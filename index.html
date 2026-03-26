@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Japan Trip Itinerary</title>
+<title>Japan Trip Itinerary — Apr 28 – May 11, 2026</title>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Japan 2026 — One-Bag Backpacking Itinerary">
+<meta property="og:description" content="14-day trip through Tokyo, Osaka, Naoshima, Kyoto, Hakone & Kamakura. 90+ stops, 6 regions, 1 bag.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://okudenconstruct.github.io/japan-itinerary/">
+
+<!-- Favicon: torii gate emoji -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛩</text></svg>">
+
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -121,7 +131,8 @@
   .header .travelers {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    flex-wrap: wrap;
+    gap: 12px;
     margin-top: 24px;
     animation: fadeDown 0.6s ease-out 0.4s both;
   }
@@ -134,6 +145,8 @@
     padding: 10px 20px;
     border-radius: 40px;
     border: 1px solid rgba(255,255,255,0.08);
+    font-size: 14px;
+    font-weight: 600;
   }
 
   .traveler-dot {
@@ -144,6 +157,13 @@
 
   .traveler-dot.steve { background: var(--accent-teal); box-shadow: 0 0 8px var(--glow-teal); }
   .traveler-dot.aaron { background: var(--accent-orange); box-shadow: 0 0 8px rgba(255,107,53,0.3); }
+
+  .traveler-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    animation: fadeDown 0.6s ease-out 0.45s both;
+  }
 
   /* ROUTE */
   .route-bar {
@@ -191,7 +211,7 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 16px 28px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     padding: 16px 24px;
     background: var(--bg-card);
     border-radius: 16px;
@@ -247,6 +267,93 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
+  }
+
+  /* CONTROLS BAR */
+  .controls-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    animation: fadeDown 0.6s ease-out 0.6s both;
+  }
+
+  .ctrl-btn {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-dim);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .ctrl-btn:hover {
+    color: var(--text-bright);
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 12px var(--glow-teal);
+  }
+
+  .ctrl-btn.active {
+    background: rgba(0, 229, 199, 0.1);
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+  }
+
+  /* STICKY DAY NAV */
+  .day-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11, 16, 38, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 10px 0;
+    margin: 0 -20px 30px;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .day-nav.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .day-nav-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: var(--text-dim);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .day-nav-btn:hover {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+  }
+
+  .day-nav-btn.active {
+    background: var(--accent-teal);
+    border-color: var(--accent-teal);
+    color: var(--bg-deep);
   }
 
   /* TIMELINE */
@@ -355,6 +462,20 @@
     text-transform: uppercase;
   }
 
+  .meetup-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(180,78,255,0.15);
+    color: var(--accent-purple);
+    border: 1px solid rgba(180,78,255,0.2);
+    letter-spacing: 1px;
+  }
+
   .day-lodging {
     display: flex;
     align-items: center;
@@ -375,7 +496,7 @@
     margin-top: 14px;
   }
 
-  /* STOP PILLS - now clickable */
+  /* STOP PILLS */
   .stop-wrapper {
     position: relative;
   }
@@ -453,6 +574,26 @@
     background: rgba(0, 229, 199, 0.04);
   }
 
+  .stop-desc .maps-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(78,202,255,0.1);
+    color: var(--accent-blue);
+    border: 1px solid rgba(78,202,255,0.2);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .stop-desc .maps-link:hover {
+    background: rgba(78,202,255,0.2);
+  }
+
   @keyframes expandIn {
     from { opacity: 0; transform: translateY(-6px); }
     to { opacity: 1; transform: translateY(0); }
@@ -470,6 +611,12 @@
     color: var(--accent-yellow);
     border: 1px solid rgba(255, 209, 102, 0.2);
     margin-top: 12px;
+  }
+
+  .note-tag a {
+    color: var(--accent-yellow);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   /* THEMES */
@@ -507,6 +654,187 @@
   .theme-travel .day-card::before { background: linear-gradient(90deg, var(--accent-yellow), var(--accent-orange)); }
   .theme-travel .day-title { color: var(--accent-yellow); }
   .theme-travel .day-region { background: rgba(255,209,102,0.15); color: var(--accent-yellow); }
+
+  /* COLLAPSIBLE SECTIONS */
+  .section-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 18px 24px;
+    margin-top: 40px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: var(--text-bright);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+  }
+
+  .section-toggle:hover {
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 16px var(--glow-teal);
+  }
+
+  .section-toggle .arrow {
+    font-size: 14px;
+    color: var(--text-dim);
+    transition: transform 0.3s;
+  }
+
+  .section-toggle.open .arrow {
+    transform: rotate(180deg);
+  }
+
+  .section-body {
+    display: none;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    padding: 20px 24px;
+    margin-top: -16px;
+    padding-top: 28px;
+  }
+
+  .section-body.open {
+    display: block;
+  }
+
+  /* BUDGET */
+  .budget-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .budget-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .budget-row .label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  .budget-row .label .cat-icon {
+    font-size: 16px;
+  }
+
+  .budget-row .label .cat-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .budget-row .amount {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    color: var(--text-bright);
+  }
+
+  .budget-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(0, 229, 199, 0.08);
+    border: 1px solid rgba(0, 229, 199, 0.15);
+    margin-top: 14px;
+  }
+
+  .budget-total .label {
+    font-weight: 900;
+    font-family: 'Nunito', sans-serif;
+    color: var(--accent-teal);
+    font-size: 15px;
+  }
+
+  .budget-total .amount {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .budget-note {
+    font-size: 11px;
+    color: var(--text-dim);
+    opacity: 0.6;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  /* PACKING LIST */
+  .packing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .packing-cat {
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .packing-cat h4 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: var(--accent-teal);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .packing-cat label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 3px 0;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .packing-cat label:hover {
+    color: var(--text-bright);
+  }
+
+  .packing-cat input[type="checkbox"] {
+    accent-color: var(--accent-teal);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+
+  .packing-cat label.checked {
+    text-decoration: line-through;
+    opacity: 0.4;
+  }
 
   /* FOOTER */
   .footer {
@@ -563,6 +891,11 @@
     .travelers { flex-direction: column; align-items: center; }
     .footer-stats { gap: 24px; }
     .legend { gap: 10px 16px; padding: 12px 16px; }
+    .day-nav { margin: 0 -12px 20px; padding: 8px 4px; }
+    .day-nav-btn { width: 28px; height: 28px; font-size: 10px; }
+    .packing-grid { grid-template-columns: 1fr 1fr; }
+    .section-toggle { font-size: 15px; padding: 14px 18px; }
+    .section-body { padding: 16px; }
   }
 </style>
 </head>
@@ -578,6 +911,7 @@
       <div class="traveler"><div class="traveler-dot steve"></div> Steve</div>
       <div class="traveler"><div class="traveler-dot aaron"></div> Aaron</div>
     </div>
+    <div class="traveler-sub">Meeting up with Mom &amp; Grace in Kyoto &amp; Tokyo (Days 8 &amp; 11)</div>
   </div>
 
   <div class="route-bar">
@@ -628,7 +962,38 @@
     </div>
   </div>
 
+  <!-- CONTROLS -->
+  <div class="controls-bar">
+    <button class="ctrl-btn" id="expandAllBtn" onclick="toggleExpandAll()">Expand All</button>
+  </div>
+
+  <!-- STICKY DAY NAV -->
+  <div class="day-nav" id="dayNav"></div>
+
   <div class="timeline" id="timeline"></div>
+
+  <!-- BUDGET SECTION -->
+  <div class="section-toggle" onclick="toggleSection('budget')">
+    <span>Budget (Aaron's Expenses)</span>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="section-body" id="budget">
+    <div class="budget-grid" id="budgetGrid"></div>
+    <div class="budget-total">
+      <span class="label">Estimated Total</span>
+      <span class="amount">$1,926.58</span>
+    </div>
+    <div class="budget-note">Prices from Wanderlog export. Train fare is estimated. Yen amounts converted at booking rate.</div>
+  </div>
+
+  <!-- PACKING LIST -->
+  <div class="section-toggle" onclick="toggleSection('packing')">
+    <span>One-Bag Packing Checklist</span>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="section-body" id="packing">
+    <div class="packing-grid" id="packingGrid"></div>
+  </div>
 
   <div class="footer">
     <div class="footer-stats">
@@ -642,198 +1007,239 @@
 </div>
 
 <script>
+// ── DATA ──────────────────────────────────────────────
 const days = [
   {
-    num: 1, date: "Monday, April 28", title: "Arrival & Shibuya", region: "Tokyo", theme: "travel",
-    lodging: { icon: "🛌", name: "The Millennials Shibuya" },
+    num: 1, date: "Tuesday, April 28", title: "Arrival & Shibuya", region: "Tokyo", theme: "travel",
+    lodging: { icon: "\u{1F6CC}", name: "The Millennials Shibuya" },
     stops: [
-      { icon: "✈", name: "Arrive NRT 4:30 PM", hl: false, desc: "Aaron arrives Narita via United UA 4975 from LAX. ~1 hr express train into central Tokyo, or budget Keisei line (~70 min). Steve's arrival is separate." },
-      { icon: "🎮", name: "TAITO Station", hl: true, desc: "Multi-floor arcade in the heart of Shibuya. Crane games, rhythm games, fighting game setups. A solid first-night warm-up for Aaron (Respawn dev) and Steve alike." },
-      { icon: "🌃", name: "Shibuya Sky", hl: true, desc: "Observation deck on the Shibuya Scramble Square rooftop (230m). Open-air with an infinity pool-style edge. Best at sunset or after dark for the full neon sprawl." },
-      { icon: "🛍", name: "Shibuya Loft", hl: false, desc: "Japanese lifestyle goods store -- stationery, home goods, unique gifts. Great for picking up quality notebooks, pens, and small souvenirs." },
-      { icon: "🛍", name: "Hands Shibuya", hl: false, desc: "Formerly Tokyu Hands. Multi-floor DIY/hobby/lifestyle store. Tools, craft supplies, kitchen gadgets, travel gear. A rabbit hole for systems thinkers." },
-      { icon: "🤖", name: "Pepper Parlor", hl: false, desc: "Cafe staffed by SoftBank's Pepper robots. They take orders and interact with you. More novelty than culinary experience, but worth the story." },
-      { icon: "🍸", name: "LOST Bar", hl: false, desc: "Speakeasy-style cocktail bar in Shibuya. Dimly lit, intimate. Good nightcap spot if you're still standing after the flight." }
+      { icon: "\u2708", name: "Arrive NRT 4:30 PM", hl: false, desc: "Aaron arrives Narita via United UA 4975 from LAX. ~1 hr express train into central Tokyo, or budget Keisei line (~70 min). Steve's arrival is separate.", maps: "Narita International Airport" },
+      { icon: "\u{1F3AE}", name: "TAITO Station", hl: true, desc: "Multi-floor arcade in the heart of Shibuya. Crane games, rhythm games, fighting game setups. A solid first-night warm-up.", maps: "TAITO Station Shibuya" },
+      { icon: "\u{1F303}", name: "Shibuya Sky", hl: true, desc: "Observation deck on the Shibuya Scramble Square rooftop (230m). Open-air with an infinity pool-style edge. Best at sunset or after dark for the full neon sprawl.", maps: "Shibuya Sky" },
+      { icon: "\u{1F6CD}", name: "Shibuya Loft", hl: false, desc: "Japanese lifestyle goods store -- stationery, home goods, unique gifts. Great for picking up quality notebooks, pens, and small souvenirs.", maps: "Shibuya Loft" },
+      { icon: "\u{1F6CD}", name: "Hands Shibuya", hl: false, desc: "Formerly Tokyu Hands. Multi-floor DIY/hobby/lifestyle store. Tools, craft supplies, kitchen gadgets, travel gear. A rabbit hole for systems thinkers.", maps: "Hands Shibuya" },
+      { icon: "\u{1F916}", name: "Pepper Parlor", hl: false, desc: "Cafe staffed by SoftBank's Pepper robots. They take orders and interact with you. More novelty than culinary experience, but worth the story.", maps: "Pepper Parlor Shibuya" },
+      { icon: "\u{1F378}", name: "LOST Bar", hl: false, desc: "Speakeasy-style cocktail bar in Shibuya. Dimly lit, intimate. Good nightcap spot if you're still standing after the flight.", maps: "LOST Shibuya" }
     ]
   },
   {
-    num: 2, date: "Tuesday, April 29", title: "Odaiba & Shinjuku", region: "Tokyo", theme: "tokyo",
-    lodging: { icon: "📚", name: "BOOK AND BED Shinjuku" },
+    num: 2, date: "Wednesday, April 29", title: "Odaiba & Shinjuku", region: "Tokyo", theme: "tokyo",
+    lodging: { icon: "\u{1F4DA}", name: "BOOK AND BED Shinjuku" },
     stops: [
-      { icon: "🏝", name: "Odaiba", hl: false, desc: "Manmade island in Tokyo Bay. Futuristic vibes, waterfront boardwalk, and views of the Rainbow Bridge. The staging area for several stops today." },
-      { icon: "🤖", name: "Unicorn Gundam", hl: true, desc: "Life-size 19.7m Unicorn Gundam statue outside DiverCity Tokyo Plaza. Transforms on schedule with light show. Free to watch, and genuinely massive up close." },
-      { icon: "🔬", name: "Miraikan", hl: true, desc: "National Museum of Emerging Science and Innovation. Interactive exhibits on robotics, space, AI, and earth science. Honda's ASIMO demos sometimes run here." },
-      { icon: "🎨", name: "teamLab Planets", hl: true, desc: "Immersive digital art museum where you wade barefoot through water, walk through flower projections, and lose all sense of spatial orientation. Book tickets in advance -- sells out." },
-      { icon: "🛍", name: "MEGA Don Quijote", hl: false, desc: "Japan's legendary discount store, cranked to max. Snacks, electronics, costumes, cosmetics, souvenirs, random chaos. Good for stocking up on Kit-Kat flavors." },
-      { icon: "🍜", name: "Omoide Yokocho", hl: false, desc: "\"Memory Lane\" -- narrow alley of tiny yakitori and ramen joints near Shinjuku Station. Also called Piss Alley. Smoky, cramped, atmospheric. Grab a skewer." },
-      { icon: "🍸", name: "Golden Gai", hl: true, desc: "Six narrow alleys packed with ~200 tiny bars, most seating 6-8 people. Each has its own theme and personality. Some charge a cover (500-1000 yen). A legendary nightlife district." },
-      { icon: "⛩", name: "Itoku Inari Shrine", hl: false, desc: "Small Shinto shrine tucked behind Golden Gai. A quiet pause between bars. Vermillion torii gates lit up at night make for good photos." },
-      { icon: "🍜", name: "Ramen Mitaba", hl: false, desc: "Shinjuku ramen spot. Likely a solid late-night bowl to close out the day. Shinjuku has incredible ramen density, so pivot if there's a line." }
+      { icon: "\u{1F3DD}", name: "Odaiba", hl: false, desc: "Manmade island in Tokyo Bay. Futuristic vibes, waterfront boardwalk, and views of the Rainbow Bridge.", maps: "Odaiba Tokyo" },
+      { icon: "\u{1F916}", name: "Unicorn Gundam", hl: true, desc: "Life-size 19.7m Unicorn Gundam statue outside DiverCity Tokyo Plaza. Transforms on schedule with light show. Free to watch, and genuinely massive up close.", maps: "Unicorn Gundam Odaiba" },
+      { icon: "\u{1F52C}", name: "Miraikan", hl: true, desc: "National Museum of Emerging Science and Innovation. Interactive exhibits on robotics, space, AI, and earth science. Honda's ASIMO demos sometimes run here.", maps: "Miraikan Tokyo" },
+      { icon: "\u{1F3A8}", name: "teamLab Planets", hl: true, desc: "Immersive digital art museum where you wade barefoot through water, walk through flower projections, and lose all sense of spatial orientation. Book tickets in advance -- sells out.", maps: "teamLab Planets TOKYO" },
+      { icon: "\u{1F6CD}", name: "MEGA Don Quijote", hl: false, desc: "Japan's legendary discount store, cranked to max. Snacks, electronics, costumes, cosmetics, souvenirs, random chaos. Good for stocking up on Kit-Kat flavors.", maps: "MEGA Don Quijote Shibuya" },
+      { icon: "\u{1F35C}", name: "Omoide Yokocho", hl: false, desc: "\"Memory Lane\" -- narrow alley of tiny yakitori and ramen joints near Shinjuku Station. Also called Piss Alley. Smoky, cramped, atmospheric. Grab a skewer.", maps: "Omoide Yokocho Shinjuku" },
+      { icon: "\u{1F378}", name: "Golden Gai", hl: true, desc: "Six narrow alleys packed with ~200 tiny bars, most seating 6-8 people. Each has its own theme and personality. Some charge a cover (500-1000 yen). A legendary nightlife district.", maps: "Shinjuku Golden Gai" },
+      { icon: "\u26E9", name: "Itoku Inari Shrine", hl: false, desc: "Small Shinto shrine tucked behind Golden Gai. A quiet pause between bars. Vermillion torii gates lit up at night make for good photos.", maps: "Itoku Inari Shrine" },
+      { icon: "\u{1F35C}", name: "Ramen Mitaba", hl: false, desc: "Shinjuku ramen spot. Likely a solid late-night bowl to close out the day. Shinjuku has incredible ramen density, so pivot if there's a line.", maps: "Ramen Mitaba Shinjuku" }
     ]
   },
   {
-    num: 3, date: "Wednesday, April 30", title: "Shinkansen to Osaka", region: "Osaka", theme: "osaka",
-    lodging: { icon: "⛺", name: "Okayama Glamping Sorania" },
-    notes: ["⚠ Glamping is a ~2.5 hr detour from Osaka -- logistics TBD"],
+    num: 3, date: "Thursday, April 30", title: "Shinkansen to Osaka", region: "Osaka", theme: "osaka",
+    lodging: { icon: "\u26FA", name: "Okayama Glamping Sorania" },
+    notes: ["\u26A0 Glamping is a ~2.5 hr detour from Osaka -- logistics TBD"],
     stops: [
-      { icon: "🚅", name: "Bullet Train to Osaka", hl: false, desc: "Shinkansen from Tokyo Station to Shin-Osaka, ~2.5 hrs on the Nozomi. If you have a JR Pass, note that the Nozomi isn't covered -- take Hikari instead (~3 hrs)." },
-      { icon: "🏙", name: "Dotonbori", hl: true, desc: "Osaka's neon-drenched food street along the canal. Giant crab signs, Glico Running Man, and wall-to-wall takoyaki, okonomiyaki, and kushikatsu stalls. The heartbeat of Osaka nightlife." },
-      { icon: "🍽", name: "Hozenji Yokocho", hl: false, desc: "Stone-paved alley just off Dotonbori with a quieter, more traditional feel. Home to small izakayas and the moss-covered Hozenji temple where you splash water on the Buddha." }
+      { icon: "\u{1F685}", name: "Bullet Train to Osaka", hl: false, desc: "Shinkansen from Tokyo Station to Shin-Osaka, ~2.5 hrs on the Nozomi. If you have a JR Pass, note that the Nozomi isn't covered -- take Hikari instead (~3 hrs).", maps: "Shin-Osaka Station" },
+      { icon: "\u{1F3D9}", name: "Dotonbori", hl: true, desc: "Osaka's neon-drenched food street along the canal. Giant crab signs, Glico Running Man, and wall-to-wall takoyaki, okonomiyaki, and kushikatsu stalls. The heartbeat of Osaka nightlife.", maps: "Dotonbori Osaka" },
+      { icon: "\u{1F37D}", name: "Hozenji Yokocho", hl: false, desc: "Stone-paved alley just off Dotonbori with a quieter, more traditional feel. Home to small izakayas and the moss-covered Hozenji temple where you splash water on the Buddha.", maps: "Hozenji Yokocho Osaka" }
     ]
   },
   {
-    num: 4, date: "Thursday, May 1", title: "Naoshima Art Island", region: "Naoshima", theme: "naoshima",
-    lodging: { icon: "🛌", name: "Capsule Hotel Asahi Plaza Shinsaibashi" },
+    num: 4, date: "Friday, May 1", title: "Naoshima Art Island", region: "Naoshima", theme: "naoshima",
+    lodging: { icon: "\u{1F6CC}", name: "Capsule Hotel Asahi Plaza Shinsaibashi" },
     stops: [
-      { icon: "🎨", name: "Benesse House Museum", hl: true, desc: "Art museum and hotel designed by Tadao Ando, built into the hillside overlooking the Seto Inland Sea. Works by Pollock, Warhol, and site-specific installations. Architecture and art fused." },
-      { icon: "🏛", name: "Ando Museum", hl: true, desc: "Tadao Ando-designed museum inside a renovated 100-year-old wooden house. Concrete meets traditional timber. Small but architecturally significant -- pure Ando." },
-      { icon: "🎨", name: "Art House: Kinza", hl: false, desc: "Part of the Art House Project -- old village houses converted into art installations. Kinza is intimate, one-person-at-a-time. Reservation required." },
-      { icon: "🎃", name: "Kusama Pumpkin", hl: true, desc: "Yayoi Kusama's iconic yellow polka-dot pumpkin sculpture on the pier. One of the most photographed art pieces in Japan. The original was swept away by a typhoon in 2021 and reinstalled in 2022." },
-      { icon: "🎮", name: "Retro Bar Space Station", hl: false, desc: "Small retro gaming bar back in Osaka. Arcade cabinets, old consoles, drinks. A good wind-down after the ferry back from Naoshima." }
+      { icon: "\u{1F3A8}", name: "Benesse House Museum", hl: true, desc: "Art museum and hotel designed by Tadao Ando, built into the hillside overlooking the Seto Inland Sea. Works by Pollock, Warhol, and site-specific installations.", maps: "Benesse House Museum Naoshima" },
+      { icon: "\u{1F3DB}", name: "Ando Museum", hl: true, desc: "Tadao Ando-designed museum inside a renovated 100-year-old wooden house. Concrete meets traditional timber. Small but architecturally significant -- pure Ando.", maps: "Ando Museum Naoshima" },
+      { icon: "\u{1F3A8}", name: "Art House: Kinza", hl: false, desc: "Part of the Art House Project -- old village houses converted into art installations. Kinza is intimate, one-person-at-a-time. Reservation required.", maps: "Art House Project Kinza Naoshima" },
+      { icon: "\u{1F383}", name: "Kusama Pumpkin", hl: true, desc: "Yayoi Kusama's iconic yellow polka-dot pumpkin sculpture on the pier. One of the most photographed art pieces in Japan. The original was swept away by a typhoon in 2021 and reinstalled in 2022.", maps: "Pumpkin Kusama Yayoi Naoshima" },
+      { icon: "\u{1F3AE}", name: "Retro Bar Space Station", hl: false, desc: "Small retro gaming bar back in Osaka. Arcade cabinets, old consoles, drinks. A good wind-down after the ferry back from Naoshima.", maps: "PC and Retro Bar Space Station Osaka" }
     ]
   },
   {
-    num: 5, date: "Friday, May 2", title: "Deep Osaka", region: "Osaka", theme: "osaka",
+    num: 5, date: "Saturday, May 2", title: "Deep Osaka", region: "Osaka", theme: "osaka",
     stops: [
-      { icon: "🍜", name: "Negiyaki Yamamoto", hl: false, desc: "Famous for negiyaki -- a thin, green onion-heavy twist on okonomiyaki. Umeda institution since the 1960s. Get the negiyaki with soy sauce and the regular okonomiyaki to compare." },
-      { icon: "🎩", name: "Magic Cafe Shinsekai", hl: false, desc: "Small cafe-bar in Shinsekai where the staff performs close-up magic at your table. Card tricks, coin magic, sleight of hand. Drinks are secondary to the show." },
-      { icon: "🏯", name: "Osaka Castle", hl: true, desc: "Osaka's most famous landmark. The current structure is a 1931 concrete reconstruction, but the museum inside covers Toyotomi Hideyoshi and the castle's history. Great views from the top floor. The surrounding park is massive." },
-      { icon: "🛍", name: "Dojima Underground", hl: false, desc: "Underground shopping arcade near Umeda. Covered walkways, restaurants, retail. A functional way to get between areas while browsing and eating." },
-      { icon: "🍡", name: "Toyo", hl: false, desc: "If this is Endo Sushi's Toyo in Osaka Central Market -- standing sushi counter, no frills, incredible fish. Opens early. One of the best-value sushi experiences in Japan." },
-      { icon: "🛍", name: "American Village Flea", hl: false, desc: "Flea market in Amerikamura, Osaka's youth fashion district. Vintage clothes, sneakers, random collectibles. Hit or miss, but the area itself has good energy." },
-      { icon: "🍣", name: "Kuromon Market", hl: true, desc: "\"Osaka's Kitchen\" -- 170+ stalls selling fresh seafood, produce, street food. Grilled scallops, uni, tamagoyaki, and fresh sashimi. Touristy but the quality holds up." },
-      { icon: "🏛", name: "Osaka Museum of History", hl: false, desc: "10-floor museum adjacent to the former Naniwa Palace site. Top floor has a full-scale recreation of the ancient palace hall. Work down chronologically through Osaka's history." }
+      { icon: "\u{1F35C}", name: "Negiyaki Yamamoto", hl: false, desc: "Famous for negiyaki -- a thin, green onion-heavy twist on okonomiyaki. Umeda institution since the 1960s. Get the negiyaki with soy sauce and the regular okonomiyaki to compare.", maps: "Negiyaki Yamamoto Osaka" },
+      { icon: "\u{1FA84}", name: "Magic Cafe Shinsekai", hl: false, desc: "Small cafe-bar in Shinsekai where the staff performs close-up magic at your table. Card tricks, coin magic, sleight of hand. Drinks are secondary to the show.", maps: "Magic Cafe Bar Shinsekai Osaka" },
+      { icon: "\u{1F3EF}", name: "Osaka Castle", hl: true, desc: "Osaka's most famous landmark. The current structure is a 1931 concrete reconstruction, but the museum inside covers Toyotomi Hideyoshi and the castle's history. Great views from the top floor.", maps: "Osaka Castle" },
+      { icon: "\u{1F6CD}", name: "Dojima Underground", hl: false, desc: "Underground shopping arcade near Umeda. Covered walkways, restaurants, retail. A functional way to get between areas while browsing and eating.", maps: "DOTIKA Dojima Underground Shopping Centre" },
+      { icon: "\u{1F361}", name: "Toyo", hl: false, desc: "If this is Endo Sushi's Toyo in Osaka Central Market -- standing sushi counter, no frills, incredible fish. Opens early. One of the best-value sushi experiences in Japan.", maps: "Toyo Osaka" },
+      { icon: "\u{1F6CD}", name: "American Village Flea", hl: false, desc: "Flea market in Amerikamura, Osaka's youth fashion district. Vintage clothes, sneakers, random collectibles. Hit or miss, but the area itself has good energy.", maps: "American Village Freemarket Osaka" },
+      { icon: "\u{1F363}", name: "Kuromon Market", hl: true, desc: "\"Osaka's Kitchen\" -- 170+ stalls selling fresh seafood, produce, street food. Grilled scallops, uni, tamagoyaki, and fresh sashimi. Touristy but the quality holds up.", maps: "Kuromon Market Osaka" },
+      { icon: "\u{1F3DB}", name: "Osaka Museum of History", hl: false, desc: "10-floor museum adjacent to the former Naniwa Palace site. Top floor has a full-scale recreation of the ancient palace hall. Work down chronologically.", maps: "Osaka Museum of History" }
     ]
   },
   {
-    num: 6, date: "Saturday, May 3", title: "Osaka: Food & Fun", region: "Osaka", theme: "osaka",
+    num: 6, date: "Sunday, May 3", title: "Osaka: Food & Fun", region: "Osaka", theme: "osaka",
     stops: [
-      { icon: "🌿", name: "Namba Parks", hl: false, desc: "Shopping complex with a terraced rooftop garden that looks like a canyon carved into the building. Worth walking the upper levels for the greenery, even if you don't shop." },
-      { icon: "🐟", name: "Zauo Fishing Restaurant", hl: true, desc: "You fish your own dinner from a boat inside the restaurant. Catch a sea bream or flounder, and the chefs prepare it as sashimi, grilled, or fried. Chaotic, loud, hilarious. The anti-omakase." },
-      { icon: "🍣", name: "Sushi Karasu", hl: false, desc: "Sushi spot in Osaka. Research pricing before going -- some of these can be high-end omakase. Good to have a backup casual option nearby." },
-      { icon: "🎮", name: "Round1 Stadium", hl: false, desc: "Massive entertainment complex -- bowling, arcade games, karaoke, darts, ping pong, batting cages. Multi-floor sensory overload. Good for a competitive hour." },
-      { icon: "🎬", name: "Tempo Harbor Theater", hl: false, desc: "Cinema in the Osaka port area. Could be good for catching a Japanese film with English subs, or just as a rest break mid-day." },
-      { icon: "🛍", name: "Kuromon Market", hl: false, desc: "Second visit -- market changes energy morning vs. afternoon. Different stalls may be open. Good for picking up anything you missed on Day 5." },
-      { icon: "😋", name: "Namba Grand Kagetsu", hl: false, desc: "Yoshimoto comedy theater -- home of manzai (double-act comedy) and other variety acts. Entirely in Japanese, but physical comedy translates. A deep-cut cultural experience." },
-      { icon: "⛩", name: "Sumiyoshi Taisha", hl: false, desc: "One of Japan's oldest shrines (3rd century), predating Buddhist influence. Distinctive straight-line architecture (sumiyoshi-zukuri). The arched bridge over the pond is iconic." }
+      { icon: "\u{1F33F}", name: "Namba Parks", hl: false, desc: "Shopping complex with a terraced rooftop garden that looks like a canyon carved into the building. Worth walking the upper levels for the greenery.", maps: "Namba Parks Osaka" },
+      { icon: "\u{1F41F}", name: "Zauo Fishing Restaurant", hl: true, desc: "You fish your own dinner from a boat inside the restaurant. Catch a sea bream or flounder, and the chefs prepare it as sashimi, grilled, or fried. Chaotic, loud, hilarious.", maps: "Zauo Fishing Restaurant Namba" },
+      { icon: "\u{1F363}", name: "Sushi Karasu", hl: false, desc: "Sushi spot in Osaka. Research pricing before going -- some of these can be high-end omakase. Good to have a backup casual option nearby.", maps: "Sushi Karasu Osaka" },
+      { icon: "\u{1F3AE}", name: "Round1 Stadium", hl: false, desc: "Massive entertainment complex -- bowling, arcade games, karaoke, darts, ping pong, batting cages. Multi-floor sensory overload.", maps: "Round1 Stadium Sennichimae" },
+      { icon: "\u{1F3AC}", name: "Tempo Harbor Theater", hl: false, desc: "Cinema in the Osaka port area. Could be good for catching a Japanese film with English subs, or just as a rest break mid-day.", maps: "TEMPO HARBOR THEATER Osaka" },
+      { icon: "\u{1F6CD}", name: "Kuromon Market", hl: false, desc: "Second visit -- market changes energy morning vs. afternoon. Different stalls may be open. Good for picking up anything you missed on Day 5.", maps: "Kuromon Market Osaka" },
+      { icon: "\u{1F60B}", name: "Namba Grand Kagetsu", hl: false, desc: "Yoshimoto comedy theater -- home of manzai (double-act comedy) and other variety acts. Entirely in Japanese, but physical comedy translates.", maps: "Namba Grand Kagetsu" },
+      { icon: "\u26E9", name: "Sumiyoshi Taisha", hl: false, desc: "One of Japan's oldest shrines (3rd century), predating Buddhist influence. Distinctive straight-line architecture (sumiyoshi-zukuri). The arched bridge is iconic.", maps: "Sumiyoshi Taisha Osaka" }
     ]
   },
   {
-    num: 7, date: "Sunday, May 4", title: "Arashiyama & Sake Country", region: "Kyoto", theme: "kyoto",
+    num: 7, date: "Monday, May 4", title: "Arashiyama & Sake Country", region: "Kyoto", theme: "kyoto",
     stops: [
-      { icon: "🎋", name: "Arashiyama Bamboo Forest", hl: true, desc: "Towering bamboo grove that filters light into green cathedral columns. Go early morning to beat crowds. The sound of wind through the stalks is part of the experience." },
-      { icon: "🐒", name: "Monkey Park Iwatayama", hl: true, desc: "Hilltop park with ~120 wild Japanese macaques. 20-min uphill hike rewards you with monkeys and panoramic Kyoto views. You can feed them from inside an enclosure (they're outside, you're caged)." },
-      { icon: "🍽", name: "Tenryuji Shigetsu", hl: false, desc: "Vegetarian (shojin ryori) restaurant inside Tenryuji Temple. Buddhist temple cuisine -- seasonal, delicate, and beautifully presented. Garden views while you eat." },
-      { icon: "🍳", name: "Kichi Kichi Omurice", hl: true, desc: "Chef Motokichi Yukimura's legendary omurice performance -- he flips the egg in one dramatic motion and it unfurls over the rice. Viral for a reason. Reservations required and competitive." },
-      { icon: "🍶", name: "Gekkeikan Sake Museum", hl: false, desc: "In Fushimi, Kyoto's sake district. Gekkeikan has been brewing since 1637. Tour the old brewery, see traditional tools, and get tasting tokens included with admission." },
-      { icon: "🍶", name: "Kizakura Kappa Country", hl: false, desc: "Sake brewery with an attached museum about kappa (water goblins from Japanese folklore). Also a restaurant and beer garden. Quirkier and less formal than Gekkeikan." },
-      { icon: "⚔", name: "Samurai Kembu Theater", hl: false, desc: "Live performance of kembu -- traditional samurai sword dance set to poetry. Small intimate venue. You can also book hands-on workshops to try it yourself." }
+      { icon: "\u{1F38B}", name: "Arashiyama Bamboo Forest", hl: true, desc: "Towering bamboo grove that filters light into green cathedral columns. Go early morning to beat crowds. The sound of wind through the stalks is part of the experience.", maps: "Arashiyama Bamboo Forest Kyoto" },
+      { icon: "\u{1F412}", name: "Monkey Park Iwatayama", hl: true, desc: "Hilltop park with ~120 wild Japanese macaques. 20-min uphill hike rewards you with monkeys and panoramic Kyoto views. You can feed them from inside an enclosure.", maps: "Arashiyama Monkey Park Iwatayama" },
+      { icon: "\u{1F37D}", name: "Tenryuji Shigetsu", hl: false, desc: "Vegetarian (shojin ryori) restaurant inside Tenryuji Temple. Buddhist temple cuisine -- seasonal, delicate, and beautifully presented. Garden views while you eat.", maps: "Tenryuji Temple Shigetsu" },
+      { icon: "\u{1F373}", name: "Kichi Kichi Omurice", hl: true, desc: "Chef Motokichi Yukimura's legendary omurice performance -- he flips the egg in one dramatic motion and it unfurls over the rice. Viral for a reason. Reservations required.", maps: "Kichi Kichi Omurice Kyoto" },
+      { icon: "\u{1F376}", name: "Gekkeikan Sake Museum", hl: false, desc: "In Fushimi, Kyoto's sake district. Gekkeikan has been brewing since 1637. Tour the old brewery, see traditional tools, and get tasting tokens included with admission.", maps: "Gekkeikan Okura Sake Museum Kyoto" },
+      { icon: "\u{1F376}", name: "Kizakura Kappa Country", hl: false, desc: "Sake brewery with an attached museum about kappa (water goblins from Japanese folklore). Also a restaurant and beer garden. Quirkier and less formal than Gekkeikan.", maps: "Kizakura Kappa Country Kyoto" },
+      { icon: "\u2694", name: "Samurai Kembu Theater", hl: false, desc: "Live performance of kembu -- traditional samurai sword dance set to poetry. Small intimate venue. You can also book hands-on workshops.", maps: "Samurai Kembu Theater Kyoto" }
     ]
   },
   {
-    num: 8, date: "Monday, May 5", title: "Temple Walk & Nishiki", region: "Kyoto", theme: "kyoto",
+    num: 8, date: "Tuesday, May 5", title: "Temple Walk & Nishiki", region: "Kyoto", theme: "kyoto",
+    meetup: true,
     stops: [
-      { icon: "⛩", name: "Kodo Gyogan-ji", hl: false, desc: "Small temple in central Kyoto, less touristed. Known for its folk deity statues and connection to the Rokudo (six realms of Buddhist cosmology)." },
-      { icon: "⛩", name: "Rozan-ji Temple", hl: false, desc: "Said to be the site of Murasaki Shikibu's residence, author of The Tale of Genji. Moss garden with bellflowers in summer. A literary history stop." },
-      { icon: "⛩", name: "Kiyomizu-dera", hl: true, desc: "UNESCO World Heritage temple perched on a hillside with a massive wooden stage cantilevered over the valley. No nails in the construction. The approach streets (Ninenzaka, Sannenzaka) are lined with shops and teahouses." },
-      { icon: "🍽", name: "Tempura Ten no Meshi", hl: false, desc: "Tempura restaurant in the Gion area. Likely a set-meal format with seasonal vegetables and shrimp. Good midday fuel between temple walks." },
-      { icon: "🎨", name: "Shikata Urushi", hl: false, desc: "Lacquerware (urushi) shop or workshop. Japanese lacquerware is a centuries-old craft. If they offer a hands-on experience, it's worth trying -- otherwise, the pieces make beautiful souvenirs." },
-      { icon: "🛍", name: "Nishiki Market", hl: true, desc: "\"Kyoto's Kitchen\" -- five blocks of food stalls and specialty shops under a covered arcade. Pickles, matcha everything, grilled mochi, fresh tofu, dashi tastings. More refined than Kuromon." },
-      { icon: "⛩", name: "Fushimi Inari Taisha", hl: true, desc: "10,000 vermillion torii gates winding up Mt. Inari. The full loop takes 2-3 hours, but even the first section is spectacular. Go late afternoon -- crowds thin and the light through the gates is incredible." },
-      { icon: "🏙", name: "Gion District", hl: false, desc: "Kyoto's geisha (geiko) district. Traditional wooden machiya townhouses, tea houses, and the chance to spot geiko or maiko heading to evening engagements on Hanamikoji Street." },
-      { icon: "🌸", name: "Philosopher's Path", hl: false, desc: "2km canal-side walking path connecting Ginkaku-ji and Nanzen-ji temples. Cherry trees line the route. Named after philosopher Nishida Kitaro, who used it for daily meditation walks." },
-      { icon: "🏯", name: "Ninomaru Palace", hl: false, desc: "Inside Nijo Castle -- famous for its 'nightingale floors' that squeak when walked on (anti-ninja security). Ornate painted sliding doors (fusuma) and Tokugawa-era opulence." }
+      { icon: "\u26E9", name: "Kodo Gyogan-ji", hl: false, desc: "Small temple in central Kyoto, less touristed. Known for its folk deity statues and connection to the Rokudo (six realms of Buddhist cosmology).", maps: "Kodo Gyogan-ji Kyoto" },
+      { icon: "\u26E9", name: "Rozan-ji Temple", hl: false, desc: "Said to be the site of Murasaki Shikibu's residence, author of The Tale of Genji. Moss garden with bellflowers in summer.", maps: "Rozan-ji Temple Kyoto" },
+      { icon: "\u26E9", name: "Kiyomizu-dera", hl: true, desc: "UNESCO World Heritage temple perched on a hillside with a massive wooden stage cantilevered over the valley. No nails in the construction. The approach streets are lined with shops and teahouses.", maps: "Kiyomizu-dera Kyoto" },
+      { icon: "\u{1F37D}", name: "Tempura Ten no Meshi", hl: false, desc: "Tempura restaurant in the Gion area. Likely a set-meal format with seasonal vegetables and shrimp. Good midday fuel between temple walks.", maps: "Kyoto Tempura Ten no Meshi Gion" },
+      { icon: "\u{1F3A8}", name: "Shikata Urushi", hl: false, desc: "Lacquerware (urushi) shop or workshop. Japanese lacquerware is a centuries-old craft. If they offer a hands-on experience, it's worth trying.", maps: "Shikata Urushi Kyoto" },
+      { icon: "\u{1F6CD}", name: "Nishiki Market", hl: true, desc: "\"Kyoto's Kitchen\" -- five blocks of food stalls and specialty shops under a covered arcade. Pickles, matcha everything, grilled mochi, fresh tofu, dashi tastings.", maps: "Nishiki Market Kyoto" },
+      { icon: "\u26E9", name: "Fushimi Inari Taisha", hl: true, desc: "10,000 vermillion torii gates winding up Mt. Inari. The full loop takes 2-3 hours, but even the first section is spectacular. Go late afternoon for thinning crowds and incredible light.", maps: "Fushimi Inari Taisha Kyoto" },
+      { icon: "\u{1F3D9}", name: "Gion District", hl: false, desc: "Kyoto's geisha (geiko) district. Traditional wooden machiya townhouses, tea houses, and the chance to spot geiko or maiko on Hanamikoji Street.", maps: "Gion Kyoto" },
+      { icon: "\u{1F338}", name: "Philosopher's Path", hl: false, desc: "2km canal-side walking path connecting Ginkaku-ji and Nanzen-ji temples. Named after philosopher Nishida Kitaro, who used it for daily meditation walks.", maps: "Philosopher's Path Kyoto" },
+      { icon: "\u{1F3EF}", name: "Ninomaru Palace", hl: false, desc: "Inside Nijo Castle -- famous for its 'nightingale floors' that squeak when walked on (anti-ninja security). Ornate painted sliding doors and Tokugawa-era opulence.", maps: "Ninomaru Palace Nijo Castle Kyoto" }
     ]
   },
   {
-    num: 9, date: "Tuesday, May 6", title: "Hakone & Ryokan Night", region: "Hakone", theme: "hakone",
-    lodging: { icon: "♨", name: "Tsuki no Yado Sara -- Ryokan -- ¥74,075" },
-    notes: ["⭐ Highlight night -- traditional ryokan + onsen"],
+    num: 9, date: "Wednesday, May 6", title: "Hakone & Ryokan Night", region: "Hakone", theme: "hakone",
+    lodging: { icon: "\u2668", name: "Tsuki no Yado Sara \u2014 Ryokan \u2014 \u00A574,075" },
+    notes: ["\u2B50 Highlight night -- traditional ryokan + onsen"],
     stops: [
-      { icon: "🎨", name: "Open-Air Museum", hl: true, desc: "Outdoor sculpture museum set against the Hakone mountains. Picasso pavilion, massive Nikiде Saint Phalle and Henry Moore pieces scattered across manicured grounds. Hot-foot bath station mid-walk." },
-      { icon: "🎨", name: "Lalique Museum", hl: false, desc: "Rene Lalique glass art museum. Art Nouveau and Art Deco jewelry, vases, and car hood ornaments. Includes an Orient Express car with original Lalique glass panels you can sit inside." },
-      { icon: "⛩", name: "Hakone Shrine", hl: true, desc: "Red torii gate standing in Lake Ashi, backed by dense cedar forest. One of the most photographed spots in Hakone. The shrine itself is serene and atmospheric, especially in mist." },
-      { icon: "🌊", name: "Lake Ashi", hl: false, desc: "Crater lake with views of Mt. Fuji on clear days. Pirate ship sightseeing boats run regular crossings. The lake connects to the ropeway and shrine circuit." },
-      { icon: "🚡", name: "Hakone Ropeway", hl: true, desc: "Aerial gondola from Sounzan to Togendai over the volcanic Owakudani valley. Sulfur vents, boiling pools, and (weather permitting) Fuji views. Buy the black eggs at the top." },
-      { icon: "🌋", name: "Owakudani", hl: false, desc: "Active volcanic valley with sulfurous steam vents and hot springs. Famous for kuro-tamago (black eggs) boiled in the sulfur springs -- said to add 7 years to your life per egg." },
-      { icon: "🏔", name: "Mt. Ashigara", hl: false, desc: "Mountain pass area between Hakone and the plains. Historical significance as a border checkpoint in feudal Japan. Good views and hiking options if time allows." },
-      { icon: "🌸", name: "Sengokuhara", hl: false, desc: "Highland area in Hakone known for pampas grass fields (susuki) in autumn. In spring, it's a quieter nature walk area. Several art galleries nearby." },
-      { icon: "⛩", name: "Choanji Temple", hl: false, desc: "Soto Zen temple in Hakone. Known as 'Flower Temple' for its seasonal gardens. Less touristed, meditative atmosphere. A good wind-down before the ryokan." }
+      { icon: "\u{1F3A8}", name: "Open-Air Museum", hl: true, desc: "Outdoor sculpture museum set against the Hakone mountains. Picasso pavilion, massive sculptures scattered across manicured grounds. Hot-foot bath station mid-walk.", maps: "Hakone Open-Air Museum" },
+      { icon: "\u{1F3A8}", name: "Lalique Museum", hl: false, desc: "Rene Lalique glass art museum. Art Nouveau and Art Deco jewelry, vases, and car hood ornaments. Includes an Orient Express car with original Lalique glass panels.", maps: "Lalique Museum Hakone" },
+      { icon: "\u26E9", name: "Hakone Shrine", hl: true, desc: "Red torii gate standing in Lake Ashi, backed by dense cedar forest. One of the most photographed spots in Hakone. Serene and atmospheric, especially in mist.", maps: "Hakone Shrine" },
+      { icon: "\u{1F30A}", name: "Lake Ashi", hl: false, desc: "Crater lake with views of Mt. Fuji on clear days. Pirate ship sightseeing boats run regular crossings. Connects to the ropeway and shrine circuit.", maps: "Lake Ashi Hakone" },
+      { icon: "\u{1F6A1}", name: "Hakone Ropeway", hl: true, desc: "Aerial gondola from Sounzan to Togendai over the volcanic Owakudani valley. Sulfur vents, boiling pools, and (weather permitting) Fuji views. Buy the black eggs at the top.", maps: "Hakone Ropeway" },
+      { icon: "\u{1F30B}", name: "Owakudani", hl: false, desc: "Active volcanic valley with sulfurous steam vents and hot springs. Famous for kuro-tamago (black eggs) boiled in the sulfur springs -- said to add 7 years to your life.", maps: "Owakudani Hakone" },
+      { icon: "\u{1F3D4}", name: "Mt. Ashigara", hl: false, desc: "Mountain pass area between Hakone and the plains. Historical significance as a border checkpoint in feudal Japan. Good views and hiking options.", maps: "Mount Ashigara" },
+      { icon: "\u{1F338}", name: "Sengokuhara", hl: false, desc: "Highland area in Hakone known for pampas grass fields in autumn. In spring, it's a quieter nature walk area. Several art galleries nearby.", maps: "Sengokuhara Hakone" },
+      { icon: "\u26E9", name: "Choanji Temple", hl: false, desc: "Soto Zen temple in Hakone. Known as 'Flower Temple' for its seasonal gardens. Less touristed, meditative atmosphere.", maps: "Ryukozan Choanji Hakone" }
     ]
   },
   {
-    num: 10, date: "Wednesday, May 7", title: "Kamakura & Yokohama", region: "Kamakura", theme: "kamakura",
+    num: 10, date: "Thursday, May 7", title: "Kamakura & Yokohama", region: "Kamakura", theme: "kamakura",
     stops: [
-      { icon: "🏝", name: "Enoshima Island", hl: true, desc: "Small island connected by bridge to the mainland. Shrines, sea caves, observation tower, and hawkers selling shirasu (baby sardines). Climb to the top for Pacific views. Cat population is notable." },
-      { icon: "🙏", name: "Great Buddha (Kotoku-in)", hl: true, desc: "13.35m bronze Amida Buddha, cast in 1252. Originally housed inside a temple hall that was destroyed by a tsunami in 1498. The Buddha has sat outdoors ever since. You can go inside it for ¥50." },
-      { icon: "🎋", name: "Hokokuji Bamboo", hl: false, desc: "\"Bamboo Temple\" -- smaller and less crowded than Arashiyama's grove. ~2,000 moso bamboo stalks in the garden. Matcha tea service in the bamboo garden is the move." },
-      { icon: "🏙", name: "Yokohama Chinatown", hl: false, desc: "Largest Chinatown in Japan, ~500 shops and restaurants. Good for nikuman (meat buns), xiaolongbao, and browsing. More of a food-walk than a destination-dining spot." },
-      { icon: "🍜", name: "Cup Noodles Museum", hl: false, desc: "Interactive museum where you design your own custom Cup Noodles flavor and packaging. Also covers instant ramen history. Fun, kitschy, and about 90 minutes well spent." },
-      { icon: "🌃", name: "Minatomirai", hl: false, desc: "Yokohama's waterfront district. Landmark Tower, Cosmo World ferris wheel, Red Brick Warehouse. Good for an evening walk with harbor views." },
-      { icon: "⛩", name: "Engaku-ji", hl: false, desc: "Major Zen temple founded in 1282 to honor those who died in the Mongol invasions. Beautiful grounds, especially the shariden (reliquary hall) which is a National Treasure." },
-      { icon: "⛩", name: "Kencho-ji", hl: false, desc: "The oldest Zen training monastery in Japan (1253). Massive juniper trees planted by the founder still stand. Hike the trail behind it to the Hansobo shrine for hilltop views." },
-      { icon: "⛩", name: "Tsurugaoka Hachimangu", hl: false, desc: "Kamakura's most important shrine, founded by Minamoto Yoritomo. Wide approach flanked by cherry trees. The lotus ponds and pigeon population are both impressive." }
+      { icon: "\u{1F3DD}", name: "Enoshima Island", hl: true, desc: "Small island connected by bridge to the mainland. Shrines, sea caves, observation tower, and hawkers selling shirasu (baby sardines). Climb to the top for Pacific views.", maps: "Enoshima Island" },
+      { icon: "\u{1F64F}", name: "Great Buddha (Kotoku-in)", hl: true, desc: "13.35m bronze Amida Buddha, cast in 1252. Originally housed inside a temple hall destroyed by a tsunami in 1498. You can go inside it for \u00A550.", maps: "Kotoku-in Kamakura" },
+      { icon: "\u{1F38B}", name: "Hokokuji Bamboo", hl: false, desc: "\"Bamboo Temple\" -- smaller and less crowded than Arashiyama. ~2,000 moso bamboo stalks. Matcha tea service in the bamboo garden is the move.", maps: "Hokokuji Temple Kamakura" },
+      { icon: "\u{1F3D9}", name: "Yokohama Chinatown", hl: false, desc: "Largest Chinatown in Japan, ~500 shops and restaurants. Good for nikuman (meat buns), xiaolongbao, and browsing.", maps: "Yokohama Chinatown" },
+      { icon: "\u{1F35C}", name: "Cup Noodles Museum", hl: false, desc: "Interactive museum where you design your own custom Cup Noodles flavor and packaging. Fun, kitschy, and about 90 minutes well spent.", maps: "Cup Noodles Museum Yokohama" },
+      { icon: "\u{1F303}", name: "Minatomirai", hl: false, desc: "Yokohama's waterfront district. Landmark Tower, Cosmo World ferris wheel, Red Brick Warehouse. Good for an evening walk with harbor views.", maps: "Minatomirai Yokohama" },
+      { icon: "\u26E9", name: "Engaku-ji", hl: false, desc: "Major Zen temple founded in 1282 to honor those who died in the Mongol invasions. Beautiful grounds, especially the shariden (reliquary hall), a National Treasure.", maps: "Engaku-ji Kamakura" },
+      { icon: "\u26E9", name: "Kencho-ji", hl: false, desc: "The oldest Zen training monastery in Japan (1253). Massive juniper trees planted by the founder still stand. Hike the trail behind it for hilltop views.", maps: "Kencho-ji Kamakura" },
+      { icon: "\u26E9", name: "Tsurugaoka Hachimangu", hl: false, desc: "Kamakura's most important shrine, founded by Minamoto Yoritomo. Wide approach flanked by cherry trees. The lotus ponds and pigeon population are both impressive.", maps: "Tsurugaoka Hachimangu Kamakura" }
     ]
   },
   {
-    num: 11, date: "Thursday, May 8", title: "Akihabara & Old Tokyo", region: "Tokyo", theme: "tokyo",
+    num: 11, date: "Friday, May 8", title: "Akihabara & Old Tokyo", region: "Tokyo", theme: "tokyo",
+    meetup: true,
     stops: [
-      { icon: "🎮", name: "Akihabara", hl: true, desc: "Tokyo's electronics and otaku district. Multi-floor arcades, retro game shops (Super Potato, Trader), manga stores, maid cafes, and component shops. Aaron's professional territory. Budget several hours." },
-      { icon: "🚅", name: "Tokyo Station", hl: false, desc: "Beyond transit hub -- the Marunouchi red-brick facade is gorgeous architecture, and the underground \"Ramen Street\" and \"Character Street\" shopping areas are worth exploring." },
-      { icon: "⛩", name: "Senso-ji Temple", hl: true, desc: "Tokyo's oldest temple (645 AD) in Asakusa. Thunder Gate (Kaminarimon) with its massive red lantern is the iconic photo. The incense cauldron in front -- wave the smoke over yourself for good health." },
-      { icon: "🏹", name: "Kyudo Japan", hl: false, desc: "Japanese archery experience. Kyudo emphasizes form and meditation over accuracy. If this is a hands-on session, expect instruction on breathing, stance, and the spiritual dimensions of the draw." },
-      { icon: "🛍", name: "Nakamise Street", hl: false, desc: "Shopping street leading to Senso-ji. Tourist-oriented but has good traditional snacks -- freshly grilled senbei, ningyo-yaki (filled cakes), and melon pan. ~250m long." },
-      { icon: "🛍", name: "Ameyoko Market", hl: false, desc: "Open-air market along the Yamanote Line tracks near Ueno. Originally a black market post-WWII, now a chaotic strip of seafood, clothes, spices, and street food. Haggling is expected." },
-      { icon: "🏛", name: "Imperial Palace", hl: false, desc: "The Emperor's residence, surrounded by massive stone walls and moats. The East Gardens are open to the public (free). The main palace grounds require advance reservation for guided tours." }
+      { icon: "\u{1F3AE}", name: "Akihabara", hl: true, desc: "Tokyo's electronics and otaku district. Multi-floor arcades, retro game shops (Super Potato, Trader), manga stores, maid cafes, and component shops. Budget several hours.", maps: "Akihabara Tokyo" },
+      { icon: "\u{1F685}", name: "Tokyo Station", hl: false, desc: "Beyond transit hub -- the Marunouchi red-brick facade is gorgeous architecture, and the underground \"Ramen Street\" and \"Character Street\" shopping areas are worth exploring.", maps: "Tokyo Station" },
+      { icon: "\u26E9", name: "Senso-ji Temple", hl: true, desc: "Tokyo's oldest temple (645 AD) in Asakusa. Thunder Gate (Kaminarimon) with its massive red lantern is the iconic photo. Wave the incense smoke over yourself for good health.", maps: "Senso-ji Temple Tokyo" },
+      { icon: "\u{1F3F9}", name: "Kyudo Japan", hl: false, desc: "Japanese archery experience. Kyudo emphasizes form and meditation over accuracy. Expect instruction on breathing, stance, and the spiritual dimensions of the draw.", maps: "Kyudo Japan Asakusa" },
+      { icon: "\u{1F6CD}", name: "Nakamise Street", hl: false, desc: "Shopping street leading to Senso-ji. Tourist-oriented but has good traditional snacks -- freshly grilled senbei, ningyo-yaki, and melon pan.", maps: "Nakamise Shopping Street Tokyo" },
+      { icon: "\u{1F6CD}", name: "Ameyoko Market", hl: false, desc: "Open-air market along the Yamanote Line tracks near Ueno. Originally a post-WWII black market, now a chaotic strip of seafood, clothes, spices, and street food.", maps: "Ameyoko Market Tokyo" },
+      { icon: "\u{1F3DB}", name: "Imperial Palace", hl: false, desc: "The Emperor's residence, surrounded by massive stone walls and moats. The East Gardens are open to the public (free). Main palace grounds require advance reservation.", maps: "Imperial Palace Tokyo" }
     ]
   },
   {
-    num: 12, date: "Friday, May 9", title: "Harajuku & Meiji", region: "Tokyo", theme: "tokyo",
+    num: 12, date: "Saturday, May 9", title: "Harajuku & Meiji", region: "Tokyo", theme: "tokyo",
     stops: [
-      { icon: "🌿", name: "Yoyogi Park", hl: false, desc: "Large public park adjacent to Meiji Jingu. Rockabilly dancers on Sundays, picnicking families, street performers. The forested paths feel far from the city." },
-      { icon: "🛍", name: "Harajuku", hl: true, desc: "Takeshita Street is the famous narrow lane of youth fashion, crepes, and sensory overload. But the backstreets (Ura-Harajuku/Cat Street) have more interesting independent shops and vintage stores." },
-      { icon: "🎨", name: "Mori Art Museum", hl: false, desc: "Contemporary art museum on the 53rd floor of Roppongi Hills. Rotating exhibitions, often excellent. The observation deck (Tokyo City View) is included and gives 360-degree views." },
-      { icon: "⛩", name: "Meiji Jingu", hl: true, desc: "Shinto shrine in a 170-acre forest in central Tokyo, dedicated to Emperor Meiji. The torii gates are made from 1,500-year-old cypress. Deeply peaceful despite being minutes from Harajuku's chaos." },
-      { icon: "🗼", name: "Tokyo Tower", hl: false, desc: "333m Eiffel-inspired tower from 1958. Less flashy than Skytree but more character. The main deck (150m) is usually enough. Orange-lit at night, it's better viewed from outside than visited." }
+      { icon: "\u{1F33F}", name: "Yoyogi Park", hl: false, desc: "Large public park adjacent to Meiji Jingu. Rockabilly dancers on Sundays, picnicking families, street performers. The forested paths feel far from the city.", maps: "Yoyogi Park Tokyo" },
+      { icon: "\u{1F6CD}", name: "Harajuku", hl: true, desc: "Takeshita Street is the famous narrow lane of youth fashion, crepes, and sensory overload. But the backstreets (Ura-Harajuku/Cat Street) have more interesting independent shops.", maps: "Harajuku Takeshita Street" },
+      { icon: "\u{1F3A8}", name: "Mori Art Museum", hl: false, desc: "Contemporary art museum on the 53rd floor of Roppongi Hills. Rotating exhibitions, often excellent. The observation deck (Tokyo City View) is included.", maps: "Mori Art Museum Tokyo" },
+      { icon: "\u26E9", name: "Meiji Jingu", hl: true, desc: "Shinto shrine in a 170-acre forest in central Tokyo, dedicated to Emperor Meiji. The torii gates are made from 1,500-year-old cypress. Deeply peaceful.", maps: "Meiji Jingu Tokyo" },
+      { icon: "\u{1F5FC}", name: "Tokyo Tower", hl: false, desc: "333m Eiffel-inspired tower from 1958. Less flashy than Skytree but more character. Orange-lit at night, it's better viewed from outside than visited.", maps: "Tokyo Tower" }
     ]
   },
   {
-    num: 13, date: "Saturday, May 10", title: "Last Full Day", region: "Tokyo", theme: "tokyo",
-    notes: ["💡 Check sumo.or.jp for May tournament tickets"],
+    num: 13, date: "Sunday, May 10", title: "Last Full Day", region: "Tokyo", theme: "tokyo",
+    notes: ['<a href="https://sumo.or.jp/EnTicket/year_schedule/" target="_blank" rel="noopener">Check sumo.or.jp</a> for May tournament tickets'],
     stops: [
-      { icon: "👟", name: "Jimbocho Kicks", hl: false, desc: "Sneaker shop in Jimbocho, Tokyo's book district. The area is famous for used bookstores, but the sneaker resale scene in Japan is legitimate. Worth browsing the neighborhood beyond the shop." },
-      { icon: "🥊", name: "Ryogoku Sumo Arena", hl: true, desc: "Kokugikan -- the home of sumo. The May Grand Tournament (Natsu Basho) runs mid-May, so depending on exact dates, you might catch it. Tickets sell fast. Even outside tournament season, the Sumo Museum inside is free." },
-      { icon: "🚅", name: "Tokyo Station", hl: false, desc: "Last chance for ekiben (train station bento boxes) and Tokyo Banana souvenirs from the underground shops. The station itself is worth photographing from Marunouchi side." },
-      { icon: "🏙", name: "Asakusa", hl: false, desc: "Return to the Asakusa area for anything missed on Day 11. The east bank of the Sumida River has good views of Tokyo Skytree. Evening lantern lighting at Senso-ji is atmospheric." },
-      { icon: "🗡", name: "Japanese Sword Museum", hl: false, desc: "Small museum in Ryogoku dedicated to nihonto (Japanese swords). Rotating exhibits of historical blades, tsuba (handguards), and armor. Niche but deeply impressive craftsmanship." }
+      { icon: "\u{1F45F}", name: "Jimbocho Kicks", hl: false, desc: "Sneaker shop in Jimbocho, Tokyo's book district. The area is famous for used bookstores, but the sneaker resale scene in Japan is legitimate.", maps: "Jimbocho Kicks Tokyo" },
+      { icon: "\u{1F94A}", name: "Ryogoku Sumo Arena", hl: true, desc: "Kokugikan -- the home of sumo. The May Grand Tournament (Natsu Basho) runs mid-May, so depending on exact dates, you might catch it. Even outside tournament, the Sumo Museum is free.", maps: "Ryogoku Kokugikan Sumo Arena" },
+      { icon: "\u{1F685}", name: "Tokyo Station", hl: false, desc: "Last chance for ekiben (train station bento boxes) and Tokyo Banana souvenirs from the underground shops.", maps: "Tokyo Station" },
+      { icon: "\u{1F3D9}", name: "Asakusa", hl: false, desc: "Return to the Asakusa area for anything missed on Day 11. The east bank of the Sumida River has good views of Tokyo Skytree. Evening lantern lighting at Senso-ji is atmospheric.", maps: "Asakusa Tokyo" },
+      { icon: "\u{1F5E1}", name: "Japanese Sword Museum", hl: false, desc: "Small museum in Ryogoku dedicated to nihonto (Japanese swords). Rotating exhibits of historical blades, tsuba (handguards), and armor. Niche but deeply impressive.", maps: "Japanese Sword Museum Tokyo" }
     ]
   },
   {
-    num: 14, date: "Sunday, May 11", title: "Fly Home", region: "Departure", theme: "travel",
-    notes: ["📌 Steve's return flight is separate"],
+    num: 14, date: "Monday, May 11", title: "Fly Home", region: "Departure", theme: "travel",
+    notes: ["\u{1F4CC} Steve's return flight is separate"],
     stops: [
-      { icon: "✈", name: "NRT → LAX 5:00 PM (Aaron)", hl: false, desc: "Aaron departs Narita on United UA 7946, arriving LAX 11:00 AM same day (international date line). Allow 2+ hours to get to Narita from central Tokyo plus check-in time." }
+      { icon: "\u2708", name: "NRT \u2192 LAX 5:00 PM (Aaron)", hl: false, desc: "Aaron departs Narita on United UA 7946, arriving LAX 11:00 AM same day (international date line). Allow 2+ hours to get to Narita from central Tokyo plus check-in time.", maps: "Narita International Airport" }
     ]
   }
 ];
 
-// RENDER
+const budgetItems = [
+  { icon: "\u2708", name: "LAX to NRT (Aaron)", amount: "$870.86", cat: "Flights", catColor: "var(--accent-blue)" },
+  { icon: "\u{1F6CC}", name: "The Millennials Shibuya", amount: "$100.00", cat: "Lodging", catColor: "var(--accent-purple)" },
+  { icon: "\u{1F4DA}", name: "BOOK AND BED Shinjuku", amount: "$65.00", cat: "Lodging", catColor: "var(--accent-purple)" },
+  { icon: "\u26FA", name: "Okayama Glamping Sorania", amount: "$86.00", cat: "Lodging", catColor: "var(--accent-purple)" },
+  { icon: "\u{1F6CC}", name: "Capsule Hotel Asahi Plaza", amount: "$20.00", cat: "Lodging", catColor: "var(--accent-purple)" },
+  { icon: "\u2668", name: "Tsuki no Yado Sara (Ryokan)", amount: "\u00A574,075", cat: "Lodging", catColor: "var(--accent-purple)" },
+  { icon: "\u{1F3AE}", name: "TAITO Station Shibuya", amount: "$20.00", cat: "Activities", catColor: "var(--accent-teal)" },
+  { icon: "\u{1F916}", name: "Pepper Parlor", amount: "$25.00", cat: "Food", catColor: "var(--accent-orange)" },
+  { icon: "\u{1F683}", name: "Estimated train fare", amount: "$275.00", cat: "Transit", catColor: "var(--accent-yellow)" },
+];
+
+const packingData = {
+  "Clothing": ["3 merino tees", "1 long sleeve", "1 light jacket", "2 shorts / pants", "4 underwear", "3 pairs socks", "1 swimwear"],
+  "Footwear": ["Walking shoes", "Sandals / slides"],
+  "Tech": ["Phone + charger", "USB-C cable", "Power bank", "Adapter (Type A)", "Earbuds"],
+  "Toiletries": ["Toothbrush + paste", "Deodorant", "Sunscreen", "Lip balm", "Small towel"],
+  "Documents": ["Passport", "Flight confirmation", "Ryokan booking", "JR Pass (if bought)", "Travel insurance"],
+  "Essentials": ["Day pack (packable)", "Water bottle", "Snacks for flight", "Pen (customs form)", "Zip bags"]
+};
+
+// ── RENDER TIMELINE ──────────────────────────────────
 const timeline = document.getElementById('timeline');
+const dayNav = document.getElementById('dayNav');
+
+// Build sticky nav buttons
+days.forEach(day => {
+  const btn = document.createElement('button');
+  btn.className = 'day-nav-btn';
+  btn.textContent = day.num;
+  btn.title = `Day ${day.num}: ${day.title}`;
+  btn.onclick = () => {
+    const target = document.getElementById(`day-${day.num}`);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  dayNav.appendChild(btn);
+});
 
 days.forEach((day, idx) => {
   const dayEl = document.createElement('div');
   dayEl.className = `day theme-${day.theme}`;
+  dayEl.id = `day-${day.num}`;
   dayEl.style.animationDelay = `${0.6 + idx * 0.08}s`;
 
   let stopsHTML = '';
   day.stops.forEach((stop, sIdx) => {
     const hlClass = stop.hl ? ' highlight-stop' : '';
     const id = `d${day.num}s${sIdx}`;
+    const mapsUrl = stop.maps ? `https://www.google.com/maps/search/${encodeURIComponent(stop.maps)}` : '';
+    const mapsLink = mapsUrl ? `<br><a class="maps-link" href="${mapsUrl}" target="_blank" rel="noopener">\u{1F4CD} Open in Google Maps</a>` : '';
     stopsHTML += `
-      <span class="stop${hlClass}" data-target="${id}" onclick="toggleDesc('${id}')"">
+      <span class="stop${hlClass}" data-target="${id}" onclick="toggleDesc('${id}')">
         <span class="stop-icon">${stop.icon}</span> ${stop.name}
       </span>
-      <div class="stop-desc${stop.hl ? ' is-highlight' : ''}" id="${id}">${stop.desc}</div>
+      <div class="stop-desc${stop.hl ? ' is-highlight' : ''}" id="${id}">${stop.desc}${mapsLink}</div>
     `;
   });
 
@@ -847,6 +1253,11 @@ days.forEach((day, idx) => {
     notesHTML = day.notes.map(n => `<div class="note-tag">${n}</div>`).join('');
   }
 
+  let meetupHTML = '';
+  if (day.meetup) {
+    meetupHTML = `<span class="meetup-badge">\u{1F91D} Meetup with Mom & Grace</span>`;
+  }
+
   dayEl.innerHTML = `
     <div class="day-node">${day.num}</div>
     <div class="day-card">
@@ -855,7 +1266,10 @@ days.forEach((day, idx) => {
           <div class="day-date">${day.date}</div>
           <div class="day-title">${day.title}</div>
         </div>
-        <div class="day-region">${day.region}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          ${meetupHTML}
+          <div class="day-region">${day.region}</div>
+        </div>
       </div>
       <div class="stops">${stopsHTML}</div>
       ${lodgingHTML}
@@ -866,24 +1280,113 @@ days.forEach((day, idx) => {
   timeline.appendChild(dayEl);
 });
 
+// ── RENDER BUDGET ─────────────────────────────────────
+const budgetGrid = document.getElementById('budgetGrid');
+budgetItems.forEach(item => {
+  const row = document.createElement('div');
+  row.className = 'budget-row';
+  row.innerHTML = `
+    <div class="label">
+      <span class="cat-icon">${item.icon}</span>
+      <span>${item.name}</span>
+      <span class="cat-tag" style="background:${item.catColor}22;color:${item.catColor};border:1px solid ${item.catColor}33;">${item.cat}</span>
+    </div>
+    <div class="amount">${item.amount}</div>
+  `;
+  budgetGrid.appendChild(row);
+});
+
+// ── RENDER PACKING LIST ───────────────────────────────
+const packingGrid = document.getElementById('packingGrid');
+Object.entries(packingData).forEach(([cat, items]) => {
+  const col = document.createElement('div');
+  col.className = 'packing-cat';
+  col.innerHTML = `<h4>${cat}</h4>` + items.map((item, i) => {
+    const key = `pack_${cat}_${i}`;
+    const checked = localStorage.getItem(key) === '1';
+    return `<label class="${checked ? 'checked' : ''}">
+      <input type="checkbox" ${checked ? 'checked' : ''} onchange="togglePack(this, '${key}')"> ${item}
+    </label>`;
+  }).join('');
+  packingGrid.appendChild(col);
+});
+
+function togglePack(el, key) {
+  if (el.checked) {
+    localStorage.setItem(key, '1');
+    el.parentElement.classList.add('checked');
+  } else {
+    localStorage.removeItem(key);
+    el.parentElement.classList.remove('checked');
+  }
+}
+
+// ── TOGGLE DESCRIPTIONS ───────────────────────────────
+let allExpanded = false;
+
 function toggleDesc(id) {
+  if (allExpanded) return; // don't toggle individual when all are shown
   const el = document.getElementById(id);
   const pill = document.querySelector(`[data-target="${id}"]`);
   const wasVisible = el.classList.contains('visible');
 
-  // Close all others
-  document.querySelectorAll('.stop-desc.visible').forEach(d => {
-    d.classList.remove('visible');
-  });
-  document.querySelectorAll('.stop.expanded').forEach(s => {
-    s.classList.remove('expanded');
-  });
+  document.querySelectorAll('.stop-desc.visible').forEach(d => d.classList.remove('visible'));
+  document.querySelectorAll('.stop.expanded').forEach(s => s.classList.remove('expanded'));
 
   if (!wasVisible) {
     el.classList.add('visible');
     pill.classList.add('expanded');
   }
 }
+
+function toggleExpandAll() {
+  const btn = document.getElementById('expandAllBtn');
+  allExpanded = !allExpanded;
+
+  if (allExpanded) {
+    document.querySelectorAll('.stop-desc').forEach(d => d.classList.add('visible'));
+    document.querySelectorAll('.stop').forEach(s => s.classList.add('expanded'));
+    btn.textContent = 'Collapse All';
+    btn.classList.add('active');
+  } else {
+    document.querySelectorAll('.stop-desc.visible').forEach(d => d.classList.remove('visible'));
+    document.querySelectorAll('.stop.expanded').forEach(s => s.classList.remove('expanded'));
+    btn.textContent = 'Expand All';
+    btn.classList.remove('active');
+  }
+}
+
+// ── COLLAPSIBLE SECTIONS ──────────────────────────────
+function toggleSection(id) {
+  const body = document.getElementById(id);
+  const toggle = body.previousElementSibling;
+  body.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+// ── STICKY NAV: show on scroll, highlight active day ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const dayNum = entry.target.id.replace('day-', '');
+      document.querySelectorAll('.day-nav-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.querySelector(`.day-nav-btn:nth-child(${dayNum})`);
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+
+days.forEach(day => {
+  const el = document.getElementById(`day-${day.num}`);
+  if (el) observer.observe(el);
+});
+
+// Show nav after scrolling past header
+const headerObserver = new IntersectionObserver(([entry]) => {
+  dayNav.classList.toggle('visible', !entry.isIntersecting);
+}, { threshold: 0 });
+
+headerObserver.observe(document.querySelector('.header'));
 </script>
 </body>
 </html>
