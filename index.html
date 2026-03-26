@@ -419,6 +419,21 @@
     box-shadow: 0 8px 30px rgba(0,0,0,0.3);
   }
 
+  .day-hero {
+    width: calc(100% + 56px);
+    margin: -24px -28px 16px;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    border-radius: 20px 20px 0 0;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .day-hero.loaded {
+    opacity: 1;
+  }
+
   .day-card::before {
     content: '';
     position: absolute;
@@ -886,6 +901,7 @@
     .header { padding: 40px 10px 30px; }
     .day { padding-left: 58px; }
     .day-card { padding: 18px 16px; }
+    .day-hero { width: calc(100% + 32px); margin: -18px -16px 12px; height: 140px; }
     .timeline::before { left: 22px; }
     .day-node { left: 8px; width: 28px; height: 28px; font-size: 11px; }
     .travelers { flex-direction: column; align-items: center; }
@@ -1003,6 +1019,7 @@
       <div class="stat"><div class="stat-num">1</div><div class="stat-label">Bag</div></div>
     </div>
     <div style="opacity: 0.5; font-size: 11px;">Built from Aaron's Wanderlog export &bull; Flights shown are Aaron's (United UA 4975 / UA 7946) &bull; Tap any stop to expand</div>
+    <div style="opacity: 0.35; font-size: 10px; margin-top: 8px;">Photos via Wikimedia Commons (CC-licensed)</div>
   </div>
 </div>
 
@@ -1011,6 +1028,7 @@
 const days = [
   {
     num: 1, date: "Tuesday, April 28", title: "Arrival & Shibuya", region: "Tokyo", theme: "travel",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Shibuya_Scramble_Square_SHIBUYA_SKY_%2852651902582%29.jpg/960px-Shibuya_Scramble_Square_SHIBUYA_SKY_%2852651902582%29.jpg", imgAlt: "Shibuya Sky observation deck",
     lodging: { icon: "\u{1F6CC}", name: "The Millennials Shibuya" },
     stops: [
       { icon: "\u2708", name: "Arrive NRT 4:30 PM", hl: false, desc: "Aaron arrives Narita via United UA 4975 from LAX. ~1 hr express train into central Tokyo, or budget Keisei line (~70 min). Steve's arrival is separate.", maps: "Narita International Airport" },
@@ -1024,6 +1042,7 @@ const days = [
   },
   {
     num: 2, date: "Wednesday, April 29", title: "Odaiba & Shinjuku", region: "Tokyo", theme: "tokyo",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Photos_at_teamlab_planets_tokyo.jpg/960px-Photos_at_teamlab_planets_tokyo.jpg", imgAlt: "teamLab Planets Tokyo",
     lodging: { icon: "\u{1F4DA}", name: "BOOK AND BED Shinjuku" },
     stops: [
       { icon: "\u{1F3DD}", name: "Odaiba", hl: false, desc: "Manmade island in Tokyo Bay. Futuristic vibes, waterfront boardwalk, and views of the Rainbow Bridge.", maps: "Odaiba Tokyo" },
@@ -1039,6 +1058,7 @@ const days = [
   },
   {
     num: 3, date: "Thursday, April 30", title: "Shinkansen to Osaka", region: "Osaka", theme: "osaka",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Dotonbori_Neon_Sign%2C_Osaka_20190415_1.jpg/960px-Dotonbori_Neon_Sign%2C_Osaka_20190415_1.jpg", imgAlt: "Dotonbori neon signs, Osaka",
     lodging: { icon: "\u26FA", name: "Okayama Glamping Sorania" },
     notes: ["\u26A0 Glamping is a ~2.5 hr detour from Osaka -- logistics TBD"],
     stops: [
@@ -1049,6 +1069,7 @@ const days = [
   },
   {
     num: 4, date: "Friday, May 1", title: "Naoshima Art Island", region: "Naoshima", theme: "naoshima",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/150505_Chichu_Art_Museum_Naoshima_Island_Kagawa_pref_Japan01s3.jpg/960px-150505_Chichu_Art_Museum_Naoshima_Island_Kagawa_pref_Japan01s3.jpg", imgAlt: "Chichu Art Museum, Naoshima Island",
     lodging: { icon: "\u{1F6CC}", name: "Capsule Hotel Asahi Plaza Shinsaibashi" },
     stops: [
       { icon: "\u{1F3A8}", name: "Benesse House Museum", hl: true, desc: "Art museum and hotel designed by Tadao Ando, built into the hillside overlooking the Seto Inland Sea. Works by Pollock, Warhol, and site-specific installations.", maps: "Benesse House Museum Naoshima" },
@@ -1060,6 +1081,7 @@ const days = [
   },
   {
     num: 5, date: "Saturday, May 2", title: "Deep Osaka", region: "Osaka", theme: "osaka",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Osaka_Castle_Outer_Moat_and_Osaka_Business_Park%2C_November_2016.jpg/960px-Osaka_Castle_Outer_Moat_and_Osaka_Business_Park%2C_November_2016.jpg", imgAlt: "Osaka Castle",
     stops: [
       { icon: "\u{1F35C}", name: "Negiyaki Yamamoto", hl: false, desc: "Famous for negiyaki -- a thin, green onion-heavy twist on okonomiyaki. Umeda institution since the 1960s. Get the negiyaki with soy sauce and the regular okonomiyaki to compare.", maps: "Negiyaki Yamamoto Osaka" },
       { icon: "\u{1FA84}", name: "Magic Cafe Shinsekai", hl: false, desc: "Small cafe-bar in Shinsekai where the staff performs close-up magic at your table. Card tricks, coin magic, sleight of hand. Drinks are secondary to the show.", maps: "Magic Cafe Bar Shinsekai Osaka" },
@@ -1073,6 +1095,7 @@ const days = [
   },
   {
     num: 6, date: "Sunday, May 3", title: "Osaka: Food & Fun", region: "Osaka", theme: "osaka",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Dotonbori%2C_Osaka%2C_at_night%2C_November_2016.jpg/960px-Dotonbori%2C_Osaka%2C_at_night%2C_November_2016.jpg", imgAlt: "Dotonbori at night, Osaka",
     stops: [
       { icon: "\u{1F33F}", name: "Namba Parks", hl: false, desc: "Shopping complex with a terraced rooftop garden that looks like a canyon carved into the building. Worth walking the upper levels for the greenery.", maps: "Namba Parks Osaka" },
       { icon: "\u{1F41F}", name: "Zauo Fishing Restaurant", hl: true, desc: "You fish your own dinner from a boat inside the restaurant. Catch a sea bream or flounder, and the chefs prepare it as sashimi, grilled, or fried. Chaotic, loud, hilarious.", maps: "Zauo Fishing Restaurant Namba" },
@@ -1086,6 +1109,7 @@ const days = [
   },
   {
     num: 7, date: "Monday, May 4", title: "Arashiyama & Sake Country", region: "Kyoto", theme: "kyoto",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Bamboo_Forest%2C_Arashiyama%2C_Kyoto%2C_Japan.jpg/960px-Bamboo_Forest%2C_Arashiyama%2C_Kyoto%2C_Japan.jpg", imgAlt: "Arashiyama Bamboo Forest, Kyoto",
     stops: [
       { icon: "\u{1F38B}", name: "Arashiyama Bamboo Forest", hl: true, desc: "Towering bamboo grove that filters light into green cathedral columns. Go early morning to beat crowds. The sound of wind through the stalks is part of the experience.", maps: "Arashiyama Bamboo Forest Kyoto" },
       { icon: "\u{1F412}", name: "Monkey Park Iwatayama", hl: true, desc: "Hilltop park with ~120 wild Japanese macaques. 20-min uphill hike rewards you with monkeys and panoramic Kyoto views. You can feed them from inside an enclosure.", maps: "Arashiyama Monkey Park Iwatayama" },
@@ -1098,6 +1122,7 @@ const days = [
   },
   {
     num: 8, date: "Tuesday, May 5", title: "Temple Walk & Nishiki", region: "Kyoto", theme: "kyoto",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Kiyomizu-dera%2C_Kyoto%2C_November_2016_-07.jpg/960px-Kiyomizu-dera%2C_Kyoto%2C_November_2016_-07.jpg", imgAlt: "Kiyomizu-dera Temple, Kyoto",
     meetup: true,
     stops: [
       { icon: "\u26E9", name: "Kodo Gyogan-ji", hl: false, desc: "Small temple in central Kyoto, less touristed. Known for its folk deity statues and connection to the Rokudo (six realms of Buddhist cosmology).", maps: "Kodo Gyogan-ji Kyoto" },
@@ -1114,6 +1139,7 @@ const days = [
   },
   {
     num: 9, date: "Wednesday, May 6", title: "Hakone & Ryokan Night", region: "Hakone", theme: "hakone",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Lake_torii_%40_Hakone_Shrine_%2813776519615%29.jpg/960px-Lake_torii_%40_Hakone_Shrine_%2813776519615%29.jpg", imgAlt: "Hakone Shrine torii gate on Lake Ashi",
     lodging: { icon: "\u2668", name: "Tsuki no Yado Sara \u2014 Ryokan \u2014 \u00A574,075" },
     notes: ["\u2B50 Highlight night -- traditional ryokan + onsen"],
     stops: [
@@ -1130,6 +1156,7 @@ const days = [
   },
   {
     num: 10, date: "Thursday, May 7", title: "Kamakura & Yokohama", region: "Kamakura", theme: "kamakura",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Kamakura_Budda_Daibutsu_front_1885.jpg/960px-Kamakura_Budda_Daibutsu_front_1885.jpg", imgAlt: "Great Buddha of Kamakura",
     stops: [
       { icon: "\u{1F3DD}", name: "Enoshima Island", hl: true, desc: "Small island connected by bridge to the mainland. Shrines, sea caves, observation tower, and hawkers selling shirasu (baby sardines). Climb to the top for Pacific views.", maps: "Enoshima Island" },
       { icon: "\u{1F64F}", name: "Great Buddha (Kotoku-in)", hl: true, desc: "13.35m bronze Amida Buddha, cast in 1252. Originally housed inside a temple hall destroyed by a tsunami in 1498. You can go inside it for \u00A550.", maps: "Kotoku-in Kamakura" },
@@ -1144,6 +1171,7 @@ const days = [
   },
   {
     num: 11, date: "Friday, May 8", title: "Akihabara & Old Tokyo", region: "Tokyo", theme: "tokyo",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Akihabara_Electric_Town_9999_326.jpg/960px-Akihabara_Electric_Town_9999_326.jpg", imgAlt: "Akihabara Electric Town, Tokyo",
     meetup: true,
     stops: [
       { icon: "\u{1F3AE}", name: "Akihabara", hl: true, desc: "Tokyo's electronics and otaku district. Multi-floor arcades, retro game shops (Super Potato, Trader), manga stores, maid cafes, and component shops. Budget several hours.", maps: "Akihabara Tokyo" },
@@ -1157,6 +1185,7 @@ const days = [
   },
   {
     num: 12, date: "Saturday, May 9", title: "Harajuku & Meiji", region: "Tokyo", theme: "tokyo",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Torii_%40_Meiji_Jingu_Shrine_%40_Yoyogi_Park_%2813607317544%29.jpg/960px-Torii_%40_Meiji_Jingu_Shrine_%40_Yoyogi_Park_%2813607317544%29.jpg", imgAlt: "Meiji Jingu Shrine torii gate",
     stops: [
       { icon: "\u{1F33F}", name: "Yoyogi Park", hl: false, desc: "Large public park adjacent to Meiji Jingu. Rockabilly dancers on Sundays, picnicking families, street performers. The forested paths feel far from the city.", maps: "Yoyogi Park Tokyo" },
       { icon: "\u{1F6CD}", name: "Harajuku", hl: true, desc: "Takeshita Street is the famous narrow lane of youth fashion, crepes, and sensory overload. But the backstreets (Ura-Harajuku/Cat Street) have more interesting independent shops.", maps: "Harajuku Takeshita Street" },
@@ -1167,6 +1196,7 @@ const days = [
   },
   {
     num: 13, date: "Sunday, May 10", title: "Last Full Day", region: "Tokyo", theme: "tokyo",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Five-storied_Pagoda_of_Sensoji_Temple_in_Tokyo%2C_20240821_1616_5263.jpg/960px-Five-storied_Pagoda_of_Sensoji_Temple_in_Tokyo%2C_20240821_1616_5263.jpg", imgAlt: "Senso-ji Pagoda, Asakusa",
     notes: ['<a href="https://sumo.or.jp/EnTicket/year_schedule/" target="_blank" rel="noopener">Check sumo.or.jp</a> for May tournament tickets'],
     stops: [
       { icon: "\u{1F45F}", name: "Jimbocho Kicks", hl: false, desc: "Sneaker shop in Jimbocho, Tokyo's book district. The area is famous for used bookstores, but the sneaker resale scene in Japan is legitimate.", maps: "Jimbocho Kicks Tokyo" },
@@ -1258,9 +1288,15 @@ days.forEach((day, idx) => {
     meetupHTML = `<span class="meetup-badge">\u{1F91D} Meetup with Mom & Grace</span>`;
   }
 
+  let heroHTML = '';
+  if (day.img) {
+    heroHTML = `<img class="day-hero" src="${day.img}" alt="${day.imgAlt || ''}" loading="lazy" onload="this.classList.add('loaded')">`;
+  }
+
   dayEl.innerHTML = `
     <div class="day-node">${day.num}</div>
     <div class="day-card">
+      ${heroHTML}
       <div class="day-header">
         <div>
           <div class="day-date">${day.date}</div>
