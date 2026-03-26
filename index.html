@@ -85,6 +85,19 @@
     padding: 60px 20px 50px;
   }
 
+  .header-photo {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 20%;
+    margin: 0 auto 24px;
+    display: block;
+    border: 3px solid rgba(255,255,255,0.12);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 6px rgba(78, 202, 255, 0.15);
+    animation: fadeDown 0.6s ease-out 0.1s both;
+  }
+
   .header-badge {
     display: inline-block;
     background: linear-gradient(135deg, var(--accent-orange), var(--accent-pink));
@@ -838,6 +851,7 @@
 <div class="container">
 
   <div class="header">
+    <img class="header-photo" src="samurai-selfie.png" alt="Steve & Aaron in samurai gear">
     <div class="header-badge">One-Bag Backpacking</div>
     <h1>JAPAN</h1>
     <div class="subtitle">2026</div>
