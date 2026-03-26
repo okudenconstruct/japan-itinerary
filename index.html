@@ -719,87 +719,6 @@
     display: block;
   }
 
-  /* BUDGET */
-  .budget-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .budget-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .budget-row .label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: var(--text-dim);
-  }
-
-  .budget-row .label .cat-icon {
-    font-size: 16px;
-  }
-
-  .budget-row .label .cat-tag {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .budget-row .amount {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 15px;
-    color: var(--text-bright);
-  }
-
-  .budget-total {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px;
-    border-radius: 12px;
-    background: rgba(0, 229, 199, 0.08);
-    border: 1px solid rgba(0, 229, 199, 0.15);
-    margin-top: 14px;
-  }
-
-  .budget-total .label {
-    font-weight: 900;
-    font-family: 'Nunito', sans-serif;
-    color: var(--accent-teal);
-    font-size: 15px;
-  }
-
-  .budget-total .amount {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 20px;
-    background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .budget-note {
-    font-size: 11px;
-    color: var(--text-dim);
-    opacity: 0.6;
-    margin-top: 10px;
-    text-align: center;
-  }
-
   /* PACKING LIST */
   .packing-grid {
     display: grid;
@@ -987,20 +906,6 @@
   <div class="day-nav" id="dayNav"></div>
 
   <div class="timeline" id="timeline"></div>
-
-  <!-- BUDGET SECTION -->
-  <div class="section-toggle" onclick="toggleSection('budget')">
-    <span>Budget (Aaron's Expenses)</span>
-    <span class="arrow">&#9660;</span>
-  </div>
-  <div class="section-body" id="budget">
-    <div class="budget-grid" id="budgetGrid"></div>
-    <div class="budget-total">
-      <span class="label">Estimated Total</span>
-      <span class="amount">$1,926.58</span>
-    </div>
-    <div class="budget-note">Prices from Wanderlog export. Train fare is estimated. Yen amounts converted at booking rate.</div>
-  </div>
 
   <!-- PACKING LIST -->
   <div class="section-toggle" onclick="toggleSection('packing')">
@@ -1215,18 +1120,6 @@ const days = [
   }
 ];
 
-const budgetItems = [
-  { icon: "\u2708", name: "LAX to NRT (Aaron)", amount: "$870.86", cat: "Flights", catColor: "var(--accent-blue)" },
-  { icon: "\u{1F6CC}", name: "The Millennials Shibuya", amount: "$100.00", cat: "Lodging", catColor: "var(--accent-purple)" },
-  { icon: "\u{1F4DA}", name: "BOOK AND BED Shinjuku", amount: "$65.00", cat: "Lodging", catColor: "var(--accent-purple)" },
-  { icon: "\u26FA", name: "Okayama Glamping Sorania", amount: "$86.00", cat: "Lodging", catColor: "var(--accent-purple)" },
-  { icon: "\u{1F6CC}", name: "Capsule Hotel Asahi Plaza", amount: "$20.00", cat: "Lodging", catColor: "var(--accent-purple)" },
-  { icon: "\u2668", name: "Tsuki no Yado Sara (Ryokan)", amount: "\u00A574,075", cat: "Lodging", catColor: "var(--accent-purple)" },
-  { icon: "\u{1F3AE}", name: "TAITO Station Shibuya", amount: "$20.00", cat: "Activities", catColor: "var(--accent-teal)" },
-  { icon: "\u{1F916}", name: "Pepper Parlor", amount: "$25.00", cat: "Food", catColor: "var(--accent-orange)" },
-  { icon: "\u{1F683}", name: "Estimated train fare", amount: "$275.00", cat: "Transit", catColor: "var(--accent-yellow)" },
-];
-
 const packingData = {
   "Clothing": ["3 merino tees", "1 long sleeve", "1 light jacket", "2 shorts / pants", "4 underwear", "3 pairs socks", "1 swimwear"],
   "Footwear": ["Walking shoes", "Sandals / slides"],
@@ -1315,22 +1208,6 @@ days.forEach((day, idx) => {
   `;
 
   timeline.appendChild(dayEl);
-});
-
-// ── RENDER BUDGET ─────────────────────────────────────
-const budgetGrid = document.getElementById('budgetGrid');
-budgetItems.forEach(item => {
-  const row = document.createElement('div');
-  row.className = 'budget-row';
-  row.innerHTML = `
-    <div class="label">
-      <span class="cat-icon">${item.icon}</span>
-      <span>${item.name}</span>
-      <span class="cat-tag" style="background:${item.catColor}22;color:${item.catColor};border:1px solid ${item.catColor}33;">${item.cat}</span>
-    </div>
-    <div class="amount">${item.amount}</div>
-  `;
-  budgetGrid.appendChild(row);
 });
 
 // ── RENDER PACKING LIST ───────────────────────────────
