@@ -2422,18 +2422,36 @@ function scrollToCity(region) {
   }, 3500);
 })();
 
-// ── MUSIC PLAYER ────────────────────────────────────
+
+</script>
+
+<!-- MUSIC PLAYER WIDGET -->
+<div class="music-player" id="musicPlayer">
+  <div class="music-panel">
+    <button class="music-skip" id="musicPrev" title="Previous">&#9664;</button>
+    <div class="music-track-info">
+      <div class="music-track-name" id="musicTrackName">Rokudan</div>
+      <div class="music-track-artist" id="musicTrackArtist">Edo Period Koto</div>
+    </div>
+    <button class="music-skip" id="musicNext" title="Next">&#9654;</button>
+    <input class="music-vol" id="musicVol" type="range" min="0" max="100" value="30" title="Volume">
+  </div>
+  <button class="music-toggle" id="musicToggle" title="Play Edo period music">&#9835;</button>
+</div>
+
+<script>
+// ── MUSIC PLAYER (must run after DOM element exists) ─
 (function initMusicPlayer() {
   const tracks = [
-    {
-      name: 'Rokudan (Six Sections)',
-      artist: 'Sōkyoku — Edo Period Koto',
-      src: 'https://archive.org/download/lp_japan-iii-music-of-the-edo-period_various/disc1/02.03.%20S%C5%8Dkyoku%3A%20%22Rokudan%22.mp3'
-    },
     {
       name: 'Godanno-shirabe',
       artist: 'Ensemble Hijiri-Kaï — Edo Urban Music',
       src: 'https://archive.org/download/ensemblehijirikai/01%20-%20Godanno-shirabe.mp3'
+    },
+    {
+      name: 'Rokudan (Six Sections)',
+      artist: 'Sōkyoku — Edo Period Koto',
+      src: 'https://archive.org/download/lp_japan-iii-music-of-the-edo-period_various/disc1/02.03.%20S%C5%8Dkyoku%3A%20%22Rokudan%22.mp3'
     },
     {
       name: 'Koto No Yurai',
@@ -2457,13 +2475,14 @@ function scrollToCity(region) {
   let trackLoaded = false;
   const audio = new Audio();
   audio.volume = 0.3;
-  audio.crossOrigin = 'anonymous';
 
-  const player = document.querySelector('.music-player');
+  const player = document.getElementById('musicPlayer');
   const toggle = document.getElementById('musicToggle');
   const nameEl = document.getElementById('musicTrackName');
   const artistEl = document.getElementById('musicTrackArtist');
   const volSlider = document.getElementById('musicVol');
+
+  if (!toggle) { console.error('Music player elements not found'); return; }
 
   function loadTrack(index) {
     currentTrack = index;
@@ -2487,86 +2506,57 @@ function scrollToCity(region) {
     toggle.classList.remove('playing');
   }
 
-  function togglePlay() {
+  toggle.addEventListener('click', function(e) {
+    e.stopPropagation();
     if (isPlaying) {
       audio.pause();
       setPausedUI();
-    } else {
-      if (!trackLoaded) loadTrack(0);
-      player.classList.add('expanded');
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setPlayingUI();
-        }).catch((err) => {
-          console.log('Audio play failed:', err);
-          // Try loading again on failure
-          loadTrack(currentTrack);
-          setTimeout(() => {
-            audio.play().then(() => setPlayingUI()).catch(e => console.log('Retry failed:', e));
-          }, 500);
-        });
-      }
+      return;
     }
-  }
-
-  function nextTrack() {
-    const next = (currentTrack + 1) % tracks.length;
-    loadTrack(next);
-    if (isPlaying) {
-      audio.play().then(() => setPlayingUI()).catch(e => console.log('Next track error:', e));
-    }
-  }
-
-  function prevTrack() {
-    const prev = (currentTrack - 1 + tracks.length) % tracks.length;
-    loadTrack(prev);
-    if (isPlaying) {
-      audio.play().then(() => setPlayingUI()).catch(e => console.log('Prev track error:', e));
-    }
-  }
-
-  audio.addEventListener('ended', nextTrack);
-
-  // Log loading events for debugging
-  audio.addEventListener('canplay', () => console.log('Audio ready:', tracks[currentTrack].name));
-  audio.addEventListener('error', (e) => console.log('Audio error:', e.target.error));
-
-  toggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    togglePlay();
+    if (!trackLoaded) loadTrack(0);
+    player.classList.add('expanded');
+    audio.play().then(function() {
+      setPlayingUI();
+    }).catch(function(err) {
+      console.error('Play failed:', err.message);
+    });
   });
 
-  document.getElementById('musicNext').addEventListener('click', (e) => { e.stopPropagation(); nextTrack(); });
-  document.getElementById('musicPrev').addEventListener('click', (e) => { e.stopPropagation(); prevTrack(); });
+  document.getElementById('musicNext').addEventListener('click', function(e) {
+    e.stopPropagation();
+    currentTrack = (currentTrack + 1) % tracks.length;
+    loadTrack(currentTrack);
+    if (isPlaying) audio.play().then(setPlayingUI).catch(function(e){ console.error('Next error:', e); });
+  });
 
-  volSlider.addEventListener('input', (e) => {
+  document.getElementById('musicPrev').addEventListener('click', function(e) {
+    e.stopPropagation();
+    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+    loadTrack(currentTrack);
+    if (isPlaying) audio.play().then(setPlayingUI).catch(function(e){ console.error('Prev error:', e); });
+  });
+
+  volSlider.addEventListener('input', function(e) {
     audio.volume = e.target.value / 100;
   });
 
-  // Collapse panel when clicking outside
-  document.addEventListener('click', (e) => {
+  audio.addEventListener('ended', function() {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    loadTrack(currentTrack);
+    audio.play().then(setPlayingUI).catch(function(e){ console.error('Auto-next error:', e); });
+  });
+
+  audio.addEventListener('error', function() {
+    console.error('Audio load error for:', tracks[currentTrack].name, audio.error);
+  });
+
+  document.addEventListener('click', function(e) {
     if (!e.target.closest('.music-player') && !isPlaying) {
       player.classList.remove('expanded');
     }
   });
 })();
-
 </script>
-
-<!-- MUSIC PLAYER WIDGET -->
-<div class="music-player" id="musicPlayer">
-  <div class="music-panel">
-    <button class="music-skip" id="musicPrev" title="Previous">&#9664;</button>
-    <div class="music-track-info">
-      <div class="music-track-name" id="musicTrackName">Rokudan</div>
-      <div class="music-track-artist" id="musicTrackArtist">Edo Period Koto</div>
-    </div>
-    <button class="music-skip" id="musicNext" title="Next">&#9654;</button>
-    <input class="music-vol" id="musicVol" type="range" min="0" max="100" value="30" title="Volume">
-  </div>
-  <button class="music-toggle" id="musicToggle" title="Play Edo period music">&#9835;</button>
-</div>
 
 </body>
 </html>
