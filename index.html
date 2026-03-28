@@ -1480,11 +1480,52 @@
     cursor: pointer;
   }
 
+  .music-prompt {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--edo-gold);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--edo-gold);
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    animation: promptBounce 2s ease-in-out infinite;
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+
+  .music-prompt.visible { opacity: 1; }
+
+  .music-prompt::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    right: 18px;
+    width: 10px;
+    height: 10px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--edo-gold);
+    border-bottom: 1px solid var(--edo-gold);
+    transform: rotate(45deg);
+  }
+
+  @keyframes promptBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
   @media (max-width: 600px) {
     .music-player { bottom: 12px; right: 12px; }
     .music-toggle { width: 42px; height: 42px; font-size: 18px; }
     .music-player.expanded .music-panel { max-width: 220px; }
     .music-vol { width: 36px; }
+    .music-prompt { font-size: 11px; padding: 6px 10px; }
   }
 
   @media (max-width: 600px) {
@@ -2437,6 +2478,7 @@ function scrollToCity(region) {
     <input class="music-vol" id="musicVol" type="range" min="0" max="100" value="30" title="Volume">
   </div>
   <button class="music-toggle" id="musicToggle" title="Play Edo period music">&#9835;</button>
+  <div class="music-prompt" id="musicPrompt">&#9835; Tap to play</div>
 </div>
 
 <script>
@@ -2483,6 +2525,23 @@ function scrollToCity(region) {
   const volSlider = document.getElementById('musicVol');
 
   if (!toggle) { console.error('Music player elements not found'); return; }
+  const prompt = document.getElementById('musicPrompt');
+
+  // Auto-expand and show prompt after a short delay
+  setTimeout(function() {
+    prompt.classList.add('visible');
+  }, 2500);
+
+  // Also try autoplay (will succeed if user has interacted with site before)
+  setTimeout(function() {
+    loadTrack(0);
+    audio.play().then(function() {
+      setPlayingUI();
+      prompt.classList.remove('visible');
+    }).catch(function() {
+      // Autoplay blocked — prompt is already visible, waiting for click
+    });
+  }, 3000);
 
   function loadTrack(index) {
     currentTrack = index;
@@ -2517,6 +2576,7 @@ function scrollToCity(region) {
     player.classList.add('expanded');
     audio.play().then(function() {
       setPlayingUI();
+      prompt.classList.remove('visible');
     }).catch(function(err) {
       console.error('Play failed:', err.message);
     });
