@@ -1015,6 +1015,393 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* SAKURA PARTICLES */
+  .sakura-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .header { position: relative; }
+  .header > *:not(.sakura-canvas) { position: relative; z-index: 1; }
+
+  /* COUNTDOWN */
+  .countdown {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0 8px;
+    animation: fadeDown 0.6s ease-out 0.25s both;
+  }
+
+  .countdown-unit {
+    text-align: center;
+    min-width: 60px;
+  }
+
+  .countdown-num {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .countdown-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .countdown-sep {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--text-dim);
+    opacity: 0.3;
+    align-self: flex-start;
+    padding-top: 2px;
+  }
+
+  .countdown-past {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent-teal);
+    animation: fadeDown 0.6s ease-out 0.25s both;
+    margin: 16px 0 8px;
+  }
+
+  /* ANIMATED STATS */
+  .trip-stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px 32px;
+    margin: 24px 0 8px;
+    animation: fadeDown 0.6s ease-out 0.5s both;
+  }
+
+  .trip-stat {
+    text-align: center;
+  }
+
+  .trip-stat-num {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .trip-stat-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  /* JAPAN MAP SVG */
+  .japan-map-wrapper {
+    margin: 24px auto;
+    max-width: 400px;
+    animation: fadeDown 0.6s ease-out 0.55s both;
+  }
+
+  .japan-map-wrapper svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .map-dot {
+    r: 5;
+    fill: var(--accent-teal);
+    filter: drop-shadow(0 0 4px var(--glow-teal));
+    cursor: pointer;
+    transition: r 0.2s;
+  }
+
+  .map-dot:hover { r: 8; }
+  .map-dot.osaka { fill: var(--accent-orange); filter: drop-shadow(0 0 4px rgba(255,107,53,0.4)); }
+  .map-dot.naoshima { fill: var(--accent-purple); filter: drop-shadow(0 0 4px rgba(180,78,255,0.4)); }
+  .map-dot.kyoto { fill: var(--accent-pink); filter: drop-shadow(0 0 4px rgba(255,63,142,0.4)); }
+  .map-dot.hakone { fill: var(--accent-green); filter: drop-shadow(0 0 4px rgba(122,229,130,0.4)); }
+  .map-dot.kamakura { fill: var(--accent-blue); filter: drop-shadow(0 0 4px rgba(78,202,255,0.4)); }
+
+  .map-path-anim {
+    fill: none;
+    stroke: rgba(255,255,255,0.25);
+    stroke-width: 1.5;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawPath 3s ease-out 1s forwards;
+  }
+
+  .map-label {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 8px;
+    fill: var(--text-dim);
+    font-weight: 700;
+    pointer-events: none;
+  }
+
+  @keyframes drawPath {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* SEARCH BAR */
+  .search-wrapper {
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto 16px;
+    animation: fadeDown 0.6s ease-out 0.6s both;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 16px 10px 38px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--bg-card);
+    color: var(--text-bright);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .search-input::placeholder {
+    color: var(--text-dim);
+    opacity: 0.6;
+  }
+
+  .search-input:focus {
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 16px var(--glow-teal);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .search-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 200;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  .search-results.active { display: block; }
+
+  .search-result-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .search-result-item:last-child { border-bottom: none; }
+  .search-result-item:hover { background: rgba(255,255,255,0.06); }
+
+  .search-result-icon { font-size: 16px; flex-shrink: 0; }
+  .search-result-name { font-size: 13px; font-weight: 700; color: var(--text-bright); }
+  .search-result-day { font-size: 11px; color: var(--text-dim); margin-left: auto; white-space: nowrap; }
+
+  /* CURRENCY CONVERTER */
+  .currency-converter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto 20px;
+    animation: fadeDown 0.6s ease-out 0.62s both;
+    flex-wrap: wrap;
+  }
+
+  .currency-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 30px;
+    padding: 6px 14px;
+  }
+
+  .currency-input-wrap:focus-within {
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 12px var(--glow-teal);
+  }
+
+  .currency-flag { font-size: 16px; }
+  .currency-label { font-size: 12px; font-weight: 700; color: var(--text-dim); }
+
+  .currency-input {
+    width: 80px;
+    background: none;
+    border: none;
+    color: var(--text-bright);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    outline: none;
+    text-align: right;
+  }
+
+  .currency-input::-webkit-inner-spin-button { display: none; }
+
+  .currency-swap {
+    background: none;
+    border: none;
+    color: var(--accent-teal);
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    line-height: 1;
+  }
+
+  .currency-swap:hover { transform: rotate(180deg); }
+
+  /* PHRASE ROTATOR */
+  .phrase-rotator {
+    text-align: center;
+    margin: 16px 0 4px;
+    height: 44px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeDown 0.6s ease-out 0.48s both;
+  }
+
+  .phrase-item {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+
+  .phrase-item.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .phrase-jp {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent-yellow);
+  }
+
+  .phrase-en {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  /* CITY CHIP TOOLTIPS */
+  .route-stop {
+    position: relative;
+  }
+
+  .city-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 8px 14px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    z-index: 50;
+  }
+
+  .route-stop:hover .city-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  .city-tooltip-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 2px;
+  }
+
+  .city-tooltip-info {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  /* WEATHER PREVIEW */
+  .weather-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 16px 0 0;
+    animation: fadeDown 0.6s ease-out 0.56s both;
+  }
+
+  .weather-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dim);
+    transition: all 0.2s;
+  }
+
+  .weather-chip:hover {
+    border-color: rgba(255,255,255,0.15);
+    color: var(--text-bright);
+  }
+
+  .weather-icon { font-size: 16px; }
+  .weather-temp { color: var(--accent-yellow); font-family: 'Nunito', sans-serif; font-weight: 900; }
+
   @media (max-width: 600px) {
     .container { padding: 20px 12px 60px; }
     .header { padding: 40px 10px 30px; }
@@ -1033,6 +1420,15 @@
     .video-grid { grid-template-columns: 1fr; }
     .section-toggle { font-size: 15px; padding: 14px 18px; }
     .section-body { padding: 16px; }
+    .countdown { gap: 10px; }
+    .countdown-num { font-size: 24px; }
+    .countdown-unit { min-width: 48px; }
+    .trip-stats { gap: 14px 20px; }
+    .trip-stat-num { font-size: 20px; }
+    .japan-map-wrapper { max-width: 300px; }
+    .currency-converter { gap: 8px; }
+    .currency-input { width: 60px; font-size: 14px; }
+    .search-wrapper { max-width: 100%; }
   }
 </style>
 </head>
@@ -1040,34 +1436,65 @@
 <div class="container">
 
   <div class="header">
+    <canvas class="sakura-canvas" id="sakuraCanvas"></canvas>
     <img class="header-photo" id="headerPhoto" src="samurai-selfie.png" alt="Steve & Aaron in samurai gear">
-  <img class="sticky-avatar" id="stickyAvatar" src="samurai-selfie.png" alt="" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <img class="sticky-avatar" id="stickyAvatar" src="samurai-selfie.png" alt="" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <div class="header-badge">One-Bag Backpacking</div>
     <h1>JAPAN</h1>
     <div class="subtitle">2026</div>
+
+    <!-- COUNTDOWN TIMER -->
+    <div class="countdown" id="countdown"></div>
+
     <div class="dates">APRIL 28 &mdash; MAY 11 &bull; 14 DAYS</div>
     <div class="travelers">
       <div class="traveler"><div class="traveler-dot steve"></div> Steve</div>
       <div class="traveler"><div class="traveler-dot aaron"></div> Aaron</div>
     </div>
     <div class="traveler-sub">Meeting up with Mom &amp; Grace in Kyoto &amp; Tokyo (Days 8 &amp; 11)</div>
+
+    <!-- PHRASE ROTATOR -->
+    <div class="phrase-rotator" id="phraseRotator"></div>
+
+    <!-- ANIMATED TRIP STATS -->
+    <div class="trip-stats" id="tripStats"></div>
   </div>
 
-  <div class="route-bar">
-    <div class="route-stop"><span class="city">Tokyo</span></div>
-    <span class="route-arrow">&#9656;</span>
-    <div class="route-stop"><span class="city">Osaka</span></div>
-    <span class="route-arrow">&#9656;</span>
-    <div class="route-stop"><span class="city">Naoshima</span></div>
-    <span class="route-arrow">&#9656;</span>
-    <div class="route-stop"><span class="city">Kyoto</span></div>
-    <span class="route-arrow">&#9656;</span>
-    <div class="route-stop"><span class="city">Hakone</span></div>
-    <span class="route-arrow">&#9656;</span>
-    <div class="route-stop"><span class="city">Kamakura</span></div>
-    <span class="route-arrow">&#9656;</span>
-    <div class="route-stop"><span class="city">Tokyo</span></div>
+  <!-- ROUTE BAR (interactive city chips) -->
+  <div class="route-bar" id="routeBar"></div>
+
+  <!-- JAPAN MAP SVG -->
+  <div class="japan-map-wrapper">
+    <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+      <!-- Simplified Japan outline -->
+      <path d="M180,20 Q200,10 220,25 Q240,40 235,60 Q230,80 240,100 Q250,120 245,140 Q240,160 250,180 Q260,195 255,210 Q250,225 240,240 Q230,260 210,270 Q190,275 170,260 Q155,245 160,225 Q165,210 155,195 Q145,180 150,165 Q155,145 165,130 Q170,120 165,105 Q160,90 165,70 Q170,50 175,35 Z" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+      <!-- Hokkaido hint -->
+      <path d="M240,15 Q260,5 275,15 Q285,25 280,40 Q270,50 255,45 Q245,35 240,25 Z" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+      <!-- Shikoku hint -->
+      <path d="M140,200 Q160,190 175,195 Q180,205 170,215 Q155,220 140,210 Z" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+      <!-- Kyushu hint -->
+      <path d="M110,220 Q130,210 140,220 Q145,235 135,250 Q120,260 110,245 Q105,235 110,220 Z" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+      <!-- Animated route path -->
+      <polyline class="map-path-anim" points="230,95 185,175 155,198 175,170 205,140 230,95"/>
+      <!-- City dots -->
+      <circle class="map-dot tokyo" cx="230" cy="95" data-city="Tokyo" onclick="scrollToCity('Tokyo')"><title>Tokyo</title></circle>
+      <circle class="map-dot osaka" cx="185" cy="175" data-city="Osaka" onclick="scrollToCity('Osaka')"><title>Osaka</title></circle>
+      <circle class="map-dot naoshima" cx="155" cy="198" data-city="Naoshima" onclick="scrollToCity('Naoshima')"><title>Naoshima</title></circle>
+      <circle class="map-dot kyoto" cx="175" cy="170" data-city="Kyoto" onclick="scrollToCity('Kyoto')"><title>Kyoto</title></circle>
+      <circle class="map-dot hakone" cx="220" cy="115" data-city="Hakone" onclick="scrollToCity('Hakone')"><title>Hakone</title></circle>
+      <circle class="map-dot kamakura" cx="235" cy="105" data-city="Kamakura" onclick="scrollToCity('Kamakura')"><title>Kamakura</title></circle>
+      <!-- Labels -->
+      <text class="map-label" x="242" y="92">Tokyo</text>
+      <text class="map-label" x="172" y="185">Osaka</text>
+      <text class="map-label" x="130" y="202">Naoshima</text>
+      <text class="map-label" x="158" y="167">Kyoto</text>
+      <text class="map-label" x="226" y="127">Hakone</text>
+      <text class="map-label" x="247" y="103">Kamakura</text>
+    </svg>
   </div>
+
+  <!-- WEATHER PREVIEW -->
+  <div class="weather-bar" id="weatherBar"></div>
 
   <!-- LEGEND -->
   <div class="legend">
@@ -1098,6 +1525,28 @@
     </div>
     <div class="legend-item">
       <span class="legend-chip regular"><span class="legend-chip-dot" style="background: var(--text-dim);"></span> On the List</span>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="search-wrapper">
+    <span class="search-icon">&#128269;</span>
+    <input class="search-input" id="searchInput" type="text" placeholder="Find a stop..." autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- CURRENCY CONVERTER -->
+  <div class="currency-converter">
+    <div class="currency-input-wrap">
+      <span class="currency-flag">&#127482;&#127480;</span>
+      <span class="currency-label">USD</span>
+      <input class="currency-input" id="usdInput" type="number" value="1" min="0" step="any">
+    </div>
+    <button class="currency-swap" id="currencySwap" title="Swap">&#8644;</button>
+    <div class="currency-input-wrap">
+      <span class="currency-flag">&#127471;&#127477;</span>
+      <span class="currency-label">JPY</span>
+      <input class="currency-input" id="jpyInput" type="number" value="150" min="0" step="any">
     </div>
   </div>
 
@@ -1578,6 +2027,381 @@ const photoObserver = new IntersectionObserver(([entry]) => {
   stickyAvatar.classList.toggle('visible', !entry.isIntersecting);
 }, { threshold: 0 });
 photoObserver.observe(document.getElementById('headerPhoto'));
+
+// ── 1. COUNTDOWN TIMER ──────────────────────────────
+(function initCountdown() {
+  const target = new Date('2026-04-28T00:00:00+09:00');
+  const el = document.getElementById('countdown');
+
+  function update() {
+    const now = new Date();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      // Trip has started or passed
+      const tripEnd = new Date('2026-05-11T23:59:59+09:00');
+      if (now <= tripEnd) {
+        const dayOfTrip = Math.ceil((now - target) / 86400000) + 1;
+        el.innerHTML = `<div class="countdown-past">&#9992; Day ${Math.min(dayOfTrip, 14)} of 14 — Currently in Japan!</div>`;
+      } else {
+        el.innerHTML = `<div class="countdown-past">&#10024; Trip complete — what an adventure!</div>`;
+      }
+      return;
+    }
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    el.innerHTML = `
+      <div class="countdown-unit"><div class="countdown-num">${d}</div><div class="countdown-label">Days</div></div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-unit"><div class="countdown-num">${String(h).padStart(2,'0')}</div><div class="countdown-label">Hours</div></div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-unit"><div class="countdown-num">${String(m).padStart(2,'0')}</div><div class="countdown-label">Min</div></div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-unit"><div class="countdown-num">${String(s).padStart(2,'0')}</div><div class="countdown-label">Sec</div></div>
+    `;
+  }
+
+  update();
+  setInterval(update, 1000);
+})();
+
+// ── 2. ANIMATED TRIP STATS ──────────────────────────
+(function initStats() {
+  const mustHits = days.reduce((n, d) => n + d.stops.filter(s => s.hl).length, 0);
+  const totalStops = days.reduce((n, d) => n + d.stops.length, 0);
+  const temples = days.reduce((n, d) => n + d.stops.filter(s => s.icon === '\u26E9' || s.icon === '\u{1F64F}').length, 0);
+  const foodSpots = days.reduce((n, d) => n + d.stops.filter(s => ['\u{1F35C}','\u{1F363}','\u{1F37D}','\u{1F361}','\u{1F373}','\u{1F41F}'].includes(s.icon)).length, 0);
+
+  const stats = [
+    { num: 7, label: 'Cities' },
+    { num: totalStops, label: 'Stops' },
+    { num: 14, label: 'Days' },
+    { num: mustHits, label: 'Must-Hits' },
+    { num: temples, label: 'Temples' },
+    { num: foodSpots, label: 'Food Spots' }
+  ];
+
+  const container = document.getElementById('tripStats');
+  stats.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'trip-stat';
+    div.innerHTML = `<div class="trip-stat-num" data-target="${s.num}">0</div><div class="trip-stat-label">${s.label}</div>`;
+    container.appendChild(div);
+  });
+
+  // Animate counters when visible
+  const statsObs = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      container.querySelectorAll('.trip-stat-num').forEach(el => {
+        const target = parseInt(el.dataset.target);
+        let current = 0;
+        const step = Math.max(1, Math.floor(target / 30));
+        const interval = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = current;
+          if (current >= target) clearInterval(interval);
+        }, 30);
+      });
+      statsObs.disconnect();
+    }
+  }, { threshold: 0.5 });
+  statsObs.observe(container);
+})();
+
+// ── 3. INTERACTIVE ROUTE BAR ────────────────────────
+(function initRouteBar() {
+  const routeCities = [
+    { name: 'Tokyo', region: 'Tokyo', days: [1,2,11,12,13,14] },
+    { name: 'Osaka', region: 'Osaka', days: [3,5,6] },
+    { name: 'Naoshima', region: 'Naoshima', days: [4] },
+    { name: 'Kyoto', region: 'Kyoto', days: [7,8] },
+    { name: 'Hakone', region: 'Hakone', days: [9] },
+    { name: 'Kamakura', region: 'Kamakura', days: [10] },
+    { name: 'Tokyo', region: 'Tokyo', days: [11,12,13,14], label: 'Tokyo' }
+  ];
+
+  const bar = document.getElementById('routeBar');
+  routeCities.forEach((city, i) => {
+    const stopCount = city.days.reduce((n, d) => {
+      const dayData = days.find(dd => dd.num === d);
+      return n + (dayData ? dayData.stops.length : 0);
+    }, 0);
+
+    const stop = document.createElement('div');
+    stop.className = 'route-stop';
+    stop.innerHTML = `
+      <span class="city" onclick="scrollToCity('${city.region}')">${city.name}</span>
+      <div class="city-tooltip">
+        <div class="city-tooltip-title">${city.name}</div>
+        <div class="city-tooltip-info">${city.days.length} day${city.days.length > 1 ? 's' : ''} &bull; ${stopCount} stops</div>
+      </div>
+    `;
+    bar.appendChild(stop);
+
+    if (i < routeCities.length - 1) {
+      const arrow = document.createElement('span');
+      arrow.className = 'route-arrow';
+      arrow.innerHTML = '&#9656;';
+      bar.appendChild(arrow);
+    }
+  });
+})();
+
+function scrollToCity(region) {
+  const firstDay = days.find(d => d.region === region || (region === 'Tokyo' && d.theme === 'tokyo'));
+  if (firstDay) {
+    const el = document.getElementById(`day-${firstDay.num}`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ── 4. CHERRY BLOSSOM PARTICLES ─────────────────────
+(function initSakura() {
+  const canvas = document.getElementById('sakuraCanvas');
+  const ctx = canvas.getContext('2d');
+  const header = canvas.parentElement;
+  let petals = [];
+  let animId;
+
+  function resize() {
+    canvas.width = header.offsetWidth;
+    canvas.height = header.offsetHeight;
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Petal {
+    constructor() {
+      this.reset(true);
+    }
+    reset(init) {
+      this.x = Math.random() * canvas.width;
+      this.y = init ? Math.random() * canvas.height * -1 : -10;
+      this.size = Math.random() * 8 + 4;
+      this.speedY = Math.random() * 0.8 + 0.3;
+      this.speedX = Math.random() * 0.6 - 0.3;
+      this.rotation = Math.random() * Math.PI * 2;
+      this.rotSpeed = (Math.random() - 0.5) * 0.02;
+      this.opacity = Math.random() * 0.4 + 0.15;
+      this.sway = Math.random() * 2;
+      this.swaySpeed = Math.random() * 0.02 + 0.01;
+      this.swayOffset = Math.random() * Math.PI * 2;
+    }
+    update() {
+      this.y += this.speedY;
+      this.x += this.speedX + Math.sin(this.swayOffset) * this.sway * 0.1;
+      this.swayOffset += this.swaySpeed;
+      this.rotation += this.rotSpeed;
+      if (this.y > canvas.height + 20) this.reset(false);
+    }
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation);
+      ctx.globalAlpha = this.opacity;
+      ctx.fillStyle = '#FFB7C5';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, this.size, this.size * 0.6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(0, 0, this.size * 0.6, this.size, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  const count = Math.min(35, Math.floor(canvas.width / 25));
+  for (let i = 0; i < count; i++) petals.push(new Petal());
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    petals.forEach(p => { p.update(); p.draw(); });
+    animId = requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ── 5. SEARCH BAR ───────────────────────────────────
+(function initSearch() {
+  const input = document.getElementById('searchInput');
+  const results = document.getElementById('searchResults');
+
+  // Build search index
+  const searchIndex = [];
+  days.forEach(day => {
+    day.stops.forEach((stop, sIdx) => {
+      searchIndex.push({
+        name: stop.name,
+        icon: stop.icon,
+        dayNum: day.num,
+        dayTitle: day.title,
+        id: `d${day.num}s${sIdx}`,
+        hl: stop.hl
+      });
+    });
+  });
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (q.length < 2) {
+      results.classList.remove('active');
+      return;
+    }
+
+    const matches = searchIndex.filter(s =>
+      s.name.toLowerCase().includes(q)
+    ).slice(0, 8);
+
+    if (matches.length === 0) {
+      results.innerHTML = '<div style="padding:12px 16px;color:var(--text-dim);font-size:13px;">No stops found</div>';
+      results.classList.add('active');
+      return;
+    }
+
+    results.innerHTML = matches.map(m => `
+      <div class="search-result-item" data-day="${m.dayNum}" data-id="${m.id}">
+        <span class="search-result-icon">${m.icon}</span>
+        <span class="search-result-name">${m.name}</span>
+        <span class="search-result-day">Day ${m.dayNum}</span>
+      </div>
+    `).join('');
+
+    results.querySelectorAll('.search-result-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const dayNum = item.dataset.day;
+        const stopId = item.dataset.id;
+        const dayEl = document.getElementById(`day-${dayNum}`);
+        if (dayEl) {
+          dayEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setTimeout(() => {
+            const desc = document.getElementById(stopId);
+            const pill = document.querySelector(`[data-target="${stopId}"]`);
+            if (desc && !desc.classList.contains('visible')) {
+              desc.classList.add('visible');
+              if (pill) pill.classList.add('expanded');
+            }
+          }, 600);
+        }
+        results.classList.remove('active');
+        input.value = '';
+      });
+    });
+
+    results.classList.add('active');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrapper')) results.classList.remove('active');
+  });
+})();
+
+// ── 6. CURRENCY CONVERTER ───────────────────────────
+(function initCurrency() {
+  const RATE = 150; // approximate USD to JPY
+  const usd = document.getElementById('usdInput');
+  const jpy = document.getElementById('jpyInput');
+  const swap = document.getElementById('currencySwap');
+
+  usd.addEventListener('input', () => {
+    const val = parseFloat(usd.value) || 0;
+    jpy.value = Math.round(val * RATE);
+  });
+
+  jpy.addEventListener('input', () => {
+    const val = parseFloat(jpy.value) || 0;
+    usd.value = (val / RATE).toFixed(2);
+  });
+
+  swap.addEventListener('click', () => {
+    const tmpVal = usd.value;
+    usd.value = (parseFloat(jpy.value) / RATE).toFixed(2);
+    jpy.value = Math.round(parseFloat(tmpVal) * RATE);
+  });
+
+  // Try to fetch live rate
+  fetch('https://api.exchangerate-api.com/v4/latest/USD')
+    .then(r => r.json())
+    .then(data => {
+      if (data.rates && data.rates.JPY) {
+        const liveRate = data.rates.JPY;
+        usd.addEventListener('input', () => {
+          jpy.value = Math.round((parseFloat(usd.value) || 0) * liveRate);
+        });
+        jpy.addEventListener('input', () => {
+          usd.value = ((parseFloat(jpy.value) || 0) / liveRate).toFixed(2);
+        });
+        // Update initial values
+        jpy.value = Math.round(parseFloat(usd.value) * liveRate);
+      }
+    })
+    .catch(() => {}); // Fail silently, use fallback rate
+})();
+
+// ── 7. PHRASE ROTATOR ───────────────────────────────
+(function initPhrases() {
+  const phrases = [
+    { jp: 'Sumimasen', en: 'Excuse me / Sorry' },
+    { jp: 'Arigatou gozaimasu', en: 'Thank you very much' },
+    { jp: 'Ikura desu ka?', en: 'How much is it?' },
+    { jp: 'Oishii!', en: 'Delicious!' },
+    { jp: 'Kanpai!', en: 'Cheers!' },
+    { jp: 'O-kaikei onegaishimasu', en: 'Check, please' },
+    { jp: 'Eigo o hanasemasu ka?', en: 'Do you speak English?' },
+    { jp: 'Kore wa nan desu ka?', en: 'What is this?' },
+    { jp: 'Sugoi!', en: 'Amazing!' },
+    { jp: 'Itadakimasu', en: 'Thanks for the food (before eating)' },
+    { jp: 'Gochisousama deshita', en: 'That was delicious (after eating)' },
+    { jp: 'Toire wa doko desu ka?', en: 'Where is the bathroom?' },
+    { jp: 'Daijoubu desu', en: 'I\'m fine / It\'s okay' },
+    { jp: 'Kawaii!', en: 'Cute!' },
+    { jp: 'Osusume wa nan desu ka?', en: 'What do you recommend?' }
+  ];
+
+  const container = document.getElementById('phraseRotator');
+  phrases.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'phrase-item' + (i === 0 ? ' active' : '');
+    div.innerHTML = `<div class="phrase-jp">${p.jp}</div><div class="phrase-en">${p.en}</div>`;
+    container.appendChild(div);
+  });
+
+  let current = 0;
+  setInterval(() => {
+    const items = container.querySelectorAll('.phrase-item');
+    items[current].classList.remove('active');
+    current = (current + 1) % phrases.length;
+    items[current].classList.add('active');
+  }, 3500);
+})();
+
+// ── 8. WEATHER PREVIEW ──────────────────────────────
+(function initWeather() {
+  const weather = [
+    { city: 'Tokyo', icon: '\u{1F324}', high: '72°F', low: '57°F', note: '22°C / 14°C' },
+    { city: 'Osaka', icon: '\u{1F324}', high: '73°F', low: '58°F', note: '23°C / 14°C' },
+    { city: 'Kyoto', icon: '\u26C5', high: '74°F', low: '55°F', note: '23°C / 13°C' },
+    { city: 'Hakone', icon: '\u{1F327}', high: '65°F', low: '48°F', note: '18°C / 9°C' },
+    { city: 'Kamakura', icon: '\u{1F324}', high: '68°F', low: '55°F', note: '20°C / 13°C' }
+  ];
+
+  const bar = document.getElementById('weatherBar');
+  weather.forEach(w => {
+    const chip = document.createElement('div');
+    chip.className = 'weather-chip';
+    chip.title = `${w.city} late April avg: ${w.note}`;
+    chip.innerHTML = `
+      <span class="weather-icon">${w.icon}</span>
+      <span>${w.city}</span>
+      <span class="weather-temp">${w.high}</span>
+    `;
+    bar.appendChild(chip);
+  });
+})();
 </script>
 </body>
 </html>
