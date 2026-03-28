@@ -2454,9 +2454,10 @@ function scrollToCity(region) {
 
   let currentTrack = 0;
   let isPlaying = false;
+  let trackLoaded = false;
   const audio = new Audio();
   audio.volume = 0.3;
-  audio.preload = 'none';
+  audio.crossOrigin = 'anonymous';
 
   const player = document.querySelector('.music-player');
   const toggle = document.getElementById('musicToggle');
@@ -2466,52 +2467,78 @@ function scrollToCity(region) {
 
   function loadTrack(index) {
     currentTrack = index;
+    trackLoaded = true;
     audio.src = tracks[index].src;
+    audio.load();
     nameEl.textContent = tracks[index].name;
     artistEl.textContent = tracks[index].artist;
+  }
+
+  function setPlayingUI() {
+    isPlaying = true;
+    toggle.innerHTML = '\u275A\u275A';
+    toggle.classList.add('playing');
+    player.classList.add('expanded');
+  }
+
+  function setPausedUI() {
+    isPlaying = false;
+    toggle.textContent = '\u266B';
+    toggle.classList.remove('playing');
   }
 
   function togglePlay() {
     if (isPlaying) {
       audio.pause();
-      isPlaying = false;
-      toggle.textContent = '\u266B';
-      toggle.classList.remove('playing');
+      setPausedUI();
     } else {
-      if (!audio.src || audio.src === '') loadTrack(0);
-      audio.play().then(() => {
-        isPlaying = true;
-        toggle.innerHTML = '\u275A\u275A';
-        toggle.classList.add('playing');
-        player.classList.add('expanded');
-      }).catch(() => {});
+      if (!trackLoaded) loadTrack(0);
+      player.classList.add('expanded');
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          setPlayingUI();
+        }).catch((err) => {
+          console.log('Audio play failed:', err);
+          // Try loading again on failure
+          loadTrack(currentTrack);
+          setTimeout(() => {
+            audio.play().then(() => setPlayingUI()).catch(e => console.log('Retry failed:', e));
+          }, 500);
+        });
+      }
     }
   }
 
   function nextTrack() {
     const next = (currentTrack + 1) % tracks.length;
     loadTrack(next);
-    if (isPlaying) audio.play().catch(() => {});
+    if (isPlaying) {
+      audio.play().then(() => setPlayingUI()).catch(e => console.log('Next track error:', e));
+    }
   }
 
   function prevTrack() {
     const prev = (currentTrack - 1 + tracks.length) % tracks.length;
     loadTrack(prev);
-    if (isPlaying) audio.play().catch(() => {});
+    if (isPlaying) {
+      audio.play().then(() => setPlayingUI()).catch(e => console.log('Prev track error:', e));
+    }
   }
 
   audio.addEventListener('ended', nextTrack);
 
-  toggle.addEventListener('click', () => {
-    if (!player.classList.contains('expanded')) {
-      player.classList.add('expanded');
-      if (!audio.src || audio.src === location.href) loadTrack(0);
-    }
+  // Log loading events for debugging
+  audio.addEventListener('canplay', () => console.log('Audio ready:', tracks[currentTrack].name));
+  audio.addEventListener('error', (e) => console.log('Audio error:', e.target.error));
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
     togglePlay();
   });
 
-  document.getElementById('musicNext').addEventListener('click', nextTrack);
-  document.getElementById('musicPrev').addEventListener('click', prevTrack);
+  document.getElementById('musicNext').addEventListener('click', (e) => { e.stopPropagation(); nextTrack(); });
+  document.getElementById('musicPrev').addEventListener('click', (e) => { e.stopPropagation(); prevTrack(); });
 
   volSlider.addEventListener('input', (e) => {
     audio.volume = e.target.value / 100;
