@@ -1126,54 +1126,6 @@
     margin-top: 2px;
   }
 
-  /* JAPAN MAP SVG */
-  .japan-map-wrapper {
-    margin: 24px auto;
-    max-width: 400px;
-    animation: fadeDown 0.6s ease-out 0.55s both;
-  }
-
-  .japan-map-wrapper svg {
-    width: 100%;
-    height: auto;
-  }
-
-  .map-dot {
-    r: 5;
-    fill: var(--edo-red);
-    filter: drop-shadow(0 0 4px rgba(197, 58, 42, 0.4));
-    cursor: pointer;
-    transition: r 0.2s;
-  }
-
-  .map-dot:hover { r: 8; }
-  .map-dot.osaka { fill: var(--accent-orange); filter: drop-shadow(0 0 4px rgba(212, 118, 44, 0.4)); }
-  .map-dot.naoshima { fill: var(--accent-purple); filter: drop-shadow(0 0 4px rgba(123, 94, 167, 0.4)); }
-  .map-dot.kyoto { fill: var(--edo-gold); filter: drop-shadow(0 0 4px rgba(201, 168, 76, 0.4)); }
-  .map-dot.hakone { fill: var(--edo-moss); filter: drop-shadow(0 0 4px rgba(107, 142, 90, 0.4)); }
-  .map-dot.kamakura { fill: var(--edo-indigo); filter: drop-shadow(0 0 4px rgba(44, 74, 110, 0.4)); }
-
-  .map-path-anim {
-    fill: none;
-    stroke: rgba(255,255,255,0.25);
-    stroke-width: 1.5;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: drawPath 3s ease-out 1s forwards;
-  }
-
-  .map-label {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 8px;
-    fill: var(--text-dim);
-    font-weight: 700;
-    pointer-events: none;
-  }
-
-  @keyframes drawPath {
-    to { stroke-dashoffset: 0; }
-  }
-
   /* SEARCH BAR */
   .search-wrapper {
     position: relative;
@@ -1441,7 +1393,6 @@
     .countdown-unit { min-width: 48px; }
     .trip-stats { gap: 14px 20px; }
     .trip-stat-num { font-size: 20px; }
-    .japan-map-wrapper { max-width: 300px; }
     .currency-converter { gap: 8px; }
     .currency-input { width: 60px; font-size: 14px; }
     .search-wrapper { max-width: 100%; }
@@ -1480,34 +1431,6 @@
   <div class="route-bar" id="routeBar"></div>
 
   <!-- JAPAN MAP SVG -->
-  <div class="japan-map-wrapper">
-    <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
-      <!-- Simplified Japan outline -->
-      <path d="M180,20 Q200,10 220,25 Q240,40 235,60 Q230,80 240,100 Q250,120 245,140 Q240,160 250,180 Q260,195 255,210 Q250,225 240,240 Q230,260 210,270 Q190,275 170,260 Q155,245 160,225 Q165,210 155,195 Q145,180 150,165 Q155,145 165,130 Q170,120 165,105 Q160,90 165,70 Q170,50 175,35 Z" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
-      <!-- Hokkaido hint -->
-      <path d="M240,15 Q260,5 275,15 Q285,25 280,40 Q270,50 255,45 Q245,35 240,25 Z" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
-      <!-- Shikoku hint -->
-      <path d="M140,200 Q160,190 175,195 Q180,205 170,215 Q155,220 140,210 Z" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
-      <!-- Kyushu hint -->
-      <path d="M110,220 Q130,210 140,220 Q145,235 135,250 Q120,260 110,245 Q105,235 110,220 Z" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
-      <!-- Animated route path -->
-      <polyline class="map-path-anim" points="230,95 185,175 155,198 175,170 205,140 230,95"/>
-      <!-- City dots -->
-      <circle class="map-dot tokyo" cx="230" cy="95" data-city="Tokyo" onclick="scrollToCity('Tokyo')"><title>Tokyo</title></circle>
-      <circle class="map-dot osaka" cx="185" cy="175" data-city="Osaka" onclick="scrollToCity('Osaka')"><title>Osaka</title></circle>
-      <circle class="map-dot naoshima" cx="155" cy="198" data-city="Naoshima" onclick="scrollToCity('Naoshima')"><title>Naoshima</title></circle>
-      <circle class="map-dot kyoto" cx="175" cy="170" data-city="Kyoto" onclick="scrollToCity('Kyoto')"><title>Kyoto</title></circle>
-      <circle class="map-dot hakone" cx="220" cy="115" data-city="Hakone" onclick="scrollToCity('Hakone')"><title>Hakone</title></circle>
-      <circle class="map-dot kamakura" cx="235" cy="105" data-city="Kamakura" onclick="scrollToCity('Kamakura')"><title>Kamakura</title></circle>
-      <!-- Labels -->
-      <text class="map-label" x="242" y="92">Tokyo</text>
-      <text class="map-label" x="172" y="185">Osaka</text>
-      <text class="map-label" x="130" y="202">Naoshima</text>
-      <text class="map-label" x="158" y="167">Kyoto</text>
-      <text class="map-label" x="226" y="127">Hakone</text>
-      <text class="map-label" x="247" y="103">Kamakura</text>
-    </svg>
-  </div>
 
   <!-- WEATHER PREVIEW -->
   <div class="weather-bar" id="weatherBar"></div>
