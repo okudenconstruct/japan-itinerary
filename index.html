@@ -1017,10 +1017,13 @@
 
   /* SAKURA PARTICLES */
   .sakura-canvas {
-    position: absolute;
-    inset: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
-    z-index: 0;
+    z-index: 9998;
   }
 
   .header { position: relative; }
@@ -1433,10 +1436,10 @@
 </style>
 </head>
 <body>
+<canvas class="sakura-canvas" id="sakuraCanvas"></canvas>
 <div class="container">
 
   <div class="header">
-    <canvas class="sakura-canvas" id="sakuraCanvas"></canvas>
     <img class="header-photo" id="headerPhoto" src="samurai-selfie.png" alt="Steve & Aaron in samurai gear">
     <img class="sticky-avatar" id="stickyAvatar" src="samurai-selfie.png" alt="" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <div class="header-badge">One-Bag Backpacking</div>
@@ -2159,17 +2162,16 @@ function scrollToCity(region) {
   }
 }
 
-// ── 4. CHERRY BLOSSOM PARTICLES ─────────────────────
+// ── 4. CHERRY BLOSSOM PARTICLES (full-page) ─────────
 (function initSakura() {
   const canvas = document.getElementById('sakuraCanvas');
   const ctx = canvas.getContext('2d');
-  const header = canvas.parentElement;
   let petals = [];
-  let animId;
+  let W, H;
 
   function resize() {
-    canvas.width = header.offsetWidth;
-    canvas.height = header.offsetHeight;
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
 
   resize();
@@ -2180,14 +2182,25 @@ function scrollToCity(region) {
       this.reset(true);
     }
     reset(init) {
-      this.x = Math.random() * canvas.width;
-      this.y = init ? Math.random() * canvas.height * -1 : -10;
+      // Concentrate petals on left and right edges (sides of the page)
+      const side = Math.random();
+      if (side < 0.35) {
+        // Left side
+        this.x = Math.random() * W * 0.15;
+      } else if (side < 0.7) {
+        // Right side
+        this.x = W - Math.random() * W * 0.15;
+      } else {
+        // Some scattered across the middle (sparser)
+        this.x = Math.random() * W;
+      }
+      this.y = init ? Math.random() * -H : -10 - Math.random() * 40;
       this.size = Math.random() * 8 + 4;
       this.speedY = Math.random() * 0.8 + 0.3;
       this.speedX = Math.random() * 0.6 - 0.3;
       this.rotation = Math.random() * Math.PI * 2;
       this.rotSpeed = (Math.random() - 0.5) * 0.02;
-      this.opacity = Math.random() * 0.4 + 0.15;
+      this.opacity = Math.random() * 0.35 + 0.1;
       this.sway = Math.random() * 2;
       this.swaySpeed = Math.random() * 0.02 + 0.01;
       this.swayOffset = Math.random() * Math.PI * 2;
@@ -2197,7 +2210,7 @@ function scrollToCity(region) {
       this.x += this.speedX + Math.sin(this.swayOffset) * this.sway * 0.1;
       this.swayOffset += this.swaySpeed;
       this.rotation += this.rotSpeed;
-      if (this.y > canvas.height + 20) this.reset(false);
+      if (this.y > H + 20) this.reset(false);
     }
     draw() {
       ctx.save();
@@ -2215,13 +2228,13 @@ function scrollToCity(region) {
     }
   }
 
-  const count = Math.min(35, Math.floor(canvas.width / 25));
+  const count = Math.min(50, Math.floor(W / 20));
   for (let i = 0; i < count; i++) petals.push(new Petal());
 
   function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, W, H);
     petals.forEach(p => { p.update(); p.draw(); });
-    animId = requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
   }
   animate();
 })();
