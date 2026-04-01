@@ -1672,9 +1672,10 @@ const days = [
   {
     num: 1, date: "Tuesday, April 28", title: "Arrival & Shibuya", region: "Tokyo", theme: "travel",
     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Shibuya_Crossing%2C_Aerial.jpg/960px-Shibuya_Crossing%2C_Aerial.jpg", imgAlt: "Shibuya Crossing aerial view",
-    lodging: { icon: "\u{1F6CC}", name: "The Millennials Shibuya" },
+    lodging: { icon: "\u{1F3E8}", name: "JR-EAST HOTEL METS SHIBUYA" },
     stops: [
       { icon: "\u2708", name: "Arrive NRT 4:30 PM", hl: false, desc: "Aaron arrives Narita via United UA 4975 from LAX. ~1 hr express train into central Tokyo, or budget Keisei line (~70 min). Steve's arrival is separate.", maps: "Narita International Airport" },
+      { icon: "\u26E9", name: "Chōkoku-ji Temple", hl: false, desc: "Buddhist temple near Shibuya. A calm first-stop to decompress after the long flight before diving into neon Shibuya.", maps: "Chokoku-ji Temple Tokyo" },
       { icon: "\u{1F3AE}", name: "TAITO Station", hl: true, video: "xbcKxM6Yk0M", desc: "Multi-floor arcade in the heart of Shibuya. Crane games, rhythm games, fighting game setups. A solid first-night warm-up.", maps: "TAITO Station Shibuya" },
       { icon: "\u{1F303}", name: "Shibuya Sky", hl: true, video: "5GNbwHqbwFg", desc: "Observation deck on the Shibuya Scramble Square rooftop (230m). Open-air with an infinity pool-style edge. Best at sunset or after dark for the full neon sprawl.", maps: "Shibuya Sky" },
       { icon: "\u{1F6CD}", name: "Shibuya Loft", hl: false, video: "werj-wLEVN0", desc: "Japanese lifestyle goods store -- stationery, home goods, unique gifts. Great for picking up quality notebooks, pens, and small souvenirs.", maps: "Shibuya Loft" },
@@ -1686,7 +1687,7 @@ const days = [
   {
     num: 2, date: "Wednesday, April 29", title: "Odaiba & Shinjuku", region: "Tokyo", theme: "tokyo",
     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Photos_at_teamlab_planets_tokyo.jpg/960px-Photos_at_teamlab_planets_tokyo.jpg", imgAlt: "teamLab Planets Tokyo",
-    lodging: { icon: "\u{1F4DA}", name: "BOOK AND BED Shinjuku" },
+    lodging: { icon: "\u{1F3E8}", name: "JR-EAST HOTEL METS SHIBUYA" },
     stops: [
       { icon: "\u{1F3DD}", name: "Odaiba", hl: false, video: "o3Ufrd7CVAY", desc: "Manmade island in Tokyo Bay. Futuristic vibes, waterfront boardwalk, and views of the Rainbow Bridge.", maps: "Odaiba Tokyo" },
       { icon: "\u{1F916}", name: "Unicorn Gundam", hl: true, video: "Wq_Y63lenfY", desc: "Life-size 19.7m Unicorn Gundam statue outside DiverCity Tokyo Plaza. Transforms on schedule with light show. Free to watch, and genuinely massive up close.", maps: "Unicorn Gundam Odaiba" },
@@ -1700,14 +1701,13 @@ const days = [
     ]
   },
   {
-    num: 3, date: "Thursday, April 30", title: "Shinkansen to Osaka", region: "Osaka", theme: "osaka",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Dotonbori_Neon_Sign%2C_Osaka_20190415_1.jpg/960px-Dotonbori_Neon_Sign%2C_Osaka_20190415_1.jpg", imgAlt: "Dotonbori neon signs, Osaka",
-    lodging: { icon: "\u26FA", name: "Okayama Glamping Sorania" },
-    notes: ["\u26A0 Glamping is a ~2.5 hr detour from Osaka -- logistics TBD"],
+    num: 3, date: "Thursday, April 30", title: "Okayama Glamping", region: "Okayama", theme: "travel",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Kurashiki_bikatiku_naka-bashi.JPG/960px-Kurashiki_bikatiku_naka-bashi.JPG", imgAlt: "Kurashiki canal district, Okayama",
+    lodging: { icon: "\u26FA", name: "Okayama Glamping Sorania — ¥45,400" },
+    notes: ["\u{1F6A4} Travel day — 5 hrs from Tokyo to Okayama by Shinkansen"],
     stops: [
-      { icon: "\u{1F685}", name: "Bullet Train to Osaka", hl: false, video: "Wqer8g5WCS8", desc: "Shinkansen from Tokyo Station to Shin-Osaka, ~2.5 hrs on the Nozomi. If you have a JR Pass, note that the Nozomi isn't covered -- take Hikari instead (~3 hrs).", maps: "Shin-Osaka Station" },
-      { icon: "\u{1F3D9}", name: "Dotonbori", hl: true, video: "URjCOrTPpyo", desc: "Osaka's neon-drenched food street along the canal. Giant crab signs, Glico Running Man, and wall-to-wall takoyaki, okonomiyaki, and kushikatsu stalls. The heartbeat of Osaka nightlife.", maps: "Dotonbori Osaka" },
-      { icon: "\u{1F37D}", name: "Hozenji Yokocho", hl: false, video: "P-1uRyA-wSs", desc: "Stone-paved alley just off Dotonbori with a quieter, more traditional feel. Home to small izakayas and the moss-covered Hozenji temple where you splash water on the Buddha.", maps: "Hozenji Yokocho Osaka" }
+      { icon: "\u{1F685}", name: "Shinkansen to Okayama", hl: false, video: "Wqer8g5WCS8", desc: "Bullet train from Tokyo Station to Okayama, ~3.5 hrs on the Hikari. From Okayama Station, it's about 30 min by car/bus to the glamping site in Kurashiki.", maps: "Okayama Station" },
+      { icon: "\u26FA", name: "Glamping Sorania", hl: true, desc: "Luxury glamping resort in Kurashiki, Okayama. A nature reset between the intensity of Tokyo and Naoshima. Relax, stargaze, and recharge for the art island tomorrow.", maps: "Okayama Glamping Sorania Kurashiki" }
     ]
   },
   {
@@ -1725,12 +1725,14 @@ const days = [
   {
     num: 5, date: "Saturday, May 2", title: "Deep Osaka", region: "Osaka", theme: "osaka",
     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Osaka_Castle_02bs3200.jpg/960px-Osaka_Castle_02bs3200.jpg", imgAlt: "Osaka Castle",
+    lodging: { icon: "\u{1F3E8}", name: "Hotel Keihan Namba Grande" },
     stops: [
       { icon: "\u{1F35C}", name: "Negiyaki Yamamoto", hl: false, video: "r19mH_696C0", desc: "Famous for negiyaki -- a thin, green onion-heavy twist on okonomiyaki. Umeda institution since the 1960s. Get the negiyaki with soy sauce and the regular okonomiyaki to compare.", maps: "Negiyaki Yamamoto Osaka" },
       { icon: "\u{1FA84}", name: "Magic Cafe Shinsekai", hl: false, video: "H1elKpjON9U", desc: "Small cafe-bar in Shinsekai where the staff performs close-up magic at your table. Card tricks, coin magic, sleight of hand. Drinks are secondary to the show.", maps: "Magic Cafe Bar Shinsekai Osaka" },
       { icon: "\u{1F3EF}", name: "Osaka Castle", hl: true, video: "A7y_TiK55TI", desc: "Osaka's most famous landmark. The current structure is a 1931 concrete reconstruction, but the museum inside covers Toyotomi Hideyoshi and the castle's history. Great views from the top floor.", maps: "Osaka Castle" },
       { icon: "\u{1F6CD}", name: "Dojima Underground", hl: false, video: "A2INKsyVFwI", desc: "Underground shopping arcade near Umeda. Covered walkways, restaurants, retail. A functional way to get between areas while browsing and eating.", maps: "DOTIKA Dojima Underground Shopping Centre" },
       { icon: "\u{1F361}", name: "Toyo", hl: false, video: "U7faJOfpw-M", desc: "If this is Endo Sushi's Toyo in Osaka Central Market -- standing sushi counter, no frills, incredible fish. Opens early. One of the best-value sushi experiences in Japan.", maps: "Toyo Osaka" },
+      { icon: "\u{1F3D9}", name: "Nakatsu", hl: false, desc: "Neighborhood in north Osaka known for its local restaurant scene. Less touristy than Dotonbori, more where locals actually eat. Good for finding hidden izakayas.", maps: "Nakatsu Osaka" },
       { icon: "\u{1F6CD}", name: "American Village Flea", hl: false, video: "sx8ffAGmdaE", desc: "Flea market in Amerikamura, Osaka's youth fashion district. Vintage clothes, sneakers, random collectibles. Hit or miss, but the area itself has good energy.", maps: "American Village Freemarket Osaka" },
       { icon: "\u{1F363}", name: "Kuromon Market", hl: true, video: "cB3bGiz_jT8", desc: "\"Osaka's Kitchen\" -- 170+ stalls selling fresh seafood, produce, street food. Grilled scallops, uni, tamagoyaki, and fresh sashimi. Touristy but the quality holds up.", maps: "Kuromon Market Osaka" },
       { icon: "\u{1F3DB}", name: "Osaka Museum of History", hl: false, video: "oFJGJDnYwjQ", desc: "10-floor museum adjacent to the former Naniwa Palace site. Top floor has a full-scale recreation of the ancient palace hall. Work down chronologically.", maps: "Osaka Museum of History" }
@@ -1739,7 +1741,10 @@ const days = [
   {
     num: 6, date: "Sunday, May 3", title: "Osaka: Food & Fun", region: "Osaka", theme: "osaka",
     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Dotonbori%2C_Osaka%2C_at_night%2C_November_2016.jpg/960px-Dotonbori%2C_Osaka%2C_at_night%2C_November_2016.jpg", imgAlt: "Dotonbori at night, Osaka",
+    lodging: { icon: "\u{1F3E8}", name: "Hotel Keihan Namba Grande" },
     stops: [
+      { icon: "\u{1F37D}", name: "Hozenji Yokocho", hl: false, video: "P-1uRyA-wSs", desc: "Stone-paved alley just off Dotonbori with a quieter, more traditional feel. Home to small izakayas and the moss-covered Hozenji temple where you splash water on the Buddha.", maps: "Hozenji Yokocho Osaka" },
+      { icon: "\u{1F3D9}", name: "Dotonbori", hl: true, video: "URjCOrTPpyo", desc: "Osaka's neon-drenched food street along the canal. Giant crab signs, Glico Running Man, and wall-to-wall takoyaki, okonomiyaki, and kushikatsu stalls. The heartbeat of Osaka nightlife.", maps: "Dotonbori Osaka" },
       { icon: "\u{1F33F}", name: "Namba Parks", hl: false, video: "SPv3p6TH8NQ", desc: "Shopping complex with a terraced rooftop garden that looks like a canyon carved into the building. Worth walking the upper levels for the greenery.", maps: "Namba Parks Osaka" },
       { icon: "\u{1F41F}", name: "Zauo Fishing Restaurant", hl: true, video: "Bs4ovsnDQLM", desc: "You fish your own dinner from a boat inside the restaurant. Catch a sea bream or flounder, and the chefs prepare it as sashimi, grilled, or fried. Chaotic, loud, hilarious.", maps: "Zauo Fishing Restaurant Namba" },
       { icon: "\u{1F363}", name: "Sushi Karasu", hl: false, video: "zKyidpCc2rU", desc: "Sushi spot in Osaka. Research pricing before going -- some of these can be high-end omakase. Good to have a backup casual option nearby.", maps: "Sushi Karasu Osaka" },
@@ -1747,7 +1752,8 @@ const days = [
       { icon: "\u{1F3AC}", name: "Tempo Harbor Theater", hl: false, desc: "Cinema in the Osaka port area. Could be good for catching a Japanese film with English subs, or just as a rest break mid-day.", maps: "TEMPO HARBOR THEATER Osaka" },
       { icon: "\u{1F6CD}", name: "Kuromon Market", hl: false, desc: "Second visit -- market changes energy morning vs. afternoon. Different stalls may be open. Good for picking up anything you missed on Day 5.", maps: "Kuromon Market Osaka" },
       { icon: "\u{1F60B}", name: "Namba Grand Kagetsu", hl: false, video: "fuKmUsPe5oQ", desc: "Yoshimoto comedy theater -- home of manzai (double-act comedy) and other variety acts. Entirely in Japanese, but physical comedy translates.", maps: "Namba Grand Kagetsu" },
-      { icon: "\u26E9", name: "Sumiyoshi Taisha", hl: false, video: "uOPTezTscDI", desc: "One of Japan's oldest shrines (3rd century), predating Buddhist influence. Distinctive straight-line architecture (sumiyoshi-zukuri). The arched bridge is iconic.", maps: "Sumiyoshi Taisha Osaka" }
+      { icon: "\u26E9", name: "Sumiyoshi Taisha", hl: false, video: "uOPTezTscDI", desc: "One of Japan's oldest shrines (3rd century), predating Buddhist influence. Distinctive straight-line architecture (sumiyoshi-zukuri). The arched bridge is iconic.", maps: "Sumiyoshi Taisha Osaka" },
+      { icon: "\u{1F3AE}", name: "Capcom Parco", hl: false, desc: "Capcom's official store on the 6th floor of Parco. Merch for Street Fighter, Resident Evil, Monster Hunter, and more. Limited-edition Japan exclusives.", maps: "Capcom Store Osaka Parco" }
     ]
   },
   {
@@ -1809,7 +1815,8 @@ const days = [
       { icon: "\u{1F303}", name: "Minatomirai", hl: false, video: "W2MruDvlvnc", desc: "Yokohama's waterfront district. Landmark Tower, Cosmo World ferris wheel, Red Brick Warehouse. Good for an evening walk with harbor views.", maps: "Minatomirai Yokohama" },
       { icon: "\u26E9", name: "Engaku-ji", hl: false, video: "qE9N6qQdflM", desc: "Major Zen temple founded in 1282 to honor those who died in the Mongol invasions. Beautiful grounds, especially the shariden (reliquary hall), a National Treasure.", maps: "Engaku-ji Kamakura" },
       { icon: "\u26E9", name: "Kencho-ji", hl: false, video: "QMfrLV7Gcnc", desc: "The oldest Zen training monastery in Japan (1253). Massive juniper trees planted by the founder still stand. Hike the trail behind it for hilltop views.", maps: "Kencho-ji Kamakura" },
-      { icon: "\u26E9", name: "Tsurugaoka Hachimangu", hl: false, video: "hns5l-sItRg", desc: "Kamakura's most important shrine, founded by Minamoto Yoritomo. Wide approach flanked by cherry trees. The lotus ponds and pigeon population are both impressive.", maps: "Tsurugaoka Hachimangu Kamakura" }
+      { icon: "\u26E9", name: "Tsurugaoka Hachimangu", hl: false, video: "hns5l-sItRg", desc: "Kamakura's most important shrine, founded by Minamoto Yoritomo. Wide approach flanked by cherry trees. The lotus ponds and pigeon population are both impressive.", maps: "Tsurugaoka Hachimangu Kamakura" },
+      { icon: "\u{1F6B6}", name: "Daibutsu Hiking Trail", hl: false, desc: "Ancient trail connecting the Great Buddha to Kita-Kamakura through forested hills. Rock-cut passages (kiridoshi) were medieval defensive routes. About 1.5 hrs of beautiful woodland hiking.", maps: "Daibutsu Kiridoshi Kamakura" }
     ]
   },
   {
