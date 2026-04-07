@@ -1661,7 +1661,7 @@
       <div class="stat"><div class="stat-num">90+</div><div class="stat-label">Stops</div></div>
       <div class="stat"><div class="stat-num">1</div><div class="stat-label">Bag</div></div>
     </div>
-    <div style="opacity: 0.5; font-size: 11px;">Built from Aaron's Wanderlog export &bull; Flights shown are Aaron's (United UA 4975 / UA 7946) &bull; Tap any stop to expand</div>
+    <div style="opacity: 0.5; font-size: 11px;">Built from Wanderlog export &bull; Steve: ANA/UA 6452 EWR&harr;NRT &bull; Aaron: United UA 4975 / UA 7946 LAX&harr;NRT &bull; Tap any stop to expand</div>
     <div style="opacity: 0.35; font-size: 10px; margin-top: 8px;">Photos via Wikimedia Commons (CC-licensed)</div>
   </div>
 </div>
@@ -1674,7 +1674,7 @@ const days = [
     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Shibuya_Crossing%2C_Aerial.jpg/960px-Shibuya_Crossing%2C_Aerial.jpg", imgAlt: "Shibuya Crossing aerial view",
     lodging: { icon: "\u{1F3E8}", name: "JR-EAST HOTEL METS SHIBUYA" },
     stops: [
-      { icon: "\u2708", name: "Arrive NRT 4:30 PM", hl: false, desc: "Aaron arrives Narita via United UA 4975 from LAX. ~1 hr express train into central Tokyo, or budget Keisei line (~70 min). Steve's arrival is separate.", maps: "Narita International Airport" },
+      { icon: "\u2708", name: "Arrive NRT 2:30 PM", hl: true, desc: "Steve arrives Narita Terminal 1 via ANA/United Flight 6452 (Boeing 789) from Newark EWR. Departed Apr 27 11:30 AM EDT, 14h flight. ~1 hr express train (Narita Express) into central Tokyo, or budget Keisei line (~70 min). Aaron's arrival is separate.", maps: "Narita International Airport Terminal 1" },
       { icon: "\u26E9", name: "Chōkoku-ji Temple", hl: false, desc: "Buddhist temple near Shibuya. A calm first-stop to decompress after the long flight before diving into neon Shibuya.", maps: "Chokoku-ji Temple Tokyo" },
       { icon: "\u{1F3AE}", name: "TAITO Station", hl: true, video: "xbcKxM6Yk0M", desc: "Multi-floor arcade in the heart of Shibuya. Crane games, rhythm games, fighting game setups. A solid first-night warm-up.", maps: "TAITO Station Shibuya" },
       { icon: "\u{1F303}", name: "Shibuya Sky", hl: true, video: "5GNbwHqbwFg", desc: "Observation deck on the Shibuya Scramble Square rooftop (230m). Open-air with an infinity pool-style edge. Best at sunset or after dark for the full neon sprawl.", maps: "Shibuya Sky" },
@@ -1862,10 +1862,10 @@ const days = [
   },
   {
     num: 14, date: "Monday, May 11", title: "Fly Home", region: "Departure", theme: "travel",
-    notes: ["\u{1F4CC} Steve's return flight is separate"],
     stops: [
       { icon: "\u26E9", name: "Naritasan Omotesando", hl: true, desc: "Old temple town approach street leading to Naritasan Shinshoji Temple, just minutes from Narita Airport. Traditional shops, eel restaurants (the local specialty), and a 1,000+ year old temple. Perfect last stop before flying out.", maps: "Naritasan Omotesando" },
-      { icon: "\u2708", name: "NRT \u2192 LAX 5:00 PM (Aaron)", hl: false, desc: "Aaron departs Narita on United UA 7946, arriving LAX 11:00 AM same day (international date line). Allow 2+ hours to get to Narita from central Tokyo plus check-in time.", maps: "Narita International Airport" }
+      { icon: "\u2708", name: "NRT \u2192 EWR 5:15 PM (Steve)", hl: true, desc: "Steve departs Narita Terminal 1 at 17:15 on ANA/United Flight (Boeing 789), arriving Newark EWR Terminal B at 17:00 same day (12h45m, crossing the international date line). Allow 2+ hours to get to Narita from central Tokyo plus check-in time.", maps: "Narita International Airport Terminal 1" },
+      { icon: "\u2708", name: "NRT \u2192 LAX 5:00 PM (Aaron)", hl: false, desc: "Aaron departs Narita on United UA 7946, arriving LAX 11:00 AM same day (international date line).", maps: "Narita International Airport" }
     ]
   }
 ];
@@ -2110,7 +2110,7 @@ photoObserver.observe(document.getElementById('headerPhoto'));
 
 // ── 1. COUNTDOWN TIMER ──────────────────────────────
 (function initCountdown() {
-  const target = new Date('2026-04-28T00:00:00+09:00');
+  const target = new Date('2026-04-27T11:30:00-04:00');
   const el = document.getElementById('countdown');
 
   function update() {
