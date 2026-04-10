@@ -1911,37 +1911,18 @@
   }
   .map-city-dot {
     cursor: pointer;
-    transition: all 0.3s;
   }
-  .map-city-dot:hover circle {
-    r: 2;
+  .map-city-dot:hover .map-dot-inner {
+    filter: brightness(1.4);
   }
   /* Animated route */
   .map-route-line {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
-    animation: drawRoute 4s ease-in-out 1s forwards;
+    animation: drawRoute 3s ease-in-out 0.5s forwards;
   }
   @keyframes drawRoute {
     to { stroke-dashoffset: 0; }
-  }
-  .map-route-glow {
-    stroke-dasharray: 2000;
-    stroke-dashoffset: 2000;
-    animation: drawRoute 4s ease-in-out 1s forwards;
-  }
-  /* Fuji icon */
-  .map-fuji {
-    opacity: 0.7;
-  }
-  /* City pulse animation */
-  .map-pulse {
-    animation: mapPulse 2.5s ease-in-out infinite;
-    transform-origin: center;
-  }
-  @keyframes mapPulse {
-    0%, 100% { opacity: 0.08; r: 3; }
-    50% { opacity: 0.15; r: 4; }
   }
   /* Legend */
   .map-legend {
@@ -2790,22 +2771,12 @@ function scrollToCity(region) {
   // Defs
   const defs = document.createElementNS(ns, 'defs');
   defs.innerHTML = `
-    <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#C9A84C"/>
-      <stop offset="50%" stop-color="#E8D5A3"/>
-      <stop offset="100%" stop-color="#C9A84C"/>
-    </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="0.4" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
     <filter id="labelShadow">
       <feDropShadow dx="0" dy="0.15" stdDeviation="0.3" flood-color="#000" flood-opacity="0.8"/>
     </filter>
-    <radialGradient id="pulseGrad">
-      <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.15"/>
-      <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
-    </radialGradient>
+    <marker id="arrowhead" markerWidth="3" markerHeight="2.4" refX="3" refY="1.2" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0,0 3,1.2 0,2.4" fill="#C9A84C" opacity="0.6"/>
+    </marker>
   `;
   svg.appendChild(defs);
 
@@ -2820,173 +2791,100 @@ function scrollToCity(region) {
     { name: '鎌倉', en: 'Kamakura', lon: 139.55, lat: 35.32, color: '#5B8FA8', days: [10], major: true },
   ];
 
-  // Route order
+  // Route segments as individual lines with arrowheads
   const routeOrder = ['Tokyo', 'Okayama', 'Naoshima', 'Osaka', 'Kyoto', 'Hakone', 'Kamakura', 'Tokyo'];
   const routePts = routeOrder.map(name => {
     const c = cities.find(ci => ci.en === name);
     return proj(c.lon, c.lat);
   });
 
-  const routeD = cardinalSpline(routePts, false, 0.3);
+  // Draw route as individual segments with arrowheads for clear direction
+  for (let i = 0; i < routePts.length - 1; i++) {
+    const [x1, y1] = routePts[i];
+    const [x2, y2] = routePts[i + 1];
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', x1);
+    line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2);
+    line.setAttribute('y2', y2);
+    line.setAttribute('stroke', '#C9A84C');
+    line.setAttribute('stroke-width', '0.12');
+    line.setAttribute('stroke-opacity', '0.5');
+    line.setAttribute('marker-end', 'url(#arrowhead)');
+    line.setAttribute('class', 'map-route-line');
+    svg.appendChild(line);
+  }
 
-  // Route glow
-  const routeGlow = document.createElementNS(ns, 'path');
-  routeGlow.setAttribute('d', routeD);
-  routeGlow.setAttribute('fill', 'none');
-  routeGlow.setAttribute('stroke', '#C9A84C');
-  routeGlow.setAttribute('stroke-width', '0.8');
-  routeGlow.setAttribute('opacity', '0.25');
-  routeGlow.setAttribute('stroke-linecap', 'round');
-  routeGlow.setAttribute('class', 'map-route-glow');
-  routeGlow.setAttribute('filter', 'url(#glow)');
-  routeGlow.setAttribute('vector-effect', 'non-scaling-stroke');
-  svg.appendChild(routeGlow);
-
-  // Route main line
-  const routeLine = document.createElementNS(ns, 'path');
-  routeLine.setAttribute('d', routeD);
-  routeLine.setAttribute('fill', 'none');
-  routeLine.setAttribute('stroke', 'url(#routeGrad)');
-  routeLine.setAttribute('stroke-width', '0.35');
-  routeLine.setAttribute('stroke-linecap', 'round');
-  routeLine.setAttribute('stroke-linejoin', 'round');
-  routeLine.setAttribute('class', 'map-route-line');
-  routeLine.setAttribute('vector-effect', 'non-scaling-stroke');
-  svg.appendChild(routeLine);
-
-  // Set proper dash length
+  // Animate route draw-in
   setTimeout(() => {
     try {
-      const len = routeLine.getTotalLength();
-      routeLine.style.strokeDasharray = len;
-      routeLine.style.strokeDashoffset = len;
-      routeGlow.style.strokeDasharray = len;
-      routeGlow.style.strokeDashoffset = len;
-      routeLine.style.animation = 'none';
-      routeGlow.style.animation = 'none';
-      requestAnimationFrame(() => {
-        routeLine.style.animation = 'drawRoute 4s ease-in-out 0.5s forwards';
-        routeGlow.style.animation = 'drawRoute 4s ease-in-out 0.5s forwards';
+      document.querySelectorAll('.map-route-line').forEach((line, i) => {
+        const len = Math.sqrt(
+          Math.pow(+line.getAttribute('x2') - +line.getAttribute('x1'), 2) +
+          Math.pow(+line.getAttribute('y2') - +line.getAttribute('y1'), 2)
+        );
+        line.style.strokeDasharray = len;
+        line.style.strokeDashoffset = len;
+        line.style.animation = 'none';
+        requestAnimationFrame(() => {
+          line.style.animation = `drawRoute 0.8s ease-in-out ${0.3 + i * 0.5}s forwards`;
+        });
       });
     } catch(e) {}
   }, 200);
 
-  // Direction arrows along route
-  setTimeout(() => {
-    try {
-      const len = routeLine.getTotalLength();
-      for (let i = 1; i <= 10; i++) {
-        const frac = i / 11;
-        const pt = routeLine.getPointAtLength(len * frac);
-        const pt2 = routeLine.getPointAtLength(Math.min(len * frac + 1, len));
-        const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI;
-        const arrow = document.createElementNS(ns, 'text');
-        arrow.setAttribute('x', pt.x);
-        arrow.setAttribute('y', pt.y);
-        arrow.setAttribute('text-anchor', 'middle');
-        arrow.setAttribute('dominant-baseline', 'central');
-        arrow.setAttribute('transform', `rotate(${angle}, ${pt.x}, ${pt.y})`);
-        arrow.setAttribute('fill', '#C9A84C');
-        arrow.setAttribute('font-size', '1.2');
-        arrow.setAttribute('opacity', '0');
-        arrow.textContent = '\u25B8';
-        svg.appendChild(arrow);
-        arrow.style.transition = 'opacity 0.5s';
-        setTimeout(() => arrow.setAttribute('opacity', '0.5'), 4800 + i * 100);
-      }
-    } catch(e) {}
-  }, 300);
+  // City markers — clean dots with labels
+  const stopNum = { Tokyo: 1, Okayama: 2, Naoshima: 3, Osaka: 4, Kyoto: 5, Hakone: 6, Kamakura: 7 };
 
-  // Mt. Fuji icon
-  const [fx, fy] = proj(138.73, 35.36);
-  const fujiG = document.createElementNS(ns, 'g');
-  fujiG.setAttribute('opacity', '0.7');
-  const s = 1.8; // scale
-  fujiG.innerHTML = `
-    <polygon points="${fx},${fy-s*1.5} ${fx-s},${fy+s*0.5} ${fx+s},${fy+s*0.5}" fill="#3D3225" stroke="#C9A84C" stroke-width="0.08"/>
-    <polygon points="${fx},${fy-s*1.5} ${fx-s*0.4},${fy-s*0.6} ${fx+s*0.4},${fy-s*0.6}" fill="#DDD" stroke="none" opacity="0.5"/>
-    <text x="${fx}" y="${fy+s*1.3}" text-anchor="middle" fill="#C9A84C" font-family="'Noto Serif JP', serif" font-size="0.9" font-weight="700" opacity="0.5">富士山</text>
-  `;
-  svg.appendChild(fujiG);
-
-  // City markers
   cities.forEach(city => {
     const [cx, cy] = proj(city.lon, city.lat);
     const g = document.createElementNS(ns, 'g');
     g.setAttribute('class', 'map-city-dot');
 
-    // Pulse
-    const pulse = document.createElementNS(ns, 'circle');
-    pulse.setAttribute('cx', cx);
-    pulse.setAttribute('cy', cy);
-    pulse.setAttribute('r', city.major ? '1.5' : '1');
-    pulse.setAttribute('fill', 'url(#pulseGrad)');
-    pulse.setAttribute('class', 'map-pulse');
-    g.appendChild(pulse);
-
-    // Outer ring
-    const outer = document.createElementNS(ns, 'circle');
-    outer.setAttribute('cx', cx);
-    outer.setAttribute('cy', cy);
-    outer.setAttribute('r', city.major ? '0.6' : '0.4');
-    outer.setAttribute('fill', 'none');
-    outer.setAttribute('stroke', city.color);
-    outer.setAttribute('stroke-width', '0.15');
-    g.appendChild(outer);
-
-    // Inner dot
+    // Simple filled dot
     const dot = document.createElementNS(ns, 'circle');
     dot.setAttribute('cx', cx);
     dot.setAttribute('cy', cy);
-    dot.setAttribute('r', city.major ? '0.35' : '0.25');
+    dot.setAttribute('r', '0.35');
     dot.setAttribute('fill', city.color);
+    dot.setAttribute('class', 'map-dot-inner');
     g.appendChild(dot);
 
-    // Label offsets (percentage units)
-    let lx = cx + 1.2, ly = cy - 0.8;
+    // Label offsets — spread labels to avoid overlap
+    let lx = cx + 1.2, ly = cy - 0.6;
     let anchor = 'start';
-    if (city.en === 'Tokyo') { lx = cx + 1.2; ly = cy - 0.3; }
-    if (city.en === 'Kamakura') { lx = cx + 1; ly = cy + 1.8; }
-    if (city.en === 'Hakone') { lx = cx - 1; ly = cy + 1.8; anchor = 'end'; }
-    if (city.en === 'Kyoto') { lx = cx - 1; ly = cy - 0.5; anchor = 'end'; }
-    if (city.en === 'Osaka') { lx = cx - 1; ly = cy + 0.5; anchor = 'end'; }
-    if (city.en === 'Naoshima') { lx = cx + 1; ly = cy + 1.5; }
-    if (city.en === 'Okayama') { lx = cx - 1; ly = cy - 0.5; anchor = 'end'; }
+    if (city.en === 'Tokyo') { lx = cx + 1.2; ly = cy - 0.8; }
+    if (city.en === 'Kamakura') { lx = cx + 1; ly = cy + 0.3; }
+    if (city.en === 'Hakone') { lx = cx + 0.8; ly = cy + 1.2; }
+    if (city.en === 'Kyoto') { lx = cx - 0.8; ly = cy - 1.2; anchor = 'end'; }
+    if (city.en === 'Osaka') { lx = cx - 0.8; ly = cy + 0.3; anchor = 'end'; }
+    if (city.en === 'Naoshima') { lx = cx - 0.8; ly = cy + 1.5; anchor = 'end'; }
+    if (city.en === 'Okayama') { lx = cx - 0.8; ly = cy - 0.6; anchor = 'end'; }
 
-    // Label group with shadow
     const labelG = document.createElementNS(ns, 'g');
     labelG.setAttribute('filter', 'url(#labelShadow)');
 
-    const labelJp = document.createElementNS(ns, 'text');
-    labelJp.setAttribute('x', lx);
-    labelJp.setAttribute('y', ly);
-    labelJp.setAttribute('text-anchor', anchor);
-    labelJp.setAttribute('font-family', "'Noto Serif JP', serif");
-    labelJp.setAttribute('font-weight', '900');
-    labelJp.setAttribute('font-size', '1.3');
-    labelJp.setAttribute('fill', '#F0E6D3');
-    labelJp.textContent = city.name;
-    labelG.appendChild(labelJp);
+    // Stop number + city name on one line
+    const num = stopNum[city.en];
+    const labelMain = document.createElementNS(ns, 'text');
+    labelMain.setAttribute('x', lx);
+    labelMain.setAttribute('y', ly);
+    labelMain.setAttribute('text-anchor', anchor);
+    labelMain.setAttribute('font-family', "'Quicksand', sans-serif");
+    labelMain.setAttribute('font-weight', '700');
+    labelMain.setAttribute('font-size', '0.7');
+    labelMain.setAttribute('fill', '#C9A84C');
+    labelMain.textContent = `${num}. ${city.en}`;
+    labelG.appendChild(labelMain);
 
-    const labelEn = document.createElementNS(ns, 'text');
-    labelEn.setAttribute('x', lx);
-    labelEn.setAttribute('y', ly + 1.3);
-    labelEn.setAttribute('text-anchor', anchor);
-    labelEn.setAttribute('font-family', "'Quicksand', sans-serif");
-    labelEn.setAttribute('font-weight', '700');
-    labelEn.setAttribute('font-size', '0.9');
-    labelEn.setAttribute('fill', '#C9A84C');
-    labelEn.setAttribute('opacity', '0.8');
-    labelEn.textContent = city.en;
-    labelG.appendChild(labelEn);
-
+    // Days info
     const daysText = document.createElementNS(ns, 'text');
     daysText.setAttribute('x', lx);
-    daysText.setAttribute('y', ly + 2.3);
+    daysText.setAttribute('y', ly + 0.9);
     daysText.setAttribute('text-anchor', anchor);
     daysText.setAttribute('font-family', "'Quicksand', sans-serif");
     daysText.setAttribute('font-weight', '700');
-    daysText.setAttribute('font-size', '0.75');
+    daysText.setAttribute('font-size', '0.55');
     daysText.setAttribute('fill', '#9C8B75');
     daysText.textContent = city.days.length === 1 ? `Day ${city.days[0]}` : `Days ${city.days[0]}\u2013${city.days[city.days.length-1]}`;
     labelG.appendChild(daysText);
