@@ -1841,7 +1841,7 @@
     box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 0 80px rgba(201, 168, 76, 0.03);
     aspect-ratio: 9/5;
     background: #0D0A07;
-    background: #0D0A07;
+    cursor: pointer;
   }
   .edo-map-img {
     position: absolute;
@@ -3041,6 +3041,23 @@ function scrollToCity(region) {
     });
 
     svg.appendChild(g);
+  });
+
+  // Click map to replay route animation
+  document.getElementById('edoMapWrap').addEventListener('click', (e) => {
+    if (e.target.closest('.map-city-dot')) return; // don't trigger on city clicks
+    document.querySelectorAll('.map-route-line').forEach((line, i) => {
+      const len = Math.sqrt(
+        Math.pow(+line.getAttribute('x2') - +line.getAttribute('x1'), 2) +
+        Math.pow(+line.getAttribute('y2') - +line.getAttribute('y1'), 2)
+      );
+      line.style.strokeDasharray = len;
+      line.style.strokeDashoffset = len;
+      line.style.animation = 'none';
+      requestAnimationFrame(() => {
+        line.style.animation = `drawRoute 0.8s ease-in-out ${0.3 + i * 0.5}s forwards`;
+      });
+    });
   });
 })();
 
