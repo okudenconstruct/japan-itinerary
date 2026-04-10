@@ -1839,7 +1839,21 @@
     overflow: hidden;
     border: 2px solid rgba(201, 168, 76, 0.3);
     box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 0 80px rgba(201, 168, 76, 0.03);
-    background: #1E1710;
+    background: #0D0A07;
+  }
+  .edo-map-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: sepia(0.5) saturate(0.6) brightness(0.45) contrast(1.2);
+    opacity: 0.85;
+  }
+  .edo-map-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
   .edo-map-title {
     position: absolute;
@@ -2041,7 +2055,10 @@
   <div class="edo-map-wrap" id="edoMapWrap">
     <div class="edo-map-title">旅の道筋 — THE ROUTE</div>
     <div class="edo-map-subtitle">TOKYO &bull; OKAYAMA &bull; NAOSHIMA &bull; OSAKA &bull; KYOTO &bull; HAKONE &bull; KAMAKURA</div>
-    <svg class="edo-map-svg" id="edoMapSvg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg"></svg>
+    <img class="edo-map-img" id="edoMapImg"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Japan_relief_location_map.jpg/960px-Japan_relief_location_map.jpg"
+      alt="Relief map of Japan" loading="lazy">
+    <svg class="edo-map-svg" id="edoMapSvg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
     <div class="map-legend">
       <div class="map-legend-item"><div class="map-legend-line"></div> Route</div>
       <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--edo-red);"></div> Major Stop</div>
@@ -2734,53 +2751,27 @@ function scrollToCity(region) {
   }
 }
 
-// ── EDO-ERA ROUTE MAP ────────────────────────────────
+// ── EDO-ERA ROUTE MAP (over real relief image) ──────
 (function initEdoMap() {
   const svg = document.getElementById('edoMapSvg');
   if (!svg) return;
 
-  // Projection: lon/lat → SVG coords
-  // ViewBox: 0 0 900 520
-  const lonMin = 131.2, lonMax = 141.0, latMin = 32.8, latMax = 36.8;
-  const svgW = 900, svgH = 520;
+  // The relief map image bounds (Japan_relief_location_map.jpg)
+  // Equirectangular projection: N=45.7 S=30.2 W=128.5 E=148.9
+  const lonMin = 128.5, lonMax = 148.9, latMin = 30.2, latMax = 45.7;
+
+  // Project lon/lat to percentage coords (0-100) matching the image
   function proj(lon, lat) {
     return [
-      (lon - lonMin) / (lonMax - lonMin) * svgW,
-      svgH - (lat - latMin) / (latMax - latMin) * svgH
+      (lon - lonMin) / (lonMax - lonMin) * 100,
+      (latMax - lat) / (latMax - latMin) * 100
     ];
   }
 
-  // Smooth path from points using Catmull-Rom → cubic bezier
-  function smoothPath(pts, closed) {
-    if (pts.length < 2) return '';
-    const tension = 0.3;
-    let d = `M ${pts[0][0]},${pts[0][1]}`;
-    for (let i = 0; i < pts.length - 1; i++) {
-      const p0 = pts[i === 0 ? (closed ? pts.length - 1 : 0) : i - 1];
-      const p1 = pts[i];
-      const p2 = pts[i + 1];
-      const p3 = pts[i + 2 < pts.length ? i + 2 : (closed ? pts[(i + 2) % pts.length] : pts[pts.length - 1])];
-      // Actually simplify: just use quadratic curves
-      if (i === 0) {
-        d += ` L ${pts[1][0]},${pts[1][1]}`;
-      } else {
-        const cx = (p1[0] + p2[0]) / 2;
-        const cy = (p1[1] + p2[1]) / 2;
-        d += ` Q ${p1[0]},${p1[1]} ${cx},${cy}`;
-      }
-    }
-    const last = pts[pts.length - 1];
-    d += ` L ${last[0]},${last[1]}`;
-    if (closed) d += ' Z';
-    return d;
-  }
-
-  // Better smooth: cardinal spline
+  // Cardinal spline for smooth route path
   function cardinalSpline(pts, closed, t) {
     t = t || 0.4;
-    if (pts.length < 3) {
-      return pts.map((p, i) => (i === 0 ? 'M' : 'L') + p[0] + ',' + p[1]).join(' ') + (closed ? 'Z' : '');
-    }
+    if (pts.length < 3) return pts.map((p, i) => (i === 0 ? 'M' : 'L') + p[0] + ',' + p[1]).join(' ');
     let d = `M${pts[0][0]},${pts[0][1]}`;
     const n = pts.length;
     for (let i = 0; i < (closed ? n : n - 1); i++) {
@@ -2788,187 +2779,46 @@ function scrollToCity(region) {
       const p1 = pts[i];
       const p2 = pts[(i + 1) % n];
       const p3 = pts[(i + 2) % n];
-      const cp1x = p1[0] + (p2[0] - p0[0]) * t / 3;
-      const cp1y = p1[1] + (p2[1] - p0[1]) * t / 3;
-      const cp2x = p2[0] - (p3[0] - p1[0]) * t / 3;
-      const cp2y = p2[1] - (p3[1] - p1[1]) * t / 3;
-      d += ` C${cp1x},${cp1y} ${cp2x},${cp2y} ${p2[0]},${p2[1]}`;
+      d += ` C${p1[0] + (p2[0]-p0[0])*t/3},${p1[1] + (p2[1]-p0[1])*t/3} ${p2[0] - (p3[0]-p1[0])*t/3},${p2[1] - (p3[1]-p1[1])*t/3} ${p2[0]},${p2[1]}`;
     }
-    if (closed) d += 'Z';
     return d;
   }
 
-  // ── COASTLINE DATA (lon, lat) ──
-  // Honshu (southern portion, clockwise from NW)
-  const honshuCoast = [
-    // Sea of Japan coast (north), west to east
-    [131.5, 34.45], [131.8, 34.55], [132.1, 34.8], [132.4, 35.0],
-    [132.7, 35.15], [133.0, 35.3], [133.3, 35.4], [133.6, 35.48],
-    [134.0, 35.55], [134.3, 35.6], [134.6, 35.62], [134.9, 35.58],
-    [135.2, 35.52], [135.5, 35.58], [135.8, 35.75], [136.0, 35.95],
-    [136.2, 36.1], [136.5, 36.25], [136.8, 36.35], [137.1, 36.5],
-    [137.5, 36.7], [138.0, 36.75], [138.5, 36.65], [138.9, 36.75],
-    [139.3, 36.7], [139.7, 36.5], [140.0, 36.2], [140.3, 35.95],
-    // Kanto east coast (Boso)
-    [140.5, 35.75], [140.55, 35.5], [140.4, 35.2], [140.15, 35.05],
-    [139.95, 35.15],
-    // Tokyo Bay west side
-    [139.8, 35.4], [139.65, 35.35], [139.62, 35.15],
-    // Miura → Sagami
-    [139.58, 35.12], [139.5, 35.15], [139.35, 35.13],
-    // Izu Peninsula
-    [139.15, 35.08], [139.0, 34.92], [138.85, 34.72],
-    [138.78, 34.6], [138.95, 34.55], [139.05, 34.68],
-    // Pacific coast west (Enshu-nada)
-    [138.5, 34.62], [138.0, 34.68], [137.5, 34.65],
-    [137.0, 34.68], [136.8, 34.52], [136.6, 34.25],
-    // Kii Peninsula
-    [136.3, 33.85], [136.0, 33.55], [135.8, 33.45],
-    [135.5, 33.48], [135.3, 33.65], [135.1, 33.95],
-    // Osaka Bay area
-    [135.05, 34.28], [135.1, 34.52], [135.25, 34.62], [135.43, 34.66],
-    // Inland Sea coast (south side of Honshu)
-    [135.15, 34.55], [134.9, 34.52], [134.6, 34.45],
-    [134.35, 34.38], [134.1, 34.38], [133.8, 34.42],
-    [133.5, 34.38], [133.2, 34.28], [132.9, 34.2],
-    [132.6, 34.1], [132.3, 34.05], [132.0, 34.08],
-    [131.7, 34.15], [131.5, 34.2]
-  ].map(c => proj(c[0], c[1]));
-
-  // Shikoku island
-  const shikokuCoast = [
-    [134.65, 34.25], [134.3, 34.15], [133.9, 34.0],
-    [133.5, 33.85], [133.1, 33.65], [132.75, 33.55],
-    [132.7, 33.35], [132.8, 33.1], [133.1, 32.95],
-    [133.45, 33.0], [133.8, 33.15], [134.15, 33.2],
-    [134.4, 33.35], [134.6, 33.55], [134.75, 33.8],
-    [134.8, 34.0], [134.72, 34.18]
-  ].map(c => proj(c[0], c[1]));
-
-  // Kyushu (eastern edge only, visible in our viewport)
-  const kyushuCoast = [
-    [131.4, 33.95], [131.2, 33.7], [131.15, 33.4],
-    [131.0, 33.15], [131.1, 32.95], [131.35, 32.85],
-    [131.6, 33.0], [131.7, 33.25], [131.65, 33.5],
-    [131.5, 33.75]
-  ].map(c => proj(c[0], c[1]));
-
-  // Awaji Island (between Honshu and Shikoku)
-  const awajiCoast = [
-    [134.9, 34.6], [134.85, 34.5], [134.78, 34.35],
-    [134.82, 34.25], [134.92, 34.18], [135.0, 34.28],
-    [135.0, 34.42], [134.95, 34.55]
-  ].map(c => proj(c[0], c[1]));
-
-  // ── CREATE SVG ELEMENTS ──
   const ns = 'http://www.w3.org/2000/svg';
+  svg.setAttribute('viewBox', '0 0 100 100');
+  svg.setAttribute('preserveAspectRatio', 'none');
 
-  // Defs: filters, patterns, gradients
+  // Defs
   const defs = document.createElementNS(ns, 'defs');
-
-  // Seigaiha wave pattern for ocean
   defs.innerHTML = `
-    <pattern id="oceanWaves" x="0" y="0" width="40" height="20" patternUnits="userSpaceOnUse">
-      <circle cx="20" cy="20" r="15" fill="none" stroke="#C9A84C" stroke-width="0.4" opacity="0.12"/>
-      <circle cx="20" cy="20" r="10" fill="none" stroke="#C9A84C" stroke-width="0.3" opacity="0.08"/>
-      <circle cx="20" cy="20" r="5" fill="none" stroke="#C9A84C" stroke-width="0.3" opacity="0.05"/>
-      <circle cx="0" cy="20" r="15" fill="none" stroke="#C9A84C" stroke-width="0.4" opacity="0.12"/>
-      <circle cx="0" cy="20" r="10" fill="none" stroke="#C9A84C" stroke-width="0.3" opacity="0.08"/>
-      <circle cx="40" cy="20" r="15" fill="none" stroke="#C9A84C" stroke-width="0.4" opacity="0.12"/>
-      <circle cx="40" cy="20" r="10" fill="none" stroke="#C9A84C" stroke-width="0.3" opacity="0.08"/>
-    </pattern>
-    <pattern id="landTexture" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-      <filter id="landNoise">
-        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>
-        <feColorMatrix type="saturate" values="0"/>
-      </filter>
-      <rect width="100" height="100" filter="url(#landNoise)" opacity="0.06"/>
-    </pattern>
-    <filter id="inkEdge">
-      <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="3" result="noise"/>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
-    </filter>
     <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#C9A84C"/>
       <stop offset="50%" stop-color="#E8D5A3"/>
       <stop offset="100%" stop-color="#C9A84C"/>
     </linearGradient>
     <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feGaussianBlur stdDeviation="0.4" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <filter id="labelShadow">
+      <feDropShadow dx="0" dy="0.15" stdDeviation="0.3" flood-color="#000" flood-opacity="0.8"/>
+    </filter>
     <radialGradient id="pulseGrad">
-      <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.5"/>
+      <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.4"/>
       <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
     </radialGradient>
   `;
   svg.appendChild(defs);
 
-  // Ocean background
-  const oceanBg = document.createElementNS(ns, 'rect');
-  oceanBg.setAttribute('width', '900');
-  oceanBg.setAttribute('height', '520');
-  oceanBg.setAttribute('fill', '#16120D');
-  svg.appendChild(oceanBg);
-
-  const oceanPattern = document.createElementNS(ns, 'rect');
-  oceanPattern.setAttribute('width', '900');
-  oceanPattern.setAttribute('height', '520');
-  oceanPattern.setAttribute('fill', 'url(#oceanWaves)');
-  svg.appendChild(oceanPattern);
-
-  // Subtle ocean depth gradient
-  const oceanGrad = document.createElementNS(ns, 'rect');
-  oceanGrad.setAttribute('width', '900');
-  oceanGrad.setAttribute('height', '520');
-  oceanGrad.setAttribute('fill', 'url(#oceanWaves)');
-  oceanGrad.setAttribute('opacity', '0.5');
-  svg.appendChild(oceanGrad);
-
-  // Land masses
-  function addLand(coastPts, id) {
-    const path = document.createElementNS(ns, 'path');
-    const d = cardinalSpline(coastPts, true, 0.35);
-    path.setAttribute('d', d);
-    path.setAttribute('fill', '#2C2418');
-    path.setAttribute('stroke', '#5C4A35');
-    path.setAttribute('stroke-width', '1.5');
-    path.setAttribute('id', id);
-    svg.appendChild(path);
-
-    // Texture overlay
-    const tex = document.createElementNS(ns, 'path');
-    tex.setAttribute('d', d);
-    tex.setAttribute('fill', 'url(#landTexture)');
-    tex.setAttribute('stroke', 'none');
-    svg.appendChild(tex);
-
-    // Inner highlight
-    const inner = document.createElementNS(ns, 'path');
-    inner.setAttribute('d', d);
-    inner.setAttribute('fill', 'none');
-    inner.setAttribute('stroke', '#C9A84C');
-    inner.setAttribute('stroke-width', '0.5');
-    inner.setAttribute('opacity', '0.12');
-    svg.appendChild(inner);
-
-    return path;
-  }
-
-  addLand(honshuCoast, 'honshu');
-  addLand(shikokuCoast, 'shikoku');
-  addLand(kyushuCoast, 'kyushu');
-  addLand(awajiCoast, 'awaji');
-
   // ── CITIES ──
   const cities = [
-    { name: '東京', en: 'Tokyo', lon: 139.69, lat: 35.69, color: 'var(--edo-red)', days: [1,2,11,12,13,14], major: true },
-    { name: '岡山', en: 'Okayama', lon: 133.92, lat: 34.66, color: 'var(--accent-orange)', days: [3], major: false },
-    { name: '直島', en: 'Naoshima', lon: 133.99, lat: 34.46, color: 'var(--accent-purple)', days: [4], major: true },
-    { name: '大阪', en: 'Osaka', lon: 135.50, lat: 34.69, color: 'var(--accent-orange)', days: [5,6], major: true },
-    { name: '京都', en: 'Kyoto', lon: 135.77, lat: 35.01, color: 'var(--edo-gold)', days: [7,8], major: true },
-    { name: '箱根', en: 'Hakone', lon: 139.11, lat: 35.23, color: 'var(--edo-moss)', days: [9], major: true },
-    { name: '鎌倉', en: 'Kamakura', lon: 139.55, lat: 35.32, color: 'var(--accent-blue)', days: [10], major: true },
+    { name: '東京', en: 'Tokyo', lon: 139.69, lat: 35.69, color: '#C53A2A', days: [1,2,11,12,13,14], major: true },
+    { name: '岡山', en: 'Okayama', lon: 133.92, lat: 34.66, color: '#D4762C', days: [3], major: false },
+    { name: '直島', en: 'Naoshima', lon: 133.99, lat: 34.46, color: '#7B5EA7', days: [4], major: true },
+    { name: '大阪', en: 'Osaka', lon: 135.50, lat: 34.69, color: '#D4762C', days: [5,6], major: true },
+    { name: '京都', en: 'Kyoto', lon: 135.77, lat: 35.01, color: '#C9A84C', days: [7,8], major: true },
+    { name: '箱根', en: 'Hakone', lon: 139.11, lat: 35.23, color: '#6B8E5A', days: [9], major: true },
+    { name: '鎌倉', en: 'Kamakura', lon: 139.55, lat: 35.32, color: '#5B8FA8', days: [10], major: true },
   ];
 
   // Route order
@@ -2978,17 +2828,19 @@ function scrollToCity(region) {
     return proj(c.lon, c.lat);
   });
 
-  // Route glow (underneath)
-  const routeGlow = document.createElementNS(ns, 'path');
   const routeD = cardinalSpline(routePts, false, 0.3);
+
+  // Route glow
+  const routeGlow = document.createElementNS(ns, 'path');
   routeGlow.setAttribute('d', routeD);
   routeGlow.setAttribute('fill', 'none');
   routeGlow.setAttribute('stroke', '#C9A84C');
-  routeGlow.setAttribute('stroke-width', '6');
-  routeGlow.setAttribute('opacity', '0.15');
+  routeGlow.setAttribute('stroke-width', '0.8');
+  routeGlow.setAttribute('opacity', '0.25');
   routeGlow.setAttribute('stroke-linecap', 'round');
   routeGlow.setAttribute('class', 'map-route-glow');
   routeGlow.setAttribute('filter', 'url(#glow)');
+  routeGlow.setAttribute('vector-effect', 'non-scaling-stroke');
   svg.appendChild(routeGlow);
 
   // Route main line
@@ -2996,66 +2848,65 @@ function scrollToCity(region) {
   routeLine.setAttribute('d', routeD);
   routeLine.setAttribute('fill', 'none');
   routeLine.setAttribute('stroke', 'url(#routeGrad)');
-  routeLine.setAttribute('stroke-width', '2.5');
+  routeLine.setAttribute('stroke-width', '0.35');
   routeLine.setAttribute('stroke-linecap', 'round');
   routeLine.setAttribute('stroke-linejoin', 'round');
   routeLine.setAttribute('class', 'map-route-line');
+  routeLine.setAttribute('vector-effect', 'non-scaling-stroke');
   svg.appendChild(routeLine);
 
-  // Set proper dash length based on actual path length
+  // Set proper dash length
   setTimeout(() => {
-    const len = routeLine.getTotalLength();
-    routeLine.style.strokeDasharray = len;
-    routeLine.style.strokeDashoffset = len;
-    routeGlow.style.strokeDasharray = len;
-    routeGlow.style.strokeDashoffset = len;
-    // Re-trigger animation
-    routeLine.style.animation = 'none';
-    routeGlow.style.animation = 'none';
-    requestAnimationFrame(() => {
-      routeLine.style.animation = `drawRoute 4s ease-in-out 0.5s forwards`;
-      routeGlow.style.animation = `drawRoute 4s ease-in-out 0.5s forwards`;
-    });
-  }, 100);
-
-  // Route direction arrows (small chevrons along the path)
-  // Added after route draws
-  setTimeout(() => {
-    const len = routeLine.getTotalLength();
-    const arrowCount = 12;
-    for (let i = 1; i <= arrowCount; i++) {
-      const frac = i / (arrowCount + 1);
-      const pt = routeLine.getPointAtLength(len * frac);
-      const pt2 = routeLine.getPointAtLength(len * frac + 3);
-      const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI;
-      const arrow = document.createElementNS(ns, 'text');
-      arrow.setAttribute('x', pt.x);
-      arrow.setAttribute('y', pt.y);
-      arrow.setAttribute('text-anchor', 'middle');
-      arrow.setAttribute('dominant-baseline', 'central');
-      arrow.setAttribute('transform', `rotate(${angle}, ${pt.x}, ${pt.y})`);
-      arrow.setAttribute('fill', '#C9A84C');
-      arrow.setAttribute('font-size', '8');
-      arrow.setAttribute('opacity', '0');
-      arrow.textContent = '\u25B8'; // small arrow
-      svg.appendChild(arrow);
-      // Fade in after route draws
-      arrow.style.transition = 'opacity 0.5s';
-      setTimeout(() => { arrow.setAttribute('opacity', '0.4'); }, 4800 + i * 100);
-    }
+    try {
+      const len = routeLine.getTotalLength();
+      routeLine.style.strokeDasharray = len;
+      routeLine.style.strokeDashoffset = len;
+      routeGlow.style.strokeDasharray = len;
+      routeGlow.style.strokeDashoffset = len;
+      routeLine.style.animation = 'none';
+      routeGlow.style.animation = 'none';
+      requestAnimationFrame(() => {
+        routeLine.style.animation = 'drawRoute 4s ease-in-out 0.5s forwards';
+        routeGlow.style.animation = 'drawRoute 4s ease-in-out 0.5s forwards';
+      });
+    } catch(e) {}
   }, 200);
 
-  // Mt. Fuji icon (near Hakone)
-  const fujiPos = proj(138.73, 35.36);
+  // Direction arrows along route
+  setTimeout(() => {
+    try {
+      const len = routeLine.getTotalLength();
+      for (let i = 1; i <= 10; i++) {
+        const frac = i / 11;
+        const pt = routeLine.getPointAtLength(len * frac);
+        const pt2 = routeLine.getPointAtLength(Math.min(len * frac + 1, len));
+        const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI;
+        const arrow = document.createElementNS(ns, 'text');
+        arrow.setAttribute('x', pt.x);
+        arrow.setAttribute('y', pt.y);
+        arrow.setAttribute('text-anchor', 'middle');
+        arrow.setAttribute('dominant-baseline', 'central');
+        arrow.setAttribute('transform', `rotate(${angle}, ${pt.x}, ${pt.y})`);
+        arrow.setAttribute('fill', '#C9A84C');
+        arrow.setAttribute('font-size', '1.2');
+        arrow.setAttribute('opacity', '0');
+        arrow.textContent = '\u25B8';
+        svg.appendChild(arrow);
+        arrow.style.transition = 'opacity 0.5s';
+        setTimeout(() => arrow.setAttribute('opacity', '0.5'), 4800 + i * 100);
+      }
+    } catch(e) {}
+  }, 300);
+
+  // Mt. Fuji icon
+  const [fx, fy] = proj(138.73, 35.36);
   const fujiG = document.createElementNS(ns, 'g');
-  fujiG.setAttribute('class', 'map-fuji');
+  fujiG.setAttribute('opacity', '0.7');
+  const s = 1.8; // scale
   fujiG.innerHTML = `
-    <polygon points="${fujiPos[0]},${fujiPos[1]-18} ${fujiPos[0]-14},${fujiPos[1]+6} ${fujiPos[0]+14},${fujiPos[1]+6}"
-      fill="#3D3225" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"/>
-    <polygon points="${fujiPos[0]},${fujiPos[1]-18} ${fujiPos[0]-6},${fujiPos[1]-8} ${fujiPos[0]+6},${fujiPos[1]-8}"
-      fill="#DDD" stroke="none" opacity="0.5"/>
-    <text x="${fujiPos[0]}" y="${fujiPos[1]+16}" text-anchor="middle"
-      fill="var(--edo-gold)" font-family="'Noto Serif JP', serif" font-size="7" font-weight="700" opacity="0.5">富士山</text>
+    <polygon points="${fx},${fy-s*1.5} ${fx-s},${fy+s*0.5} ${fx+s},${fy+s*0.5}" fill="#3D3225" stroke="#C9A84C" stroke-width="0.08"/>
+    <polygon points="${fx},${fy-s*1.5} ${fx-s*0.4},${fy-s*0.6} ${fx+s*0.4},${fy-s*0.6}" fill="#DDD" stroke="none" opacity="0.5"/>
+    <text x="${fx}" y="${fy+s*1.3}" text-anchor="middle" fill="#C9A84C" font-family="'Noto Serif JP', serif" font-size="0.9" font-weight="700" opacity="0.5">富士山</text>
   `;
   svg.appendChild(fujiG);
 
@@ -3064,13 +2915,12 @@ function scrollToCity(region) {
     const [cx, cy] = proj(city.lon, city.lat);
     const g = document.createElementNS(ns, 'g');
     g.setAttribute('class', 'map-city-dot');
-    g.style.cursor = 'pointer';
 
-    // Pulse ring
+    // Pulse
     const pulse = document.createElementNS(ns, 'circle');
     pulse.setAttribute('cx', cx);
     pulse.setAttribute('cy', cy);
-    pulse.setAttribute('r', city.major ? '12' : '8');
+    pulse.setAttribute('r', city.major ? '1.5' : '1');
     pulse.setAttribute('fill', 'url(#pulseGrad)');
     pulse.setAttribute('class', 'map-pulse');
     g.appendChild(pulse);
@@ -3079,115 +2929,78 @@ function scrollToCity(region) {
     const outer = document.createElementNS(ns, 'circle');
     outer.setAttribute('cx', cx);
     outer.setAttribute('cy', cy);
-    outer.setAttribute('r', city.major ? '5' : '3.5');
+    outer.setAttribute('r', city.major ? '0.6' : '0.4');
     outer.setAttribute('fill', 'none');
     outer.setAttribute('stroke', city.color);
-    outer.setAttribute('stroke-width', '1.5');
+    outer.setAttribute('stroke-width', '0.15');
     g.appendChild(outer);
 
     // Inner dot
     const dot = document.createElementNS(ns, 'circle');
     dot.setAttribute('cx', cx);
     dot.setAttribute('cy', cy);
-    dot.setAttribute('r', city.major ? '3' : '2');
+    dot.setAttribute('r', city.major ? '0.35' : '0.25');
     dot.setAttribute('fill', city.color);
     g.appendChild(dot);
 
-    // Label positioning (offset based on city location to avoid overlaps)
-    let lx = cx + 12, ly = cy - 8;
+    // Label offsets (percentage units)
+    let lx = cx + 1.2, ly = cy - 0.8;
     let anchor = 'start';
-    if (city.en === 'Tokyo') { lx = cx + 12; ly = cy - 5; }
-    if (city.en === 'Kamakura') { lx = cx + 10; ly = cy + 16; }
-    if (city.en === 'Hakone') { lx = cx - 12; ly = cy + 16; anchor = 'end'; }
-    if (city.en === 'Kyoto') { lx = cx - 12; ly = cy - 6; anchor = 'end'; }
-    if (city.en === 'Osaka') { lx = cx - 12; ly = cy + 5; anchor = 'end'; }
-    if (city.en === 'Naoshima') { lx = cx + 10; ly = cy + 14; }
-    if (city.en === 'Okayama') { lx = cx - 12; ly = cy - 6; anchor = 'end'; }
+    if (city.en === 'Tokyo') { lx = cx + 1.2; ly = cy - 0.3; }
+    if (city.en === 'Kamakura') { lx = cx + 1; ly = cy + 1.8; }
+    if (city.en === 'Hakone') { lx = cx - 1; ly = cy + 1.8; anchor = 'end'; }
+    if (city.en === 'Kyoto') { lx = cx - 1; ly = cy - 0.5; anchor = 'end'; }
+    if (city.en === 'Osaka') { lx = cx - 1; ly = cy + 0.5; anchor = 'end'; }
+    if (city.en === 'Naoshima') { lx = cx + 1; ly = cy + 1.5; }
+    if (city.en === 'Okayama') { lx = cx - 1; ly = cy - 0.5; anchor = 'end'; }
 
-    // Japanese name
+    // Label group with shadow
+    const labelG = document.createElementNS(ns, 'g');
+    labelG.setAttribute('filter', 'url(#labelShadow)');
+
     const labelJp = document.createElementNS(ns, 'text');
     labelJp.setAttribute('x', lx);
     labelJp.setAttribute('y', ly);
     labelJp.setAttribute('text-anchor', anchor);
-    labelJp.setAttribute('class', 'map-city-label');
+    labelJp.setAttribute('font-family', "'Noto Serif JP', serif");
+    labelJp.setAttribute('font-weight', '900');
+    labelJp.setAttribute('font-size', '1.3');
+    labelJp.setAttribute('fill', '#F0E6D3');
     labelJp.textContent = city.name;
-    g.appendChild(labelJp);
+    labelG.appendChild(labelJp);
 
-    // English name
     const labelEn = document.createElementNS(ns, 'text');
     labelEn.setAttribute('x', lx);
-    labelEn.setAttribute('y', ly + 12);
+    labelEn.setAttribute('y', ly + 1.3);
     labelEn.setAttribute('text-anchor', anchor);
-    labelEn.setAttribute('class', 'map-city-label-en');
+    labelEn.setAttribute('font-family', "'Quicksand', sans-serif");
+    labelEn.setAttribute('font-weight', '700');
+    labelEn.setAttribute('font-size', '0.9');
+    labelEn.setAttribute('fill', '#C9A84C');
+    labelEn.setAttribute('opacity', '0.8');
     labelEn.textContent = city.en;
-    g.appendChild(labelEn);
+    labelG.appendChild(labelEn);
 
-    // Days info
-    const daysLabel = document.createElementNS(ns, 'text');
-    daysLabel.setAttribute('x', lx);
-    daysLabel.setAttribute('y', ly + 21);
-    daysLabel.setAttribute('text-anchor', anchor);
-    daysLabel.setAttribute('class', 'map-city-days');
-    daysLabel.textContent = city.days.length === 1 ? `Day ${city.days[0]}` : `Days ${city.days[0]}-${city.days[city.days.length-1]}`;
-    g.appendChild(daysLabel);
+    const daysText = document.createElementNS(ns, 'text');
+    daysText.setAttribute('x', lx);
+    daysText.setAttribute('y', ly + 2.3);
+    daysText.setAttribute('text-anchor', anchor);
+    daysText.setAttribute('font-family', "'Quicksand', sans-serif");
+    daysText.setAttribute('font-weight', '700');
+    daysText.setAttribute('font-size', '0.75');
+    daysText.setAttribute('fill', '#9C8B75');
+    daysText.textContent = city.days.length === 1 ? `Day ${city.days[0]}` : `Days ${city.days[0]}\u2013${city.days[city.days.length-1]}`;
+    labelG.appendChild(daysText);
 
-    // Click interaction
+    g.appendChild(labelG);
+
     g.addEventListener('click', () => {
-      const dayNum = city.days[0];
-      const el = document.getElementById(`day-${dayNum}`);
+      const el = document.getElementById(`day-${city.days[0]}`);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
     svg.appendChild(g);
   });
-
-  // Sea labels
-  const seaLabels = [
-    { text: '太平洋', en: 'Pacific Ocean', lon: 137.5, lat: 33.3, size: 14 },
-    { text: '瀬戸内海', en: 'Inland Sea', lon: 133.6, lat: 34.15, size: 9 },
-    { text: '日本海', en: 'Sea of Japan', lon: 134.0, lat: 36.3, size: 11 },
-  ];
-
-  seaLabels.forEach(s => {
-    const [sx, sy] = proj(s.lon, s.lat);
-    const g = document.createElementNS(ns, 'g');
-    g.setAttribute('opacity', '0.2');
-
-    const t1 = document.createElementNS(ns, 'text');
-    t1.setAttribute('x', sx);
-    t1.setAttribute('y', sy);
-    t1.setAttribute('text-anchor', 'middle');
-    t1.setAttribute('fill', '#C9A84C');
-    t1.setAttribute('font-family', "'Noto Serif JP', serif");
-    t1.setAttribute('font-size', s.size);
-    t1.setAttribute('font-weight', '700');
-    t1.setAttribute('letter-spacing', '6');
-    t1.textContent = s.text;
-    g.appendChild(t1);
-
-    const t2 = document.createElementNS(ns, 'text');
-    t2.setAttribute('x', sx);
-    t2.setAttribute('y', sy + s.size + 2);
-    t2.setAttribute('text-anchor', 'middle');
-    t2.setAttribute('fill', '#C9A84C');
-    t2.setAttribute('font-family', "'Quicksand', sans-serif");
-    t2.setAttribute('font-size', '7');
-    t2.setAttribute('font-weight', '700');
-    t2.setAttribute('letter-spacing', '3');
-    t2.textContent = s.en.toUpperCase();
-    g.appendChild(t2);
-
-    svg.appendChild(g);
-  });
-
-  // Observe map coming into view to trigger animation
-  const mapObs = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) {
-      svg.classList.add('animate');
-      mapObs.disconnect();
-    }
-  }, { threshold: 0.3 });
-  mapObs.observe(svg);
 })();
 
 // ── 4. CHERRY BLOSSOM PARTICLES (full-page) ─────────
