@@ -1990,10 +1990,118 @@
     .map-city-label { font-size: 9px; }
     .map-city-label-en { font-size: 7px; }
   }
+
+  /* ── TRIP DIARY ────────────────────────────────────── */
+  .diary-toggle { display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 8px 14px; background: rgba(201,168,76,0.08); border: 1px dashed rgba(201,168,76,0.25); border-radius: 6px; color: var(--edo-gold); font-size: 13px; cursor: pointer; font-family: 'Quicksand', sans-serif; font-weight: 700; transition: background 0.2s; }
+  .diary-toggle:hover { background: rgba(201,168,76,0.15); }
+  .diary-section { display: none; margin-top: 10px; padding: 14px; background: rgba(0,0,0,0.15); border-radius: 8px; border: 1px solid rgba(201,168,76,0.1); }
+  .diary-section.open { display: block; }
+  .diary-stars { display: flex; gap: 4px; margin-bottom: 10px; }
+  .diary-star { font-size: 22px; cursor: pointer; color: #555; transition: color 0.15s; }
+  .diary-star.active { color: #C9A84C; }
+  .diary-textarea { width: 100%; min-height: 80px; background: rgba(0,0,0,0.2); border: 1px solid rgba(201,168,76,0.15); border-radius: 6px; color: var(--text-bright); padding: 10px; font-family: 'Quicksand', sans-serif; font-size: 13px; resize: vertical; }
+  .diary-textarea::placeholder { color: var(--text-dim); }
+  .diary-photos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .diary-photo { width: 80px; height: 80px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 2px solid rgba(201,168,76,0.2); transition: border-color 0.2s; }
+  .diary-photo:hover { border-color: var(--edo-gold); }
+  .diary-add-photo { width: 80px; height: 80px; border-radius: 6px; border: 2px dashed rgba(201,168,76,0.3); display: flex; align-items: center; justify-content: center; color: var(--edo-gold); font-size: 24px; cursor: pointer; transition: background 0.2s; }
+  .diary-add-photo:hover { background: rgba(201,168,76,0.1); }
+  .diary-photo-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .diary-photo-modal img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
+  .diary-add-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; display: flex; align-items: center; justify-content: center; }
+  .diary-add-form { background: var(--bg-card); padding: 24px; border-radius: 12px; border: 1px solid rgba(201,168,76,0.2); width: 90%; max-width: 400px; }
+  .diary-add-form h3 { color: var(--edo-gold); margin-bottom: 12px; font-size: 16px; }
+  .diary-add-form input { width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(201,168,76,0.2); border-radius: 6px; color: var(--text-bright); font-family: 'Quicksand', sans-serif; margin-bottom: 8px; }
+  .diary-add-form .btn-row { display: flex; gap: 8px; margin-top: 12px; }
+  .diary-add-form button { flex: 1; padding: 10px; border-radius: 6px; border: none; font-family: 'Quicksand', sans-serif; font-weight: 700; cursor: pointer; }
+  .diary-add-form .btn-save { background: var(--edo-gold); color: var(--bg-deep); }
+  .diary-add-form .btn-cancel { background: rgba(255,255,255,0.1); color: var(--text-dim); }
+  .diary-export { margin-top: 10px; padding: 6px 14px; background: none; border: 1px solid rgba(201,168,76,0.25); color: var(--edo-gold); border-radius: 6px; font-family: 'Quicksand', sans-serif; font-size: 12px; cursor: pointer; }
+  .diary-remove { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: #C53A2A; color: #fff; font-size: 12px; border: none; cursor: pointer; display: none; line-height: 20px; text-align: center; }
+  .diary-photo-wrap { position: relative; display: inline-block; }
+  .diary-photo-wrap:hover .diary-remove { display: block; }
+
+  /* ── FOOD CHECKLIST ────────────────────────────────── */
+  .food-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; padding: 16px 0; }
+  .food-cat h4 { color: var(--edo-gold); font-size: 14px; margin-bottom: 8px; border-bottom: 1px solid rgba(201,168,76,0.15); padding-bottom: 4px; }
+  .food-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 13px; }
+  .food-item input[type="checkbox"] { accent-color: var(--edo-gold); }
+  .food-item label { cursor: pointer; }
+  .food-item .food-spot { font-size: 11px; color: var(--text-dim); margin-left: 4px; }
+
+  /* ── EMERGENCY REFERENCE ───────────────────────────── */
+  .emergency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; padding: 16px 0; }
+  .emergency-card { background: rgba(197,58,42,0.06); border: 1px solid rgba(197,58,42,0.15); border-radius: 8px; padding: 14px; }
+  .emergency-card h4 { color: #C53A2A; font-size: 14px; margin-bottom: 8px; }
+  .emergency-card p, .emergency-card li { font-size: 13px; color: var(--text-bright); line-height: 1.6; }
+  .emergency-card ul { list-style: none; padding: 0; }
+  .emergency-card li::before { content: '\25B8  '; color: var(--edo-gold); }
+  .emergency-card .em-num { font-size: 20px; font-weight: 900; color: #C53A2A; letter-spacing: 2px; }
+
+  /* ── BUDGET TRACKER ────────────────────────────────── */
+  .budget-wrap { padding: 16px 0; }
+  .budget-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .budget-table th { text-align: left; color: var(--edo-gold); padding: 6px 10px; border-bottom: 1px solid rgba(201,168,76,0.2); font-weight: 700; }
+  .budget-table td { padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .budget-table .budget-cat { color: var(--text-dim); font-size: 12px; }
+  .budget-table .budget-amt { text-align: right; font-weight: 700; font-family: 'Nunito', sans-serif; }
+  .budget-total { display: flex; justify-content: space-between; padding: 12px 10px; margin-top: 8px; background: rgba(201,168,76,0.08); border-radius: 6px; font-weight: 900; font-size: 15px; }
+  .budget-total .budget-total-amt { color: var(--edo-gold); }
+  .budget-toggle-currency { padding: 4px 12px; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.25); color: var(--edo-gold); border-radius: 4px; font-size: 12px; cursor: pointer; font-family: 'Quicksand', sans-serif; margin-bottom: 10px; }
+
+  /* ── TIME ZONE WIDGET ──────────────────────────────── */
+  .tz-widget { position: fixed; top: 12px; left: 12px; background: var(--bg-card); border: 1px solid rgba(201,168,76,0.2); border-radius: 8px; padding: 6px 12px; z-index: 999; font-size: 11px; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .tz-flag { font-size: 16px; }
+  .tz-time { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 14px; color: var(--edo-gold); }
+  .tz-label { color: var(--text-dim); font-size: 10px; }
+  @media (max-width: 600px) { .tz-widget { top: auto; bottom: 70px; left: 8px; padding: 4px 8px; } }
+
+  /* ── TRIP SUMMARY ──────────────────────────────────── */
+  .trip-summary { padding: 16px 0; text-align: center; }
+  .trip-summary-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 12px; }
+  .trip-summary-stat { text-align: center; }
+  .trip-summary-num { font-size: 28px; font-weight: 900; color: var(--edo-gold); font-family: 'Nunito', sans-serif; }
+  .trip-summary-label { font-size: 11px; color: var(--text-dim); }
+  .trip-summary-stars { display: flex; justify-content: center; gap: 2px; margin-top: 6px; }
+  .trip-summary-stars span { color: #C9A84C; font-size: 16px; }
+
+  /* ── PRINT STYLESHEET ──────────────────────────────── */
+  @media print {
+    body { background: #fff !important; color: #222 !important; font-size: 11pt; }
+    body::before, body::after, .sakura-canvas, .music-player, .back-to-top, .theme-toggle, .tz-widget,
+    .day-card-toggle, .search-bar, .currency-converter, .qr-section, .video-modal-overlay,
+    .diary-add-photo, .diary-toggle, .diary-export, .day-nav, #routeBar { display: none !important; }
+    .container { max-width: 100%; padding: 0; }
+    .day { break-inside: avoid; page-break-inside: avoid; margin: 10px 0; opacity: 1 !important; transform: none !important; }
+    .day-card { background: #fff !important; border: 1px solid #ccc; box-shadow: none !important; }
+    .day-hero { max-height: 120px; }
+    .day-header, .day-title, .day-date, .day-region { color: #222 !important; }
+    .stop { background: #eee !important; color: #222 !important; border: 1px solid #ccc !important; }
+    .highlight-stop { background: #ffe0d0 !important; }
+    .section-body { display: block !important; max-height: none !important; }
+    .section-toggle .arrow { display: none; }
+    .collapsed .day-card { max-height: none !important; overflow: visible !important; }
+    .header { background: #fff !important; }
+    .header h1, .header-subtitle { color: #222 !important; }
+    a { color: #222 !important; text-decoration: underline; }
+    .edo-map-wrap { break-inside: avoid; }
+    .diary-section { border: 1px solid #ccc; }
+    .diary-textarea { border: 1px solid #ccc; color: #222; background: #fff; }
+    .diary-star.active { color: #C9A84C; }
+  }
+
+  /* Light mode overrides for new features */
+  body.light-mode .diary-section { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+  body.light-mode .diary-textarea { background: #fff; border-color: #ddd; color: #2A2118; }
+  body.light-mode .diary-toggle { background: rgba(201,168,76,0.06); border-color: rgba(201,168,76,0.2); }
+  body.light-mode .emergency-card { background: rgba(197,58,42,0.04); border-color: rgba(197,58,42,0.1); }
+  body.light-mode .tz-widget { background: #FFFBF3; border-color: rgba(0,0,0,0.1); }
+  body.light-mode .budget-total { background: rgba(201,168,76,0.06); }
 </style>
 </head>
 <body>
 <canvas class="sakura-canvas" id="sakuraCanvas"></canvas>
+<div class="tz-widget" id="tzWidget"><span class="tz-flag">&#x1F1EF;&#x1F1F5;</span><span class="tz-time" id="tzTime">--:--</span><span class="tz-label">Japan (JST)</span></div>
 
 <!-- BACK TO TOP -->
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">&#9650;</button>
@@ -2115,6 +2223,42 @@
   </div>
   <div class="section-body" id="packing">
     <div class="packing-grid" id="packingGrid"></div>
+  </div>
+
+  <!-- FOOD CHECKLIST -->
+  <div class="section-toggle" onclick="toggleSection('foodChecklist')">
+    <span>Must-Try Food Checklist</span>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="section-body" id="foodChecklist">
+    <div class="food-grid" id="foodGrid"></div>
+  </div>
+
+  <!-- BUDGET TRACKER -->
+  <div class="section-toggle" onclick="toggleSection('budgetSection')">
+    <span>Budget Tracker</span>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="section-body" id="budgetSection">
+    <div class="budget-wrap" id="budgetWrap"></div>
+  </div>
+
+  <!-- EMERGENCY REFERENCE -->
+  <div class="section-toggle" onclick="toggleSection('emergencySection')">
+    <span>Emergency Quick Reference</span>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="section-body" id="emergencySection">
+    <div class="emergency-grid" id="emergencyGrid"></div>
+  </div>
+
+  <!-- TRIP SUMMARY -->
+  <div class="section-toggle" onclick="toggleSection('tripSummary')">
+    <span>Trip Diary Summary</span>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="section-body" id="tripSummary">
+    <div class="trip-summary" id="tripSummaryContent"></div>
   </div>
 
   <!-- QR CODE SHARE -->
@@ -3313,7 +3457,401 @@ function scrollToCity(region) {
   img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}&color=2A2118&bgcolor=FFFBF3`;
 })();
 
-// ── 15. SERVICE WORKER REGISTRATION ──────────────────
+// ── 15. TRIP DIARY ──────────────────────────────────
+(function initDiary() {
+  function getDiary(dayNum) {
+    try { return JSON.parse(localStorage.getItem(`diary_day_${dayNum}`) || '{}'); } catch { return {}; }
+  }
+  function saveDiary(dayNum, data) {
+    localStorage.setItem(`diary_day_${dayNum}`, JSON.stringify(data));
+  }
+  function driveUrl(id) {
+    return `https://lh3.googleusercontent.com/d/${id}=w800`;
+  }
+  function driveThumb(id) {
+    return `https://lh3.googleusercontent.com/d/${id}=w200`;
+  }
+  function extractDriveId(input) {
+    input = input.trim();
+    // Direct file ID
+    if (/^[a-zA-Z0-9_-]{20,}$/.test(input)) return input;
+    // Drive share URL patterns
+    const m = input.match(/\/d\/([a-zA-Z0-9_-]+)/) || input.match(/id=([a-zA-Z0-9_-]+)/);
+    return m ? m[1] : null;
+  }
+
+  document.querySelectorAll('.day').forEach(dayEl => {
+    const card = dayEl.querySelector('.day-card');
+    if (!card) return;
+    const dayNum = parseInt(dayEl.id.replace('day-', ''));
+
+    // Toggle button
+    const toggle = document.createElement('div');
+    toggle.className = 'diary-toggle';
+    toggle.innerHTML = '\u{1F4D6} Trip Diary';
+    card.appendChild(toggle);
+
+    // Diary section
+    const section = document.createElement('div');
+    section.className = 'diary-section';
+    card.appendChild(section);
+
+    const diary = getDiary(dayNum);
+
+    // Star rating
+    const starsDiv = document.createElement('div');
+    starsDiv.className = 'diary-stars';
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement('span');
+      star.className = 'diary-star' + ((diary.rating || 0) >= i ? ' active' : '');
+      star.textContent = '\u2605';
+      star.onclick = () => {
+        const d = getDiary(dayNum);
+        d.rating = d.rating === i ? 0 : i;
+        saveDiary(dayNum, d);
+        starsDiv.querySelectorAll('.diary-star').forEach((s, idx) => {
+          s.classList.toggle('active', idx < d.rating);
+        });
+        updateSummary();
+      };
+      starsDiv.appendChild(star);
+    }
+    section.appendChild(starsDiv);
+
+    // Text area
+    const textarea = document.createElement('textarea');
+    textarea.className = 'diary-textarea';
+    textarea.placeholder = 'Write about your day...';
+    textarea.value = diary.text || '';
+    let saveTimer;
+    textarea.addEventListener('input', () => {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        const d = getDiary(dayNum);
+        d.text = textarea.value;
+        saveDiary(dayNum, d);
+        updateSummary();
+      }, 500);
+    });
+    section.appendChild(textarea);
+
+    // Photos grid
+    const photosDiv = document.createElement('div');
+    photosDiv.className = 'diary-photos';
+    section.appendChild(photosDiv);
+
+    function renderPhotos() {
+      const d = getDiary(dayNum);
+      const photos = d.photos || [];
+      photosDiv.innerHTML = '';
+      photos.forEach((p, idx) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'diary-photo-wrap';
+        const img = document.createElement('img');
+        img.className = 'diary-photo';
+        img.src = driveThumb(p.id);
+        img.alt = p.caption || '';
+        img.title = p.caption || 'Click to view';
+        img.loading = 'lazy';
+        img.onclick = () => {
+          const modal = document.createElement('div');
+          modal.className = 'diary-photo-modal';
+          modal.innerHTML = `<img src="${driveUrl(p.id)}" alt="${p.caption || ''}">`;
+          modal.onclick = () => modal.remove();
+          document.body.appendChild(modal);
+        };
+        const rm = document.createElement('button');
+        rm.className = 'diary-remove';
+        rm.textContent = '\u00D7';
+        rm.onclick = (e) => {
+          e.stopPropagation();
+          const d2 = getDiary(dayNum);
+          d2.photos.splice(idx, 1);
+          saveDiary(dayNum, d2);
+          renderPhotos();
+          updateSummary();
+        };
+        wrap.appendChild(img);
+        wrap.appendChild(rm);
+        photosDiv.appendChild(wrap);
+      });
+
+      // Add photo button
+      const addBtn = document.createElement('div');
+      addBtn.className = 'diary-add-photo';
+      addBtn.textContent = '+';
+      addBtn.title = 'Add photo from Google Drive';
+      addBtn.onclick = () => showAddModal(dayNum, renderPhotos);
+      photosDiv.appendChild(addBtn);
+    }
+    renderPhotos();
+
+    // Export button
+    const exportBtn = document.createElement('button');
+    exportBtn.className = 'diary-export';
+    exportBtn.textContent = '\u{1F4BE} Export Journal';
+    exportBtn.onclick = () => exportDiary();
+    section.appendChild(exportBtn);
+
+    toggle.onclick = () => section.classList.toggle('open');
+  });
+
+  function showAddModal(dayNum, refreshFn) {
+    const overlay = document.createElement('div');
+    overlay.className = 'diary-add-modal';
+    overlay.innerHTML = `<div class="diary-add-form">
+      <h3>\u{1F4F7} Add Photo from Google Drive</h3>
+      <input type="text" id="diaryDriveLink" placeholder="Paste Drive share link or file ID">
+      <input type="text" id="diaryCaption" placeholder="Caption (optional)">
+      <div class="btn-row">
+        <button class="btn-cancel" id="diaryCancel">Cancel</button>
+        <button class="btn-save" id="diarySave">Add Photo</button>
+      </div>
+    </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#diaryCancel').onclick = () => overlay.remove();
+    overlay.querySelector('#diarySave').onclick = () => {
+      const link = overlay.querySelector('#diaryDriveLink').value;
+      const caption = overlay.querySelector('#diaryCaption').value;
+      const id = extractDriveId(link);
+      if (!id) { alert('Could not extract a valid Google Drive file ID.'); return; }
+      const d = getDiary(dayNum);
+      if (!d.photos) d.photos = [];
+      d.photos.push({ id, caption });
+      saveDiary(dayNum, d);
+      overlay.remove();
+      refreshFn();
+      updateSummary();
+    };
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+    setTimeout(() => overlay.querySelector('#diaryDriveLink').focus(), 100);
+  }
+
+  function exportDiary() {
+    const entries = [];
+    for (let i = 1; i <= 14; i++) {
+      const d = getDiary(i);
+      if (d.text || d.rating || (d.photos && d.photos.length)) {
+        const day = days.find(dy => dy.num === i);
+        entries.push({
+          day: i, date: day?.date || '', title: day?.title || '',
+          rating: d.rating || 0, text: d.text || '', photos: d.photos || []
+        });
+      }
+    }
+    if (!entries.length) { alert('No diary entries yet!'); return; }
+    let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Japan 2026 Trip Diary</title><style>body{font-family:sans-serif;max-width:700px;margin:0 auto;padding:20px;background:#FFFBF3;color:#2A2118}h1{color:#C9A84C}h2{border-bottom:2px solid #C9A84C;padding-bottom:4px}.stars{color:#C9A84C;font-size:20px}.photo{width:200px;margin:4px;border-radius:8px}</style></head><body><h1>Japan 2026 Trip Diary</h1>';
+    entries.forEach(e => {
+      html += `<h2>Day ${e.day}: ${e.title}</h2><p style="color:#888">${e.date}</p>`;
+      if (e.rating) html += `<div class="stars">${'\u2605'.repeat(e.rating)}${'\u2606'.repeat(5-e.rating)}</div>`;
+      if (e.text) html += `<p>${e.text.replace(/\n/g, '<br>')}</p>`;
+      e.photos.forEach(p => { html += `<img class="photo" src="${driveUrl(p.id)}" alt="${p.caption||''}"><br>`; });
+    });
+    html += '</body></html>';
+    const blob = new Blob([html], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'japan-trip-diary-2026.html';
+    a.click();
+  }
+
+  // Summary updater
+  window.updateSummary = function() {
+    const el = document.getElementById('tripSummaryContent');
+    if (!el) return;
+    let totalPhotos = 0, totalEntries = 0, totalStars = 0, ratedDays = 0;
+    for (let i = 1; i <= 14; i++) {
+      const d = getDiary(i);
+      if (d.text || d.rating || (d.photos && d.photos.length)) totalEntries++;
+      totalPhotos += (d.photos || []).length;
+      if (d.rating) { totalStars += d.rating; ratedDays++; }
+    }
+    const avgRating = ratedDays ? (totalStars / ratedDays).toFixed(1) : '-';
+    el.innerHTML = `<div class="trip-summary-grid">
+      <div class="trip-summary-stat"><div class="trip-summary-num">${totalEntries}</div><div class="trip-summary-label">Journal Entries</div></div>
+      <div class="trip-summary-stat"><div class="trip-summary-num">${totalPhotos}</div><div class="trip-summary-label">Photos</div></div>
+      <div class="trip-summary-stat"><div class="trip-summary-num">${avgRating}</div><div class="trip-summary-label">Avg Rating</div>
+        ${ratedDays ? `<div class="trip-summary-stars">${Array.from({length:5},(_,i)=>`<span>${i<Math.round(avgRating)?'\u2605':'\u2606'}</span>`).join('')}</div>` : ''}
+      </div>
+    </div>
+    <button class="diary-export" onclick="document.querySelectorAll('.diary-export')[0]?.click()" style="margin-top:16px">\u{1F4BE} Export Full Diary</button>`;
+  };
+  updateSummary();
+})();
+
+// ── 16. FOOD CHECKLIST ──────────────────────────────
+(function initFoodChecklist() {
+  const foods = {
+    'Tokyo Eats': [
+      { name: 'Tsukiji/Toyosu fresh sushi', spot: 'Toyosu Market area' },
+      { name: 'Ramen (tonkotsu or shoyu)', spot: 'Fuunji, Shinjuku' },
+      { name: 'Monjayaki', spot: 'Tsukishima' },
+      { name: 'Yakitori at Golden Gai', spot: 'Shinjuku' },
+      { name: 'Melon pan', spot: 'Any bakery' },
+      { name: 'Conveyor belt sushi', spot: 'Genki Sushi' },
+      { name: 'Japanese curry rice', spot: 'CoCo Ichibanya' },
+      { name: 'Onigiri from konbini', spot: '7-Eleven / Lawson' },
+    ],
+    'Osaka Street Food': [
+      { name: 'Takoyaki (octopus balls)', spot: 'Dotonbori' },
+      { name: 'Okonomiyaki', spot: 'Dotonbori / Shinsekai' },
+      { name: 'Kushikatsu (deep-fried skewers)', spot: 'Shinsekai' },
+      { name: 'Gyoza', spot: 'Any local spot' },
+      { name: 'Taiyaki (fish-shaped cake)', spot: 'Street vendors' },
+    ],
+    'Kyoto Delicacies': [
+      { name: 'Matcha everything', spot: 'Uji / Nishiki Market' },
+      { name: 'Yudofu (tofu hot pot)', spot: 'Arashiyama area' },
+      { name: 'Kaiseki meal', spot: 'Traditional restaurant' },
+      { name: 'Warabi mochi', spot: 'Tea houses' },
+      { name: 'Nishiki Market grazing', spot: 'Nishiki Market' },
+    ],
+    'Everywhere Essentials': [
+      { name: 'Tonkatsu (pork cutlet)', spot: 'Anywhere' },
+      { name: 'Miso soup breakfast', spot: 'Hotel / ryokan' },
+      { name: 'Japanese cheesecake', spot: 'Uncle Tetsu / Rikuro' },
+      { name: 'Egg sandwich (konbini)', spot: '7-Eleven' },
+      { name: 'Sake tasting', spot: 'Any izakaya' },
+      { name: 'Highball (whisky soda)', spot: 'Any bar' },
+      { name: 'Strong Zero', spot: 'Any konbini' },
+      { name: 'Pocky / Kit Kat Japan flavors', spot: 'Don Quijote' },
+    ],
+  };
+
+  const grid = document.getElementById('foodGrid');
+  Object.entries(foods).forEach(([cat, items]) => {
+    const col = document.createElement('div');
+    col.className = 'food-cat';
+    col.innerHTML = `<h4>${cat}</h4>` + items.map((item, i) => {
+      const key = `food_${cat}_${i}`;
+      const checked = localStorage.getItem(key) === '1';
+      return `<div class="food-item">
+        <input type="checkbox" id="${key}" ${checked ? 'checked' : ''} onchange="localStorage.setItem('${key}', this.checked ? '1' : '0')">
+        <label for="${key}">${item.name}<span class="food-spot">${item.spot}</span></label>
+      </div>`;
+    }).join('');
+    grid.appendChild(col);
+  });
+})();
+
+// ── 17. BUDGET TRACKER ──────────────────────────────
+(function initBudget() {
+  const budget = [
+    { cat: 'Flights', item: 'EWR \u2194 NRT roundtrip (ANA)', jpy: 180000 },
+    { cat: 'Rail', item: '21-day JR Pass', jpy: 60450 },
+    { cat: 'Rail', item: 'IC card loads (Suica/Pasmo)', jpy: 5000 },
+    { cat: 'Lodging', item: 'Hotels & hostels (~\u00A55,000-12,000/night)', jpy: 120000 },
+    { cat: 'Food', item: 'Daily meals (~\u00A54,000/day \u00D7 14)', jpy: 56000 },
+    { cat: 'Food', item: 'Special dinners & drinks', jpy: 25000 },
+    { cat: 'Activities', item: 'teamLab Planets', jpy: 3800 },
+    { cat: 'Activities', item: 'Shibuya Sky', jpy: 2200 },
+    { cat: 'Activities', item: 'Fushimi Inari / temples', jpy: 3000 },
+    { cat: 'Activities', item: 'Naoshima art museums', jpy: 4000 },
+    { cat: 'Activities', item: 'Hakone Free Pass', jpy: 6100 },
+    { cat: 'Shopping', item: 'Souvenirs & misc', jpy: 30000 },
+    { cat: 'Other', item: 'SIM card / eSIM', jpy: 3000 },
+    { cat: 'Other', item: 'Travel insurance', jpy: 8000 },
+  ];
+
+  const wrap = document.getElementById('budgetWrap');
+  let showUSD = false;
+  const rate = 159; // JPY per USD, matches converter
+
+  function render() {
+    const total = budget.reduce((s, b) => s + b.jpy, 0);
+    const fmt = (jpy) => showUSD ? `$${(jpy / rate).toFixed(0)}` : `\u00A5${jpy.toLocaleString()}`;
+    wrap.innerHTML = `
+      <button class="budget-toggle-currency" onclick="window._toggleBudgetCurrency()">Show in ${showUSD ? 'JPY \u00A5' : 'USD $'}</button>
+      <table class="budget-table">
+        <tr><th>Item</th><th>Category</th><th class="budget-amt">Est. Cost</th></tr>
+        ${budget.map(b => `<tr><td>${b.item}</td><td class="budget-cat">${b.cat}</td><td class="budget-amt">${fmt(b.jpy)}</td></tr>`).join('')}
+      </table>
+      <div class="budget-total"><span>Estimated Total</span><span class="budget-total-amt">${fmt(total)}</span></div>
+    `;
+  }
+  window._toggleBudgetCurrency = () => { showUSD = !showUSD; render(); };
+  render();
+})();
+
+// ── 18. EMERGENCY QUICK REFERENCE ───────────────────
+(function initEmergency() {
+  const grid = document.getElementById('emergencyGrid');
+  grid.innerHTML = `
+    <div class="emergency-card">
+      <h4>\u{1F6A8} Emergency Numbers</h4>
+      <ul>
+        <li><span class="em-num">110</span> \u2014 Police</li>
+        <li><span class="em-num">119</span> \u2014 Fire / Ambulance</li>
+        <li><span class="em-num">118</span> \u2014 Coast Guard</li>
+      </ul>
+      <p style="margin-top:8px;font-size:12px;color:var(--text-dim)">From a pay phone: lift receiver, press red button, dial. No coins needed for 110/119.</p>
+    </div>
+    <div class="emergency-card">
+      <h4>\u{1F3E5} Medical</h4>
+      <ul>
+        <li>AMDA Medical Info: 03-6233-9266</li>
+        <li>Japan Helpline (24hr): 0570-064-211</li>
+        <li>Tokyo Metropolitan Health: 03-5285-8181</li>
+        <li>Pharmacy: look for \u85AC (kusuri) sign</li>
+      </ul>
+      <p style="margin-top:8px;font-size:12px"><strong>Key phrase:</strong> \u75C5\u9662\u306B\u9023\u308C\u3066\u884C\u3063\u3066\u304F\u3060\u3055\u3044<br><em>Byouin ni tsurete itte kudasai</em> \u2014 Please take me to a hospital</p>
+    </div>
+    <div class="emergency-card">
+      <h4>\u{1F1FA}\u{1F1F8} U.S. Embassy</h4>
+      <ul>
+        <li>Address: 1-10-5 Akasaka, Minato-ku, Tokyo</li>
+        <li>Phone: 03-3224-5000</li>
+        <li>After-hours emergency: 03-3224-5000</li>
+        <li>Osaka Consulate: 06-6315-5900</li>
+      </ul>
+    </div>
+    <div class="emergency-card">
+      <h4>\u{1F4B3} Lost Cards / Items</h4>
+      <ul>
+        <li>Lost items hotline (Tokyo): 03-3814-4151</li>
+        <li>JR East lost property: 050-2016-1601</li>
+        <li>Koban (\u4EA4\u756A) = police box \u2014 go here first for lost items</li>
+        <li>Visa: 1-800-847-2911 (US collect)</li>
+        <li>Mastercard: 1-636-722-7111 (US collect)</li>
+      </ul>
+    </div>
+    <div class="emergency-card">
+      <h4>\u{1F4F1} Useful Apps</h4>
+      <ul>
+        <li><strong>Google Translate</strong> \u2014 camera mode for signs</li>
+        <li><strong>Navitime / Google Maps</strong> \u2014 train navigation</li>
+        <li><strong>Tabelog</strong> \u2014 restaurant reviews (the Japanese Yelp)</li>
+        <li><strong>PayPay</strong> \u2014 mobile payments (widely accepted)</li>
+        <li><strong>Suica app</strong> \u2014 digital transit card</li>
+      </ul>
+    </div>
+    <div class="emergency-card">
+      <h4>\u{1F527} Key Phrases for Emergencies</h4>
+      <ul>
+        <li>\u52A9\u3051\u3066\uFF01 <em>Tasukete!</em> \u2014 Help!</li>
+        <li>\u8B66\u5BDF\u3092\u547C\u3093\u3067 <em>Keisatsu o yonde</em> \u2014 Call police</li>
+        <li>\u6551\u6025\u8ECA\u3092\u547C\u3093\u3067 <em>Kyuukyuusha o yonde</em> \u2014 Call ambulance</li>
+        <li>\u82F1\u8A9E\u3092\u8A71\u305B\u308B\u4EBA <em>Eigo o hanaseru hito</em> \u2014 English speaker</li>
+        <li>\u30D1\u30B9\u30DD\u30FC\u30C8\u3092\u306A\u304F\u3057\u307E\u3057\u305F <em>Pasupooto o nakushimashita</em> \u2014 I lost my passport</li>
+      </ul>
+    </div>
+  `;
+})();
+
+// ── 19. TIME ZONE WIDGET ────────────────────────────
+(function initTimezone() {
+  function update() {
+    const now = new Date();
+    const jp = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false
+    }).format(now);
+    document.getElementById('tzTime').textContent = jp;
+  }
+  update();
+  setInterval(update, 30000);
+})();
+
+// ── 20. SERVICE WORKER REGISTRATION ─────────────────
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
