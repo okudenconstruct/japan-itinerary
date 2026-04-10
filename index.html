@@ -1839,21 +1839,25 @@
     overflow: hidden;
     border: 2px solid rgba(201, 168, 76, 0.3);
     box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 0 80px rgba(201, 168, 76, 0.03);
+    aspect-ratio: 9/5;
+    background: #0D0A07;
     background: #0D0A07;
   }
   .edo-map-img {
-    display: block;
-    width: 100%;
-    height: auto;
+    position: absolute;
+    width: 228%;
+    height: 410%;
+    left: -61.7%;
+    top: -159.1%;
     filter: sepia(0.5) saturate(0.6) brightness(0.45) contrast(1.2);
     opacity: 0.85;
   }
   .edo-map-svg {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    width: 228%;
+    height: 410%;
+    left: -61.7%;
+    top: -159.1%;
   }
   .edo-map-title {
     position: absolute;
@@ -1910,7 +1914,7 @@
     transition: all 0.3s;
   }
   .map-city-dot:hover circle {
-    r: 7;
+    r: 2;
   }
   /* Animated route */
   .map-route-line {
@@ -1936,8 +1940,8 @@
     transform-origin: center;
   }
   @keyframes mapPulse {
-    0%, 100% { opacity: 0.3; r: 10; }
-    50% { opacity: 0.6; r: 14; }
+    0%, 100% { opacity: 0.08; r: 3; }
+    50% { opacity: 0.15; r: 4; }
   }
   /* Legend */
   .map-legend {
@@ -2051,7 +2055,7 @@
     <div class="edo-map-title">旅の道筋 — THE ROUTE</div>
     <div class="edo-map-subtitle">TOKYO &bull; OKAYAMA &bull; NAOSHIMA &bull; OSAKA &bull; KYOTO &bull; HAKONE &bull; KAMAKURA</div>
     <img class="edo-map-img" id="edoMapImg"
-      src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Japan_relief_location_map.jpg/960px-Japan_relief_location_map.jpg"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Japan_relief_location_map.jpg/1920px-Japan_relief_location_map.jpg"
       alt="Relief map of Japan" loading="lazy">
     <svg class="edo-map-svg" id="edoMapSvg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
     <div class="map-legend">
@@ -2799,7 +2803,7 @@ function scrollToCity(region) {
       <feDropShadow dx="0" dy="0.15" stdDeviation="0.3" flood-color="#000" flood-opacity="0.8"/>
     </filter>
     <radialGradient id="pulseGrad">
-      <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.4"/>
+      <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.15"/>
       <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
     </radialGradient>
   `;
