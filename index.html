@@ -13,6 +13,10 @@
 
 <!-- Favicon: torii gate emoji -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛩</text></svg>">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A150F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Quicksand:wght@500;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
@@ -1557,11 +1561,286 @@
     .currency-converter { gap: 8px; }
     .currency-input { width: 60px; font-size: 14px; }
     .search-wrapper { max-width: 100%; }
+    .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; font-size: 16px; }
+    .theme-toggle { top: 16px; right: 16px; width: 36px; height: 36px; font-size: 16px; }
+    .phrase-sheet-grid { grid-template-columns: 1fr; }
+    .qr-section { padding: 20px; }
+  }
+
+  /* ── COLLAPSIBLE DAY CARDS ── */
+  .day-card-toggle {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    background: rgba(201, 168, 76, 0.06);
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.3s;
+    z-index: 5;
+  }
+  .day-card-toggle:hover { color: var(--edo-gold); border-color: var(--edo-gold); }
+  .day.collapsed .stops,
+  .day.collapsed .day-lodging,
+  .day.collapsed .note-tag,
+  .day.collapsed .day-hero { display: none; }
+  .day.collapsed .day-card { padding-bottom: 14px; min-height: auto; }
+  .day.collapsed .day-card-toggle { transform: rotate(-90deg); }
+
+  /* ── BACK TO TOP BUTTON ── */
+  .back-to-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    background: rgba(26, 21, 15, 0.92);
+    backdrop-filter: blur(8px);
+    color: var(--edo-gold);
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 998;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .back-to-top.visible { opacity: 1; pointer-events: auto; }
+  .back-to-top:hover { background: var(--edo-gold); color: var(--bg-deep); border-color: var(--edo-gold); }
+
+  /* ── LIGHT MODE TOGGLE ── */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    background: rgba(26, 21, 15, 0.92);
+    backdrop-filter: blur(8px);
+    color: var(--edo-gold);
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+  .theme-toggle:hover { background: var(--edo-gold); color: var(--bg-deep); }
+
+  /* Light mode overrides */
+  body.light-mode {
+    --bg-deep: #F5F0E8;
+    --bg-mid: #EDE6DA;
+    --bg-card: #FFFBF3;
+    --text-bright: #2A2118;
+    --text-dim: #6B5E50;
+  }
+  body.light-mode::before { opacity: 0.04; }
+  body.light-mode::after { opacity: 0.5; }
+  body.light-mode .day-nav {
+    background: rgba(245, 240, 232, 0.94);
+    border-bottom-color: rgba(201, 168, 76, 0.25);
+  }
+  body.light-mode .day-card {
+    border-color: rgba(201, 168, 76, 0.25);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  body.light-mode .stop {
+    background: rgba(201, 168, 76, 0.06);
+    border-color: rgba(201, 168, 76, 0.15);
+    color: #4A3F33;
+  }
+  body.light-mode .highlight-stop {
+    background: rgba(197, 58, 42, 0.08);
+    color: var(--edo-red);
+  }
+  body.light-mode .stop-desc {
+    background: rgba(201, 168, 76, 0.05);
+    color: #4A3F33;
+  }
+  body.light-mode .back-to-top,
+  body.light-mode .theme-toggle,
+  body.light-mode .day-card-toggle {
+    background: rgba(255, 251, 243, 0.92);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  }
+  body.light-mode .music-player { background: rgba(255, 251, 243, 0.95); }
+  body.light-mode .search-input {
+    background: rgba(201, 168, 76, 0.06);
+    color: #2A2118;
+    border-color: rgba(201, 168, 76, 0.25);
+  }
+  body.light-mode .search-results {
+    background: #FFFBF3;
+    border-color: rgba(201, 168, 76, 0.25);
+  }
+  body.light-mode .currency-converter {
+    background: rgba(201, 168, 76, 0.06);
+    border-color: rgba(201, 168, 76, 0.2);
+  }
+  body.light-mode .currency-input {
+    background: rgba(255,255,255,0.8);
+    color: #2A2118;
+    border-color: rgba(201, 168, 76, 0.2);
+  }
+  body.light-mode .section-toggle {
+    background: rgba(201, 168, 76, 0.06);
+    border-color: rgba(201, 168, 76, 0.2);
+  }
+  body.light-mode .day-lodging {
+    background: rgba(201, 168, 76, 0.06);
+  }
+  body.light-mode .day-nav-btn {
+    border-color: rgba(201, 168, 76, 0.25);
+    color: #6B5E50;
+  }
+  body.light-mode .day-node { background: var(--bg-deep) !important; }
+  body.light-mode .sakura-canvas { opacity: 0.5; }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .day.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: none;
+  }
+  .day.scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  /* ── TODAY AUTO-HIGHLIGHT ── */
+  .day.is-today > .day-card {
+    border-color: var(--edo-gold);
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.2), 0 0 60px rgba(201, 168, 76, 0.08);
+  }
+  .day.is-today > .day-node {
+    background: var(--edo-gold) !important;
+    color: var(--bg-deep) !important;
+    border-color: var(--edo-gold) !important;
+    box-shadow: 0 0 12px rgba(201, 168, 76, 0.5);
+  }
+  .day.is-past {
+    opacity: 0.55;
+  }
+  .day.is-past.revealed {
+    opacity: 0.55;
+  }
+  .today-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--edo-gold);
+    color: var(--bg-deep);
+    animation: todayPulse 2s ease-in-out infinite;
+  }
+  @keyframes todayPulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(201, 168, 76, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(201, 168, 76, 0.6); }
+  }
+
+  /* ── JAPANESE PHRASE SHEET ── */
+  .phrase-sheet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px;
+  }
+  .phrase-card {
+    padding: 12px 16px;
+    background: rgba(201, 168, 76, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.12);
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .phrase-card:hover {
+    border-color: rgba(201, 168, 76, 0.3);
+    background: rgba(201, 168, 76, 0.08);
+  }
+  .phrase-card-cat {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--edo-gold);
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+  .phrase-card-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-bright);
+    margin-bottom: 2px;
+  }
+  .phrase-card-romaji {
+    font-size: 12px;
+    color: var(--edo-gold);
+    font-style: italic;
+    margin-bottom: 2px;
+  }
+  .phrase-card-en {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* ── QR CODE SECTION ── */
+  .qr-section {
+    text-align: center;
+    padding: 30px;
+    margin-top: 20px;
+    background: rgba(201, 168, 76, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.12);
+    border-radius: 6px;
+  }
+  .qr-section canvas {
+    border: 4px solid var(--edo-gold);
+    border-radius: 4px;
+  }
+  .qr-label {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'Noto Serif JP', serif;
+  }
+  .qr-url {
+    font-size: 11px;
+    color: var(--edo-gold);
+    word-break: break-all;
+    margin-top: 4px;
   }
 </style>
 </head>
 <body>
 <canvas class="sakura-canvas" id="sakuraCanvas"></canvas>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">&#9650;</button>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode">&#9788;</button>
+
 <div class="container">
 
   <div class="header">
@@ -1629,6 +1908,15 @@
 
   <div class="timeline" id="timeline"></div>
 
+  <!-- JAPANESE PHRASE CHEAT SHEET -->
+  <div class="section-toggle" onclick="toggleSection('phraseSheet')">
+    <span>Japanese Phrase Cheat Sheet</span>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="section-body" id="phraseSheet">
+    <div class="phrase-sheet-grid" id="phraseSheetGrid"></div>
+  </div>
+
   <!-- VIDEO GUIDES -->
   <div class="section-toggle" onclick="toggleSection('videoGuides')">
     <span>Video Guides</span>
@@ -1645,6 +1933,13 @@
   </div>
   <div class="section-body" id="packing">
     <div class="packing-grid" id="packingGrid"></div>
+  </div>
+
+  <!-- QR CODE SHARE -->
+  <div class="qr-section" id="qrSection">
+    <canvas id="qrCanvas"></canvas>
+    <div class="qr-label">Scan to open on your phone</div>
+    <div class="qr-url">okudenconstruct.github.io/japan-itinerary</div>
   </div>
 
   <!-- VIDEO MODAL -->
@@ -2483,6 +2778,194 @@ function scrollToCity(region) {
     items[current].classList.add('active');
   }, 3500);
 })();
+
+// ── 8. COLLAPSIBLE DAY CARDS ──────────────────────────
+(function initCollapsible() {
+  document.querySelectorAll('.day').forEach(dayEl => {
+    const card = dayEl.querySelector('.day-card');
+    if (!card) return;
+    const btn = document.createElement('button');
+    btn.className = 'day-card-toggle';
+    btn.innerHTML = '&#9660;';
+    btn.title = 'Collapse/Expand day';
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      dayEl.classList.toggle('collapsed');
+      btn.innerHTML = dayEl.classList.contains('collapsed') ? '&#9654;' : '&#9660;';
+    };
+    card.appendChild(btn);
+  });
+})();
+
+// ── 9. BACK TO TOP ────────────────────────────────────
+(function initBackToTop() {
+  const btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 600);
+  }, { passive: true });
+})();
+
+// ── 10. LIGHT/DARK MODE TOGGLE ────────────────────────
+(function initThemeToggle() {
+  const btn = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('japan-theme');
+  if (saved === 'light') {
+    document.body.classList.add('light-mode');
+    btn.innerHTML = '&#9790;'; // moon
+  }
+  btn.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    btn.innerHTML = isLight ? '&#9790;' : '&#9788;';
+    localStorage.setItem('japan-theme', isLight ? 'light' : 'dark');
+    // Update theme-color meta
+    document.querySelector('meta[name="theme-color"]').content = isLight ? '#F5F0E8' : '#1A150F';
+  });
+})();
+
+// ── 11. DAY CARD SCROLL REVEAL ANIMATIONS ─────────────
+(function initScrollReveal() {
+  const dayEls = document.querySelectorAll('.day');
+  // Replace the initial CSS animation with scroll-triggered reveal
+  dayEls.forEach(el => {
+    el.classList.add('scroll-reveal');
+  });
+
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  dayEls.forEach(el => revealObs.observe(el));
+
+  // Fallback: reveal any in-viewport cards after 1s (handles cases where observer doesn't fire)
+  setTimeout(() => {
+    dayEls.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 200) el.classList.add('revealed');
+    });
+  }, 800);
+})();
+
+// ── 12. TODAY AUTO-HIGHLIGHT ──────────────────────────
+(function initTodayHighlight() {
+  const tripStart = new Date('2026-04-28T00:00:00+09:00'); // Day 1 start in JST
+  const now = new Date();
+  const diffMs = now - tripStart;
+  const dayOfTrip = Math.floor(diffMs / 86400000) + 1;
+
+  if (dayOfTrip >= 1 && dayOfTrip <= 14) {
+    // During the trip
+    days.forEach(day => {
+      const el = document.getElementById(`day-${day.num}`);
+      if (!el) return;
+      if (day.num < dayOfTrip) {
+        el.classList.add('is-past');
+      } else if (day.num === dayOfTrip) {
+        el.classList.add('is-today');
+        // Add "TODAY" badge to the header
+        const header = el.querySelector('.day-header > div:first-child');
+        if (header) {
+          const badge = document.createElement('span');
+          badge.className = 'today-badge';
+          badge.textContent = 'TODAY';
+          header.prepend(badge);
+        }
+        // Auto-scroll to today's card after a short delay
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 1200);
+      }
+    });
+  }
+})();
+
+// ── 13. JAPANESE PHRASE CHEAT SHEET ───────────────────
+(function initPhraseSheet() {
+  const phrases = [
+    { cat: 'Greetings', jp: 'こんにちは', romaji: 'Konnichiwa', en: 'Hello / Good afternoon' },
+    { cat: 'Greetings', jp: 'おはようございます', romaji: 'Ohayou gozaimasu', en: 'Good morning' },
+    { cat: 'Greetings', jp: 'こんばんは', romaji: 'Konbanwa', en: 'Good evening' },
+    { cat: 'Greetings', jp: 'さようなら', romaji: 'Sayounara', en: 'Goodbye' },
+    { cat: 'Essentials', jp: 'すみません', romaji: 'Sumimasen', en: 'Excuse me / Sorry' },
+    { cat: 'Essentials', jp: 'ありがとうございます', romaji: 'Arigatou gozaimasu', en: 'Thank you very much' },
+    { cat: 'Essentials', jp: 'はい / いいえ', romaji: 'Hai / Iie', en: 'Yes / No' },
+    { cat: 'Essentials', jp: 'お願いします', romaji: 'Onegaishimasu', en: 'Please' },
+    { cat: 'Essentials', jp: '大丈夫です', romaji: 'Daijoubu desu', en: "I'm fine / It's okay" },
+    { cat: 'Essentials', jp: '英語を話せますか？', romaji: 'Eigo o hanasemasu ka?', en: 'Do you speak English?' },
+    { cat: 'Food & Drink', jp: 'いただきます', romaji: 'Itadakimasu', en: 'Thanks for the food (before)' },
+    { cat: 'Food & Drink', jp: 'ごちそうさまでした', romaji: 'Gochisousama deshita', en: 'That was delicious (after)' },
+    { cat: 'Food & Drink', jp: 'おいしい！', romaji: 'Oishii!', en: 'Delicious!' },
+    { cat: 'Food & Drink', jp: '乾杯！', romaji: 'Kanpai!', en: 'Cheers!' },
+    { cat: 'Food & Drink', jp: 'お勧めは何ですか？', romaji: 'Osusume wa nan desu ka?', en: 'What do you recommend?' },
+    { cat: 'Food & Drink', jp: 'お会計お願いします', romaji: 'O-kaikei onegaishimasu', en: 'Check, please' },
+    { cat: 'Shopping', jp: 'いくらですか？', romaji: 'Ikura desu ka?', en: 'How much is it?' },
+    { cat: 'Shopping', jp: 'これをください', romaji: 'Kore o kudasai', en: "I'll take this, please" },
+    { cat: 'Shopping', jp: '袋はいりません', romaji: 'Fukuro wa irimasen', en: "No bag needed" },
+    { cat: 'Navigation', jp: 'トイレはどこですか？', romaji: 'Toire wa doko desu ka?', en: 'Where is the bathroom?' },
+    { cat: 'Navigation', jp: '駅はどこですか？', romaji: 'Eki wa doko desu ka?', en: 'Where is the station?' },
+    { cat: 'Navigation', jp: 'ここはどこですか？', romaji: 'Koko wa doko desu ka?', en: 'Where am I?' },
+    { cat: 'Navigation', jp: '右 / 左 / まっすぐ', romaji: 'Migi / Hidari / Massugu', en: 'Right / Left / Straight' },
+    { cat: 'Emergencies', jp: '助けて！', romaji: 'Tasukete!', en: 'Help!' },
+    { cat: 'Emergencies', jp: '警察を呼んでください', romaji: 'Keisatsu o yonde kudasai', en: 'Please call the police' },
+    { cat: 'Fun', jp: 'すごい！', romaji: 'Sugoi!', en: 'Amazing!' },
+    { cat: 'Fun', jp: 'かわいい！', romaji: 'Kawaii!', en: 'Cute!' },
+    { cat: 'Fun', jp: 'やばい！', romaji: 'Yabai!', en: 'Crazy! / Awesome! / Oh no!' },
+  ];
+
+  const grid = document.getElementById('phraseSheetGrid');
+  phrases.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'phrase-card';
+    card.innerHTML = `
+      <div class="phrase-card-cat">${p.cat}</div>
+      <div class="phrase-card-jp">${p.jp}</div>
+      <div class="phrase-card-romaji">${p.romaji}</div>
+      <div class="phrase-card-en">${p.en}</div>
+    `;
+    grid.appendChild(card);
+  });
+})();
+
+// ── 14. QR CODE GENERATOR (inline, no library) ───────
+(function initQR() {
+  // Minimal QR code generator for short URLs
+  const url = 'https://okudenconstruct.github.io/japan-itinerary/';
+  const canvas = document.getElementById('qrCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Use a simple approach: generate via an image from a free API
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function() {
+    canvas.width = 160;
+    canvas.height = 160;
+    ctx.fillStyle = '#FFFBF3';
+    ctx.fillRect(0, 0, 160, 160);
+    ctx.drawImage(img, 0, 0, 160, 160);
+  };
+  img.onerror = function() {
+    // Fallback: just show the URL text
+    canvas.width = 160;
+    canvas.height = 160;
+    ctx.fillStyle = '#FFFBF3';
+    ctx.fillRect(0, 0, 160, 160);
+    ctx.fillStyle = '#2A2118';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('QR unavailable', 80, 80);
+  };
+  img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}&color=2A2118&bgcolor=FFFBF3`;
+})();
+
+// ── 15. SERVICE WORKER REGISTRATION ──────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 
 
 </script>
