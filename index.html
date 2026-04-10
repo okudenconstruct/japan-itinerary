@@ -1881,11 +1881,6 @@
     z-index: 5;
     white-space: nowrap;
   }
-  .edo-map-svg {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
   /* Map city labels */
   .map-city-label {
     font-family: 'Noto Serif JP', serif;
@@ -2758,7 +2753,7 @@ function scrollToCity(region) {
 
   // The relief map image bounds (Japan_relief_location_map.jpg)
   // Equirectangular projection: N=45.7 S=30.2 W=128.5 E=148.9
-  const lonMin = 128.5, lonMax = 148.9, latMin = 30.2, latMax = 45.7;
+  const lonMin = 128.24, lonMax = 149.27, latMin = 30.02, latMax = 45.86;
 
   // Project lon/lat to percentage coords (0-100) matching the image
   function proj(lon, lat) {
