@@ -1533,6 +1533,548 @@
     .music-prompt { font-size: 11px; padding: 6px 10px; }
   }
 
+  /* ── WEATHER CHIP (per day card) ───────────────── */
+  .weather-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    font-size: 11px;
+    color: var(--text-bright);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .weather-chip .wx-icon { font-size: 14px; line-height: 1; }
+  .weather-chip .wx-temp { opacity: 0.9; }
+  .weather-chip.forecast-stale { opacity: 0.5; }
+
+  /* ── FILTER CHIPS ───────────────────────────────── */
+  .filter-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 12px 0 18px;
+    padding: 10px 4px;
+  }
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(201, 168, 76, 0.05);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    color: var(--text-dim);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .filter-chip:hover {
+    background: rgba(201, 168, 76, 0.1);
+    color: var(--text-bright);
+  }
+  .filter-chip.active {
+    background: rgba(197, 58, 42, 0.18);
+    border-color: rgba(197, 58, 42, 0.45);
+    color: #e8c9b8;
+  }
+  .filter-chip .chip-count {
+    opacity: 0.55;
+    font-weight: 600;
+    margin-left: 2px;
+  }
+  .stop.filter-hidden { display: none; }
+  .stop-desc.filter-hidden { display: none !important; }
+  .day.filter-empty { opacity: 0.35; }
+  .day.filter-empty .stops::after {
+    content: 'No stops match the current filter';
+    display: block;
+    font-size: 12px;
+    opacity: 0.7;
+    font-style: italic;
+    padding: 6px 0;
+  }
+
+  /* ── VISITED CHECKMARKS ─────────────────────────── */
+  .stop-check {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    vertical-align: middle;
+    margin-right: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .stop-check:hover { border-color: rgba(201, 168, 76, 0.65); }
+  .stop-check.visited {
+    background: rgba(120, 160, 90, 0.45);
+    border-color: rgba(160, 200, 120, 0.75);
+  }
+  .stop-check.visited::after {
+    content: '\2713';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+    color: #fff;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .stop.is-visited { opacity: 0.55; }
+  .stop.is-visited .stop-name-text { text-decoration: line-through; text-decoration-thickness: 1px; }
+
+  /* ── EXPENSE BUTTON / MODAL ─────────────────────── */
+  .stop-expense-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(100, 140, 90, 0.15);
+    border: 1px solid rgba(100, 140, 90, 0.3);
+    color: #9cc385;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    vertical-align: middle;
+  }
+  .stop-expense-btn:hover {
+    background: rgba(100, 140, 90, 0.25);
+    color: #b5d59b;
+  }
+  .stop-expense-btn.has-spend {
+    background: rgba(197, 58, 42, 0.18);
+    border-color: rgba(197, 58, 42, 0.4);
+    color: #d88070;
+  }
+
+  /* ── GENERIC MODAL SCAFFOLDING ───────────────────── */
+  .app-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .app-modal-overlay.active { display: flex; }
+  .app-modal {
+    background: var(--bg-card, #2A2118);
+    border: 2px solid rgba(201, 168, 76, 0.3);
+    border-radius: 8px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 85vh;
+    overflow: auto;
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 12px 60px rgba(0,0,0,0.6);
+  }
+  .app-modal h3 {
+    margin: 0 0 12px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 20px;
+    color: var(--edo-gold, #C9A84C);
+  }
+  .app-modal p { font-size: 13px; line-height: 1.55; color: var(--text-bright); margin: 8px 0; }
+  .app-modal .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .app-modal .modal-close:hover { color: var(--text-bright); }
+  .app-modal input, .app-modal textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    border-radius: 4px;
+    color: var(--text-bright);
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin: 6px 0;
+  }
+  .app-modal button.primary {
+    background: var(--edo-red, #A13528);
+    color: #F0E6D3;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+  .app-modal button.secondary {
+    background: rgba(201, 168, 76, 0.1);
+    color: var(--text-bright);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 8px;
+    margin-top: 10px;
+  }
+
+  /* ── BILINGUAL ADDRESS CARD ──────────────────────── */
+  .addr-card { font-family: 'Noto Serif JP', serif; }
+  .addr-card .addr-jp-name {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--edo-gold);
+    margin-bottom: 2px;
+  }
+  .addr-card .addr-en-name {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+  .addr-card .addr-row {
+    background: rgba(0,0,0,0.25);
+    padding: 12px 14px;
+    border-radius: 4px;
+    border-left: 3px solid var(--edo-red);
+    margin: 10px 0;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .addr-card .addr-row-label {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .addr-card .addr-row-jp { font-size: 17px; color: var(--text-bright); }
+  .addr-card .addr-row-en { font-size: 12px; color: var(--text-dim); font-family: 'Quicksand', sans-serif; margin-top: 3px; }
+  .addr-card .taxi-phrase {
+    background: rgba(197, 58, 42, 0.1);
+    padding: 12px 14px;
+    border-radius: 4px;
+    border-left: 3px solid var(--edo-gold);
+    margin: 14px 0;
+  }
+  .addr-card .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: rgba(201, 168, 76, 0.12);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: 3px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--edo-gold);
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .addr-card .copy-btn:hover { background: rgba(201, 168, 76, 0.22); }
+  .addr-card .copy-btn.copied { background: rgba(120, 160, 90, 0.25); color: #b5d59b; border-color: rgba(160, 200, 120, 0.5); }
+
+  .day-lodging-clickable { cursor: pointer; transition: background 0.2s; }
+  .day-lodging-clickable:hover { background: rgba(201, 168, 76, 0.08); }
+  .day-lodging-clickable::after {
+    content: ' \25B8 tap for address';
+    font-size: 10px;
+    opacity: 0.5;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── TIMELINE VIEW (per-day toggle) ──────────────── */
+  .day-view-toggle {
+    display: inline-flex;
+    gap: 2px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 4px;
+    padding: 2px;
+    margin-left: auto;
+  }
+  .day-view-toggle button {
+    background: none;
+    border: none;
+    padding: 4px 10px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+  .day-view-toggle button.active {
+    background: rgba(197, 58, 42, 0.3);
+    color: var(--text-bright);
+  }
+  .day-timeline {
+    display: none;
+    margin-top: 14px;
+  }
+  .day.view-timeline .stops,
+  .day.view-timeline .stop-desc { display: none; }
+  .day.view-timeline .day-timeline { display: block; }
+  .tl-entry {
+    display: grid;
+    grid-template-columns: 56px 14px 1fr;
+    gap: 10px;
+    padding: 8px 0;
+    align-items: start;
+    border-bottom: 1px dashed rgba(201, 168, 76, 0.12);
+  }
+  .tl-time {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--edo-gold);
+    letter-spacing: 0.5px;
+    padding-top: 2px;
+  }
+  .tl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--edo-gold);
+    margin-top: 6px;
+    opacity: 0.6;
+  }
+  .tl-entry.hl .tl-dot { background: var(--edo-red); opacity: 1; }
+  .tl-entry.travel .tl-dot { background: transparent; border: 1px dashed var(--text-dim); }
+  .tl-entry.travel { opacity: 0.6; font-style: italic; }
+  .tl-body { font-size: 13px; line-height: 1.4; }
+  .tl-body .tl-name { font-weight: 600; color: var(--text-bright); }
+  .tl-body .tl-dur { font-size: 11px; color: var(--text-dim); margin-left: 6px; }
+
+  /* ── TODAY FOCUS MODE ────────────────────────────── */
+  .today-focus .day:not(.is-today) { display: none; }
+  .today-focus .timeline::before { display: none; }
+  .today-focus-badge {
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+    margin: 10px 0;
+    padding: 10px 14px;
+    background: rgba(197, 58, 42, 0.92);
+    color: #F0E6D3;
+    border-radius: 6px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .today-focus-badge button {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: inherit;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* ── PHOTO WALL ──────────────────────────────────── */
+  .photo-wall-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .photo-wall-grid {
+    column-count: 4;
+    column-gap: 8px;
+  }
+  .photo-wall-grid .pw-cell {
+    break-inside: avoid;
+    margin-bottom: 8px;
+    position: relative;
+    cursor: zoom-in;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .photo-wall-grid .pw-cell img {
+    width: 100%;
+    display: block;
+    transition: transform 0.2s, opacity 0.3s;
+    opacity: 0;
+  }
+  .photo-wall-grid .pw-cell img.loaded { opacity: 1; }
+  .photo-wall-grid .pw-cell:hover img { transform: scale(1.03); }
+  .photo-wall-grid .pw-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 16px 10px 8px;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .photo-wall-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* ── TRIP RECAP ──────────────────────────────────── */
+  .recap-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .recap-stat {
+    background: rgba(201, 168, 76, 0.05);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    padding: 14px 12px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .recap-stat-num {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--edo-gold);
+    line-height: 1;
+  }
+  .recap-stat-label {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    font-weight: 700;
+  }
+  .recap-section { margin-top: 22px; }
+  .recap-section h4 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px;
+    color: var(--edo-gold);
+    margin: 0 0 8px;
+    letter-spacing: 0.5px;
+  }
+  .recap-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+    font-size: 12px;
+  }
+  .recap-bar-fill {
+    height: 10px;
+    background: linear-gradient(90deg, var(--edo-red), var(--edo-gold));
+    border-radius: 2px;
+  }
+  .recap-bar-label { width: 110px; color: var(--text-bright); flex-shrink: 0; }
+  .recap-bar-value { width: 80px; text-align: right; color: var(--text-dim); font-family: 'Quicksand', sans-serif; font-size: 11px; flex-shrink: 0; }
+  .recap-bar-track { flex: 1; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+
+  /* ── SYNC / SETTINGS PANEL ──────────────────────── */
+  .sync-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .sync-status-pill.off { background: rgba(120,120,120,0.15); color: var(--text-dim); border: 1px solid rgba(120,120,120,0.3); }
+  .sync-status-pill.on { background: rgba(100, 160, 90, 0.2); color: #9cc385; border: 1px solid rgba(100, 160, 90, 0.4); }
+  .sync-status-pill.err { background: rgba(197, 58, 42, 0.2); color: #e8886f; border: 1px solid rgba(197, 58, 42, 0.4); }
+  .sync-status-pill.sync { background: rgba(200, 170, 80, 0.2); color: var(--edo-gold); border: 1px solid rgba(200, 170, 80, 0.4); }
+
+  /* ── HEADER BUTTONS BAR (Today / Calendar / Sync) ── */
+  .hdr-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .hdr-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    color: var(--text-bright);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .hdr-btn:hover {
+    background: rgba(201, 168, 76, 0.18);
+    border-color: rgba(201, 168, 76, 0.4);
+  }
+  .hdr-btn.active {
+    background: rgba(197, 58, 42, 0.3);
+    border-color: rgba(197, 58, 42, 0.5);
+    color: #f5ddd3;
+  }
+
+  @media (max-width: 600px) {
+    .photo-wall-grid { column-count: 2; }
+    .filter-chip { padding: 5px 10px; font-size: 11px; }
+    .day-view-toggle button { padding: 3px 8px; font-size: 9px; }
+    .recap-stat-num { font-size: 22px; }
+    .hdr-btn { font-size: 10px; padding: 5px 10px; }
+    .today-focus-badge { font-size: 11px; padding: 8px 10px; }
+  }
+
+  @media (max-width: 400px) {
+    .photo-wall-grid { column-count: 1; }
+  }
+
   @media (max-width: 600px) {
     .container { padding: 20px 12px 60px; }
     .header { padding: 40px 10px 30px; }
@@ -2134,6 +2676,13 @@
 
     <!-- ANIMATED TRIP STATS -->
     <div class="trip-stats" id="tripStats"></div>
+
+    <!-- HEADER ACTION BUTTONS -->
+    <div class="hdr-actions">
+      <button class="hdr-btn" id="todayFocusBtn" onclick="toggleTodayFocus()">&#x1F4CD; Today</button>
+      <button class="hdr-btn" onclick="exportCalendar()">&#x1F4C5; .ics</button>
+      <button class="hdr-btn" onclick="openSyncModal()">&#x1F504; Sync <span class="sync-status-pill off" id="syncStatus">OFF</span></button>
+    </div>
   </div>
 
   <!-- ROUTE BAR (interactive city chips) -->
@@ -2195,6 +2744,15 @@
 
   <!-- STICKY DAY NAV -->
   <div class="day-nav" id="dayNav"></div>
+
+  <!-- FILTER CHIPS -->
+  <div class="filter-chips" id="filterChips"></div>
+
+  <!-- TODAY FOCUS BADGE (appears when Today mode active) -->
+  <div class="today-focus-badge" id="todayFocusBadge" style="display:none;">
+    <span id="todayFocusText">Today Focus Mode</span>
+    <button onclick="toggleTodayFocus()">Exit</button>
+  </div>
 
   <div class="timeline" id="timeline"></div>
 
@@ -2261,11 +2819,38 @@
     <div class="trip-summary" id="tripSummaryContent"></div>
   </div>
 
+  <!-- PHOTO WALL -->
+  <div class="section-toggle" onclick="toggleSection('photoWall')">
+    <span>Photo Wall</span>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="section-body" id="photoWall">
+    <div class="photo-wall-controls" id="photoWallControls"></div>
+    <div class="photo-wall-grid" id="photoWallGrid"></div>
+  </div>
+
+  <!-- TRIP RECAP -->
+  <div class="section-toggle" onclick="toggleSection('tripRecap')">
+    <span>Trip Recap</span>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="section-body" id="tripRecap">
+    <div id="tripRecapContent"></div>
+  </div>
+
   <!-- QR CODE SHARE -->
   <div class="qr-section" id="qrSection">
     <canvas id="qrCanvas"></canvas>
     <div class="qr-label">Scan to open on your phone</div>
     <div class="qr-url">okudenconstruct.github.io/japan-itinerary</div>
+  </div>
+
+  <!-- GENERIC APP MODAL (expense, address card, sync, etc.) -->
+  <div class="app-modal-overlay" id="appModal" onclick="closeAppModal(event)">
+    <div class="app-modal" id="appModalContent" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeAppModal()">&times;</button>
+      <div id="appModalBody"></div>
+    </div>
   </div>
 
   <!-- VIDEO MODAL -->
@@ -2512,6 +3097,97 @@ const videoGuides = [
   { region: "Naoshima", id: "xrTl321Imuc", title: "Insider Guide to Naoshima \u2014 Art Island Paradise", channel: "Japan Unravelled" },
 ];
 
+// ── CITY COORDINATES (for weather forecast) ───────────
+const cityCoords = {
+  Tokyo:    { lat: 35.6762, lon: 139.6503 },
+  Osaka:    { lat: 34.6937, lon: 135.5023 },
+  Kyoto:    { lat: 35.0116, lon: 135.7681 },
+  Hakone:   { lat: 35.2325, lon: 139.1068 },
+  Kamakura: { lat: 35.3195, lon: 139.5466 },
+  Naoshima: { lat: 34.4594, lon: 133.9955 },
+  Okayama:  { lat: 34.6618, lon: 133.9344 }
+};
+
+// WMO weather interpretation codes → icon + label
+const weatherCodes = {
+  0:  { icon: '\u2600',      label: 'Clear' },
+  1:  { icon: '\u{1F324}',   label: 'Mostly clear' },
+  2:  { icon: '\u26C5',      label: 'Partly cloudy' },
+  3:  { icon: '\u2601',      label: 'Overcast' },
+  45: { icon: '\u{1F32B}',   label: 'Fog' },
+  48: { icon: '\u{1F32B}',   label: 'Icy fog' },
+  51: { icon: '\u{1F326}',   label: 'Light drizzle' },
+  53: { icon: '\u{1F326}',   label: 'Drizzle' },
+  55: { icon: '\u{1F327}',   label: 'Heavy drizzle' },
+  61: { icon: '\u{1F327}',   label: 'Light rain' },
+  63: { icon: '\u{1F327}',   label: 'Rain' },
+  65: { icon: '\u{1F327}',   label: 'Heavy rain' },
+  71: { icon: '\u{1F328}',   label: 'Snow' },
+  73: { icon: '\u{1F328}',   label: 'Snow' },
+  75: { icon: '\u2744',      label: 'Heavy snow' },
+  80: { icon: '\u{1F326}',   label: 'Showers' },
+  81: { icon: '\u{1F327}',   label: 'Showers' },
+  82: { icon: '\u26C8',      label: 'Heavy showers' },
+  95: { icon: '\u26C8',      label: 'Thunderstorm' },
+  96: { icon: '\u26C8',      label: 'Thunder+hail' },
+  99: { icon: '\u26C8',      label: 'Thunder+hail' }
+};
+
+// ── LODGING: BILINGUAL ADDRESS CARDS ──────────────────
+const lodgingInfo = {
+  'JR-EAST HOTEL METS SHIBUYA': {
+    jp: '\u30DB\u30C6\u30EB\u30E1\u30C3\u30C4\u6E0B\u8C37',
+    addressJp: '\u6771\u4EAC\u90FD\u6E0B\u8C37\u533A\u6E0B\u8C37\u0033\u4E01\u76EE\uFF12\uFF19\uFF0D\uFF11\uFF17',
+    addressEn: '3-29-17 Shibuya, Shibuya-ku, Tokyo 150-0002',
+    phone: '+81 3-5489-0011',
+    postal: '150-0002'
+  },
+  'Hotel Keihan Namba Grande': {
+    jp: '\u30DB\u30C6\u30EB\u4EAC\u962A \u306A\u3093\u3070\u30B0\u30E9\u30F3\u30C7',
+    addressJp: '\u5927\u962A\u5E9C\u5927\u962A\u5E02\u4E2D\u592E\u533A\u96E3\u6CE2\uFF11\u4E01\u76EE\uFF14\u2212\uFF11\uFF16',
+    addressEn: '1-4-16 Namba, Chuo-ku, Osaka 542-0076',
+    phone: '+81 6-6213-2400',
+    postal: '542-0076'
+  },
+  'Tsuki no Yado Sara': {
+    jp: '\u6708\u306E\u5BBF \u7D17\u3089',
+    addressJp: '\u795E\u5948\u5DDD\u770C\u8DB3\u67C4\u4E0B\u90E1\u7BB1\u6839\u753A\u6E6F\u672C\uFF15\uFF18\uFF18',
+    addressEn: '588 Yumoto, Hakone-machi, Ashigarashimo-gun, Kanagawa 250-0311',
+    phone: '+81 460-85-5489',
+    postal: '250-0311'
+  },
+  'fav TOKYO RYOGOKU': {
+    jp: 'fav \u6771\u4EAC\u4E21\u56FD',
+    addressJp: '\u6771\u4EAC\u90FD\u58A8\u7530\u533A\u4E21\u56FD\uFF12\u4E01\u76EE\uFF11\uFF19\u2212\uFF18',
+    addressEn: '2-19-8 Ryogoku, Sumida-ku, Tokyo 130-0026',
+    phone: '',
+    postal: '130-0026'
+  }
+};
+
+// ── STOP TAG INFERENCE (for filter chips) ─────────────
+function inferStopTag(stop) {
+  if (stop.tag) return stop.tag;
+  const i = stop.icon;
+  // Shrines & temples
+  if (i === '\u26E9' || i === '\u{1F64F}') return 'shrine';
+  // Food & drink
+  if (['\u{1F35C}','\u{1F363}','\u{1F371}','\u{1F35A}','\u{1F359}','\u{1F361}','\u{1F358}','\u{1F35B}','\u{1F35D}','\u{1F35E}','\u{1F356}','\u{1F357}','\u{1F354}','\u{1F355}','\u{1F96F}','\u{1F368}','\u{1F366}','\u{1F367}','\u{1F382}','\u{1F370}','\u{1F96C}','\u{1F347}'].includes(i)) return 'food';
+  // Nightlife
+  if (['\u{1F378}','\u{1F37A}','\u{1F376}','\u{1F37B}','\u{1F377}','\u{1F942}','\u{1F943}','\u{1F3B6}'].includes(i)) return 'nightlife';
+  // Shopping
+  if (i === '\u{1F6CD}' || i === '\u{1F4B4}') return 'shopping';
+  // Art & museums
+  if (['\u{1F3A8}','\u{1F5BC}','\u{1F3AD}','\u{1F52C}','\u{1F3DB}','\u{1F3EF}','\u{1F3F0}'].includes(i)) return 'art';
+  // Games/arcade/robot
+  if (i === '\u{1F3AE}' || i === '\u{1F916}') return 'games';
+  // Nature / scenic
+  if (['\u{1F38B}','\u{1F33A}','\u{1F343}','\u{1F304}','\u{1F5FE}','\u{1F3DD}','\u{1F3DE}','\u26F0','\u{1F30B}','\u{1F303}'].includes(i)) return 'nature';
+  // Transit / travel
+  if (['\u2708','\u{1F686}','\u{1F687}','\u{1F6A2}','\u{1F682}','\u{1F68C}','\u{1F6A1}','\u{1F69E}'].includes(i)) return 'travel';
+  return 'other';
+}
+
 const packingData = {
   "Clothing": ["3 merino tees", "1 long sleeve", "1 light jacket", "2 shorts / pants", "4 underwear", "3 pairs socks", "1 swimwear"],
   "Footwear": ["Walking shoes", "Sandals / slides"],
@@ -2548,20 +3224,29 @@ days.forEach((day, idx) => {
   day.stops.forEach((stop, sIdx) => {
     const hlClass = stop.hl ? ' highlight-stop' : '';
     const id = `d${day.num}s${sIdx}`;
+    const tag = inferStopTag(stop);
+    const visitKey = `visited_${id}`;
+    const visited = localStorage.getItem(visitKey) === '1';
+    const spendKey = `spend_${id}`;
+    const spendVal = parseFloat(localStorage.getItem(spendKey) || '0') || 0;
     const mapsUrl = stop.maps ? `https://www.google.com/maps/search/${encodeURIComponent(stop.maps)}` : '';
     const mapsLink = mapsUrl ? `<br><a class="maps-link" href="${mapsUrl}" target="_blank" rel="noopener">\u{1F4CD} Open in Google Maps</a>` : '';
     const videoBtn = stop.video ? `<button class="stop-video-btn" onclick="event.stopPropagation(); openVideoModal('${stop.video}')">Watch</button>` : '';
+    const expenseBtn = `<button class="stop-expense-btn${spendVal > 0 ? ' has-spend' : ''}" data-stop-id="${id}" data-stop-name="${stop.name.replace(/"/g,'&quot;')}" onclick="event.stopPropagation(); openExpenseModal('${id}', this)">\u00A5${spendVal > 0 ? spendVal.toLocaleString() : '+'}</button>`;
     stopsHTML += `
-      <span class="stop${hlClass}" data-target="${id}" onclick="toggleDesc('${id}')">
-        <span class="stop-icon">${stop.icon}</span> ${stop.name}
+      <span class="stop${hlClass}${visited ? ' is-visited' : ''}" data-target="${id}" data-stop-id="${id}" data-tag="${tag}" data-hl="${stop.hl ? '1' : '0'}" onclick="toggleDesc('${id}')">
+        <span class="stop-check${visited ? ' visited' : ''}" onclick="event.stopPropagation(); toggleVisited('${id}', this)" title="Mark visited"></span><span class="stop-icon">${stop.icon}</span> <span class="stop-name-text">${stop.name}</span>
       </span>
-      <div class="stop-desc${stop.hl ? ' is-highlight' : ''}" id="${id}">${stop.desc}${videoBtn}${mapsLink}</div>
+      <div class="stop-desc${stop.hl ? ' is-highlight' : ''}" id="${id}" data-tag="${tag}">${stop.desc}${videoBtn}${expenseBtn}${mapsLink}</div>
     `;
   });
 
   let lodgingHTML = '';
   if (day.lodging) {
-    lodgingHTML = `<div class="day-lodging"><span class="lodging-icon">${day.lodging.icon}</span> ${day.lodging.name}</div>`;
+    const lodgingKey = Object.keys(lodgingInfo).find(k => day.lodging.name.includes(k));
+    const clickableClass = lodgingKey ? ' day-lodging-clickable' : '';
+    const clickHandler = lodgingKey ? ` onclick="openAddressCard('${lodgingKey}')"` : '';
+    lodgingHTML = `<div class="day-lodging${clickableClass}"${clickHandler}><span class="lodging-icon">${day.lodging.icon}</span> ${day.lodging.name}</div>`;
   }
 
   let notesHTML = '';
@@ -2590,11 +3275,17 @@ days.forEach((day, idx) => {
           <div class="day-title">${day.title}</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <span class="weather-chip" data-weather-for="day-${day.num}" data-weather-region="${day.region}" data-weather-date="${day.isoDate || ''}" style="display:none;"></span>
           ${meetupHTML}
           <div class="day-region">${day.region}</div>
+          <div class="day-view-toggle">
+            <button class="active" onclick="setDayView(${day.num}, 'list')" data-view="list">List</button>
+            <button onclick="setDayView(${day.num}, 'timeline')" data-view="timeline">Timeline</button>
+          </div>
         </div>
       </div>
       <div class="stops">${stopsHTML}</div>
+      <div class="day-timeline" id="dayTimeline-${day.num}"></div>
       ${lodgingHTML}
       ${notesHTML}
     </div>
@@ -3870,6 +4561,765 @@ function scrollToCity(region) {
   }
   update();
   setInterval(update, 30000);
+})();
+
+// ── 21. GENERIC APP MODAL ───────────────────────────
+function openAppModal(html) {
+  const overlay = document.getElementById('appModal');
+  const body = document.getElementById('appModalBody');
+  body.innerHTML = html;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeAppModal(ev) {
+  if (ev && ev.target !== ev.currentTarget) return;
+  const overlay = document.getElementById('appModal');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeAppModal();
+});
+
+// ── 22. VISITED CHECKMARKS ──────────────────────────
+function toggleVisited(stopId, el) {
+  const key = `visited_${stopId}`;
+  const isNowVisited = localStorage.getItem(key) !== '1';
+  localStorage.setItem(key, isNowVisited ? '1' : '0');
+  el.classList.toggle('visited', isNowVisited);
+  const pill = el.closest('.stop');
+  if (pill) pill.classList.toggle('is-visited', isNowVisited);
+  if (window._pushGistState) window._pushGistState();
+}
+
+// ── 23. EXPENSE QUICK-ENTRY ─────────────────────────
+function openExpenseModal(stopId, btnEl) {
+  const name = btnEl.dataset.stopName || 'this stop';
+  const curVal = parseFloat(localStorage.getItem(`spend_${stopId}`) || '0') || 0;
+  openAppModal(`
+    <h3>Log Expense</h3>
+    <p style="font-size:12px;opacity:0.7;margin-bottom:14px;">${name}</p>
+    <label style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:700;">Amount (\u00A5 JPY)</label>
+    <input type="number" id="expenseInput" inputmode="numeric" min="0" step="100" value="${curVal || ''}" placeholder="0" autofocus>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+      ${[500,1000,2000,5000,10000].map(v => `<button class="secondary" onclick="document.getElementById('expenseInput').value=(parseFloat(document.getElementById('expenseInput').value||'0')+${v})">+\u00A5${v.toLocaleString()}</button>`).join('')}
+    </div>
+    <button class="primary" onclick="saveExpense('${stopId}')">Save</button>
+    <button class="secondary" onclick="saveExpense('${stopId}', true)">Clear</button>
+  `);
+}
+function saveExpense(stopId, clear) {
+  const key = `spend_${stopId}`;
+  if (clear) {
+    localStorage.removeItem(key);
+  } else {
+    const val = parseFloat(document.getElementById('expenseInput').value || '0') || 0;
+    if (val > 0) localStorage.setItem(key, String(val));
+    else localStorage.removeItem(key);
+  }
+  // Update button label
+  const btn = document.querySelector(`.stop-expense-btn[data-stop-id="${stopId}"]`);
+  if (btn) {
+    const v = parseFloat(localStorage.getItem(key) || '0') || 0;
+    btn.textContent = '\u00A5' + (v > 0 ? v.toLocaleString() : '+');
+    btn.classList.toggle('has-spend', v > 0);
+  }
+  closeAppModal();
+  if (window._pushGistState) window._pushGistState();
+}
+
+// ── 24. BILINGUAL ADDRESS CARD ──────────────────────
+function openAddressCard(lodgingKey) {
+  const info = lodgingInfo[lodgingKey];
+  if (!info) return;
+  const taxiPhraseJp = '\u3053\u3053\u307E\u3067\u304A\u9858\u3044\u3057\u307E\u3059\u3002';
+  const taxiPhraseRomaji = 'Koko made onegai shimasu.';
+  const taxiPhraseEn = 'Please take me here.';
+  const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(info.addressEn)}`;
+  openAppModal(`
+    <div class="addr-card">
+      <div class="addr-jp-name">${info.jp}</div>
+      <div class="addr-en-name">${lodgingKey}</div>
+      <div class="addr-row">
+        <div class="addr-row-label">\u4F4F\u6240 \u00B7 Address</div>
+        <div class="addr-row-jp">\u3012${info.postal}<br>${info.addressJp}</div>
+        <div class="addr-row-en">${info.addressEn}</div>
+        <button class="copy-btn" onclick="copyToClipboard(this, '${info.addressJp.replace(/'/g,"\\'")}')">\u{1F4CB} Copy Japanese address</button>
+      </div>
+      ${info.phone ? `<div class="addr-row">
+        <div class="addr-row-label">\u96FB\u8A71 \u00B7 Phone</div>
+        <div class="addr-row-jp"><a href="tel:${info.phone.replace(/[^+\d]/g,'')}" style="color:var(--edo-gold);text-decoration:none;">${info.phone}</a></div>
+      </div>` : ''}
+      <div class="taxi-phrase">
+        <div class="addr-row-label">\u30BF\u30AF\u30B7\u30FC\u3067 \u00B7 Taxi phrase</div>
+        <div class="addr-row-jp">${taxiPhraseJp}</div>
+        <div class="addr-row-en">${taxiPhraseRomaji} \u2014 "${taxiPhraseEn}"</div>
+      </div>
+      <a href="${mapsUrl}" target="_blank" rel="noopener" class="maps-link" style="display:inline-block;margin-top:8px;">\u{1F4CD} Open in Google Maps</a>
+    </div>
+  `);
+}
+function copyToClipboard(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '\u2713 Copied!';
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 2000);
+  }).catch(() => {
+    alert('Copy failed. Text: ' + text);
+  });
+}
+
+// ── 25. FILTER CHIPS ────────────────────────────────
+(function initFilterChips() {
+  const categories = [
+    { key: 'all',       label: 'All',        match: () => true },
+    { key: 'hl',        label: 'Must-Hit',   match: (s, el) => el.dataset.hl === '1' },
+    { key: 'food',      label: 'Food',       match: (s, el) => el.dataset.tag === 'food' },
+    { key: 'nightlife', label: 'Nightlife',  match: (s, el) => el.dataset.tag === 'nightlife' },
+    { key: 'shrine',    label: 'Shrines',    match: (s, el) => el.dataset.tag === 'shrine' },
+    { key: 'art',       label: 'Art',        match: (s, el) => el.dataset.tag === 'art' },
+    { key: 'shopping',  label: 'Shopping',   match: (s, el) => el.dataset.tag === 'shopping' },
+    { key: 'nature',    label: 'Nature',     match: (s, el) => el.dataset.tag === 'nature' },
+  ];
+  const container = document.getElementById('filterChips');
+  const stops = document.querySelectorAll('.stop[data-tag]');
+
+  // Count stops per category
+  function countFor(cat) {
+    let n = 0;
+    stops.forEach(s => { if (cat.match(null, s)) n++; });
+    return n;
+  }
+
+  let activeKey = 'all';
+  function render() {
+    container.innerHTML = categories.map(cat => {
+      const n = countFor(cat);
+      if (n === 0 && cat.key !== 'all') return '';
+      return `<button class="filter-chip ${activeKey===cat.key?'active':''}" data-filter="${cat.key}">${cat.label}<span class="chip-count">${n}</span></button>`;
+    }).join('');
+    container.querySelectorAll('.filter-chip').forEach(btn => {
+      btn.onclick = () => { activeKey = btn.dataset.filter; applyFilter(); render(); };
+    });
+  }
+  function applyFilter() {
+    const cat = categories.find(c => c.key === activeKey);
+    document.querySelectorAll('.stop[data-tag]').forEach(el => {
+      const show = cat.match(null, el);
+      el.classList.toggle('filter-hidden', !show);
+      const desc = document.getElementById(el.dataset.target);
+      if (desc) desc.classList.toggle('filter-hidden', !show);
+    });
+    // Mark empty days
+    document.querySelectorAll('.day').forEach(d => {
+      const anyVisible = d.querySelectorAll('.stop[data-tag]:not(.filter-hidden)').length > 0;
+      d.classList.toggle('filter-empty', !anyVisible && activeKey !== 'all');
+    });
+  }
+  render();
+})();
+
+// ── 26. PER-DAY TIMELINE VIEW ───────────────────────
+function setDayView(dayNum, view) {
+  const dayEl = document.getElementById(`day-${dayNum}`);
+  if (!dayEl) return;
+  dayEl.classList.toggle('view-timeline', view === 'timeline');
+  dayEl.querySelectorAll('.day-view-toggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === view);
+  });
+  if (view === 'timeline') renderDayTimeline(dayNum);
+}
+function renderDayTimeline(dayNum) {
+  const day = days.find(d => d.num === dayNum);
+  const container = document.getElementById(`dayTimeline-${dayNum}`);
+  if (!day || !container) return;
+
+  // Default durations based on highlight state; travel time between stops fixed
+  const defaultDur = (s) => s.duration || (s.hl ? 75 : 30);
+  const travelMin = 20;
+  // Start time varies by day theme
+  let startHour = 9;
+  if (day.theme === 'travel') startHour = 10;
+  if (day.theme === 'nightlife' || day.title.toLowerCase().includes('night')) startHour = 13;
+
+  let t = startHour * 60; // minutes since midnight
+  const rows = [];
+  day.stops.forEach((stop, idx) => {
+    const h = Math.floor(t / 60) % 24;
+    const m = t % 60;
+    const timeStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    const dur = defaultDur(stop);
+    rows.push(`
+      <div class="tl-entry${stop.hl ? ' hl' : ''}">
+        <div class="tl-time">${timeStr}</div>
+        <div class="tl-dot"></div>
+        <div class="tl-body"><span class="tl-name">${stop.icon} ${stop.name}</span><span class="tl-dur">~${dur} min</span></div>
+      </div>
+    `);
+    t += dur;
+    // Travel time (not after last stop)
+    if (idx < day.stops.length - 1) {
+      rows.push(`
+        <div class="tl-entry travel">
+          <div class="tl-time">+${travelMin}m</div>
+          <div class="tl-dot"></div>
+          <div class="tl-body">transit / walk</div>
+        </div>
+      `);
+      t += travelMin;
+    }
+  });
+  const endH = Math.floor(t / 60) % 24;
+  const endM = t % 60;
+  container.innerHTML = `
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;font-family:'Quicksand',sans-serif;letter-spacing:0.5px;">
+      EST. START ${String(startHour).padStart(2,'0')}:00 \u00B7 EST. FINISH ${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')} \u00B7 DURATIONS ARE ROUGH GUESSES
+    </div>
+    ${rows.join('')}
+  `;
+}
+
+// ── 27. WEATHER FORECAST (Open-Meteo) ───────────────
+(function initWeather() {
+  const CACHE_KEY = 'weather_cache_v2';
+  const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
+
+  // Compute ISO date for each day (trip day 1 = 2026-04-28 JST)
+  function addDays(isoDate, n) {
+    const d = new Date(isoDate + 'T00:00:00Z');
+    d.setUTCDate(d.getUTCDate() + n);
+    return d.toISOString().slice(0, 10);
+  }
+  days.forEach(d => { d.isoDate = addDays('2026-04-28', d.num - 1); });
+
+  async function fetchForecasts() {
+    // Check cache
+    try {
+      const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+      if (cached && (Date.now() - cached.ts) < CACHE_TTL_MS && cached.data && Object.keys(cached.data).length > 0) {
+        return cached.data;
+      }
+    } catch {}
+
+    // Open-Meteo forecast window is ~16 days. Clamp end_date to today+15.
+    const today = new Date();
+    const todayIso = today.toISOString().slice(0, 10);
+    const maxIso = addDays(todayIso, 15);
+
+    const tripDates = days.map(d => d.isoDate).sort();
+    const tripStart = tripDates[0];
+    const tripEnd = tripDates[tripDates.length - 1];
+
+    // Only fetch if part of the trip falls within the forecast window
+    if (tripStart > maxIso) return null; // whole trip too far out
+
+    const startDate = tripStart < todayIso ? todayIso : tripStart;
+    const endDate = tripEnd > maxIso ? maxIso : tripEnd;
+
+    const regions = [...new Set(days.map(d => d.region))].filter(r => cityCoords[r]);
+    const results = {};
+    try {
+      await Promise.all(regions.map(async region => {
+        const { lat, lon } = cityCoords[region];
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&start_date=${startDate}&end_date=${endDate}`;
+        try {
+          const res = await fetch(url);
+          if (!res.ok) { console.warn('Weather ' + region + ' HTTP ' + res.status); return; }
+          const json = await res.json();
+          const byDate = {};
+          (json.daily?.time || []).forEach((date, i) => {
+            byDate[date] = {
+              code: json.daily.weather_code[i],
+              tmax: Math.round(json.daily.temperature_2m_max[i]),
+              tmin: Math.round(json.daily.temperature_2m_min[i]),
+              pop: json.daily.precipitation_probability_max?.[i] ?? null
+            };
+          });
+          results[region] = byDate;
+        } catch (e) {
+          console.warn('Weather fetch error ' + region, e);
+        }
+      }));
+      if (Object.keys(results).length > 0) {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: results }));
+      }
+      return results;
+    } catch (e) {
+      console.warn('Weather fetch failed', e);
+      return null;
+    }
+  }
+
+  fetchForecasts().then(data => {
+    if (!data) return;
+    document.querySelectorAll('.weather-chip[data-weather-for]').forEach(chip => {
+      const region = chip.dataset.weatherRegion;
+      const dayId = chip.dataset.weatherFor;
+      const dayNum = parseInt(dayId.replace('day-', ''));
+      const day = days.find(d => d.num === dayNum);
+      if (!day) return;
+      const forecast = data[region]?.[day.isoDate];
+      if (!forecast) return;
+      const wx = weatherCodes[forecast.code] || { icon: '\u2600', label: 'Clear' };
+      chip.style.display = 'inline-flex';
+      chip.title = `${wx.label}${forecast.pop != null ? ` \u00B7 ${forecast.pop}% rain chance` : ''}`;
+      chip.innerHTML = `<span class="wx-icon">${wx.icon}</span><span class="wx-temp">${forecast.tmax}\u00B0/${forecast.tmin}\u00B0</span>`;
+    });
+  });
+})();
+
+// ── 28. TODAY FOCUS MODE ────────────────────────────
+function toggleTodayFocus() {
+  const active = document.body.classList.toggle('today-focus');
+  document.getElementById('todayFocusBtn').classList.toggle('active', active);
+  const badge = document.getElementById('todayFocusBadge');
+  if (active) {
+    // Find today's day
+    const todayEl = document.querySelector('.day.is-today');
+    if (!todayEl) {
+      // Trip hasn't started or is over
+      document.body.classList.remove('today-focus');
+      document.getElementById('todayFocusBtn').classList.remove('active');
+      // Show a soft notice
+      openAppModal(`
+        <h3>Today Focus</h3>
+        <p>This mode hides everything except the current day. It's meant for use during the trip (Apr 28 \u2013 May 11, 2026).</p>
+        <p style="opacity:0.7;font-size:12px;">Come back when wheels are on the ground.</p>
+      `);
+      return;
+    }
+    const dayNum = parseInt(todayEl.id.replace('day-', ''));
+    const day = days.find(d => d.num === dayNum);
+    document.getElementById('todayFocusText').textContent = `\u{1F4CD} Day ${dayNum} \u00B7 ${day?.title || ''}`;
+    badge.style.display = 'flex';
+    todayEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ── 29. CALENDAR .ICS EXPORT ────────────────────────
+function exportCalendar() {
+  const pad = n => String(n).padStart(2, '0');
+  function fmtDate(d) {
+    return d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) +
+           'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
+  }
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Japan Itinerary//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:Japan 2026',
+    'X-WR-TIMEZONE:Asia/Tokyo'
+  ];
+  days.forEach(day => {
+    if (!day.isoDate) return;
+    let tHour = 9;
+    if (day.theme === 'travel') tHour = 10;
+    let t = tHour * 60;
+    day.stops.forEach((stop, idx) => {
+      const dur = stop.duration || (stop.hl ? 75 : 30);
+      const h = Math.floor(t / 60);
+      const m = t % 60;
+      // Build JST then convert to UTC (JST = UTC+9)
+      const [y, mo, d] = day.isoDate.split('-').map(Number);
+      const startUtc = new Date(Date.UTC(y, mo - 1, d, h - 9, m));
+      const endUtc = new Date(startUtc.getTime() + dur * 60000);
+      const mapsUrl = stop.maps ? `https://www.google.com/maps/search/${encodeURIComponent(stop.maps)}` : '';
+      const videoUrl = stop.video ? `https://youtu.be/${stop.video}` : '';
+      const desc = [stop.desc, mapsUrl ? 'Maps: ' + mapsUrl : '', videoUrl ? 'Video: ' + videoUrl : '']
+        .filter(Boolean).join('\\n\\n')
+        .replace(/[\r\n]+/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+      const uid = `d${day.num}s${idx}@japan-itinerary`;
+      lines.push('BEGIN:VEVENT');
+      lines.push('UID:' + uid);
+      lines.push('DTSTAMP:' + fmtDate(new Date()));
+      lines.push('DTSTART:' + fmtDate(startUtc));
+      lines.push('DTEND:' + fmtDate(endUtc));
+      lines.push('SUMMARY:' + `Day ${day.num}: ${stop.name}`.replace(/,/g, '\\,').replace(/;/g, '\\;'));
+      if (mapsUrl) lines.push('LOCATION:' + (stop.maps || '').replace(/,/g, '\\,'));
+      lines.push('DESCRIPTION:' + desc);
+      lines.push('END:VEVENT');
+      t += dur + 20;
+    });
+  });
+  lines.push('END:VCALENDAR');
+  const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'japan-2026.ics';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// ── 30. PHOTO WALL ──────────────────────────────────
+(function initPhotoWall() {
+  const grid = document.getElementById('photoWallGrid');
+  const controls = document.getElementById('photoWallControls');
+  if (!grid || !controls) return;
+
+  function driveUrl(id, w = 600) { return `https://lh3.googleusercontent.com/d/${id}=w${w}`; }
+  function collectPhotos() {
+    const all = [];
+    days.forEach(day => {
+      try {
+        const diary = JSON.parse(localStorage.getItem(`diary_day_${day.num}`) || '{}');
+        (diary.photos || []).forEach(p => {
+          all.push({ id: p.id, caption: p.caption || '', dayNum: day.num, dayTitle: day.title, region: day.region });
+        });
+      } catch {}
+    });
+    return all;
+  }
+
+  let activeRegion = 'all';
+  function render() {
+    const photos = collectPhotos();
+    const regions = [...new Set(photos.map(p => p.region))];
+    controls.innerHTML = `
+      <button class="filter-chip ${activeRegion==='all'?'active':''}" data-region="all">All<span class="chip-count">${photos.length}</span></button>
+      ${regions.map(r => `<button class="filter-chip ${activeRegion===r?'active':''}" data-region="${r}">${r}<span class="chip-count">${photos.filter(p=>p.region===r).length}</span></button>`).join('')}
+    `;
+    controls.querySelectorAll('.filter-chip').forEach(btn => {
+      btn.onclick = () => { activeRegion = btn.dataset.region; render(); };
+    });
+
+    const filtered = activeRegion === 'all' ? photos : photos.filter(p => p.region === activeRegion);
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="photo-wall-empty">No photos yet. Add photos in the Trip Diary on any day card.</div>`;
+      return;
+    }
+    grid.innerHTML = filtered.map(p => `
+      <div class="pw-cell" onclick="openPhotoFull('${p.id}', '${(p.caption||'').replace(/'/g,'')}', 'Day ${p.dayNum}: ${p.dayTitle.replace(/'/g,'')}')">
+        <img src="${driveUrl(p.id)}" alt="${p.caption}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.parentElement.style.display='none'">
+        <div class="pw-label">Day ${p.dayNum} \u00B7 ${p.region}${p.caption ? ' \u00B7 ' + p.caption : ''}</div>
+      </div>
+    `).join('');
+  }
+  // Render on open
+  document.querySelector('.section-toggle[onclick*="photoWall"]').addEventListener('click', () => {
+    setTimeout(render, 50);
+  });
+  render();
+})();
+function openPhotoFull(id, caption, day) {
+  openAppModal(`
+    <img src="https://lh3.googleusercontent.com/d/${id}=w1600" style="width:100%;border-radius:4px;" alt="${caption}">
+    <p style="margin-top:10px;font-size:13px;"><strong>${day}</strong></p>
+    ${caption ? `<p style="font-size:13px;opacity:0.8;">${caption}</p>` : ''}
+  `);
+}
+
+// ── 31. TRIP RECAP ──────────────────────────────────
+(function initTripRecap() {
+  const content = document.getElementById('tripRecapContent');
+  if (!content) return;
+
+  function computeRecap() {
+    const totalStops = days.reduce((s, d) => s + d.stops.length, 0);
+    const allStopIds = [];
+    days.forEach(d => d.stops.forEach((s, i) => allStopIds.push(`d${d.num}s${i}`)));
+
+    const visited = allStopIds.filter(id => localStorage.getItem(`visited_${id}`) === '1');
+    const visitedByDay = {};
+    days.forEach(d => {
+      visitedByDay[d.num] = d.stops.filter((s, i) => localStorage.getItem(`visited_d${d.num}s${i}`) === '1').length;
+    });
+
+    const spendByCat = { food: 0, nightlife: 0, shrine: 0, shopping: 0, art: 0, nature: 0, games: 0, travel: 0, other: 0 };
+    let totalSpend = 0;
+    days.forEach(d => d.stops.forEach((s, i) => {
+      const key = `spend_d${d.num}s${i}`;
+      const v = parseFloat(localStorage.getItem(key) || '0') || 0;
+      if (v > 0) {
+        const tag = inferStopTag(s);
+        spendByCat[tag] = (spendByCat[tag] || 0) + v;
+        totalSpend += v;
+      }
+    }));
+
+    // Diary data
+    let diaryEntries = 0, totalPhotos = 0, ratingsSum = 0, ratingsCount = 0;
+    const ratedDays = [];
+    days.forEach(d => {
+      try {
+        const dr = JSON.parse(localStorage.getItem(`diary_day_${d.num}`) || '{}');
+        if (dr.text || dr.rating || (dr.photos && dr.photos.length)) diaryEntries++;
+        totalPhotos += (dr.photos || []).length;
+        if (dr.rating) {
+          ratingsSum += dr.rating;
+          ratingsCount++;
+          ratedDays.push({ num: d.num, title: d.title, rating: dr.rating });
+        }
+      } catch {}
+    });
+    ratedDays.sort((a, b) => b.rating - a.rating);
+
+    return { totalStops, visited: visited.length, visitedByDay, spendByCat, totalSpend, diaryEntries, totalPhotos, avgRating: ratingsCount ? (ratingsSum/ratingsCount) : 0, ratedDays };
+  }
+
+  function render() {
+    const r = computeRecap();
+    const maxCatSpend = Math.max(1, ...Object.values(r.spendByCat));
+    const catColors = {
+      food: 'Food', nightlife: 'Nightlife', shrine: 'Shrines', shopping: 'Shopping',
+      art: 'Art', nature: 'Nature', games: 'Games', travel: 'Travel', other: 'Other'
+    };
+
+    content.innerHTML = `
+      <div class="recap-stats">
+        <div class="recap-stat"><div class="recap-stat-num">${r.visited}</div><div class="recap-stat-label">Stops Visited</div></div>
+        <div class="recap-stat"><div class="recap-stat-num">${r.totalStops}</div><div class="recap-stat-label">Planned Total</div></div>
+        <div class="recap-stat"><div class="recap-stat-num">\u00A5${r.totalSpend.toLocaleString()}</div><div class="recap-stat-label">Logged Spend</div></div>
+        <div class="recap-stat"><div class="recap-stat-num">${r.diaryEntries}/14</div><div class="recap-stat-label">Diary Days</div></div>
+        <div class="recap-stat"><div class="recap-stat-num">${r.totalPhotos}</div><div class="recap-stat-label">Photos</div></div>
+        <div class="recap-stat"><div class="recap-stat-num">${r.avgRating.toFixed(1)}</div><div class="recap-stat-label">Avg Rating</div></div>
+      </div>
+
+      ${r.totalSpend > 0 ? `
+      <div class="recap-section">
+        <h4>Spending by Category</h4>
+        ${Object.entries(r.spendByCat).filter(([,v]) => v > 0).sort((a,b)=>b[1]-a[1]).map(([k,v]) => `
+          <div class="recap-bar">
+            <div class="recap-bar-label">${catColors[k]||k}</div>
+            <div class="recap-bar-track"><div class="recap-bar-fill" style="width:${(v/maxCatSpend*100).toFixed(1)}%;"></div></div>
+            <div class="recap-bar-value">\u00A5${v.toLocaleString()}</div>
+          </div>
+        `).join('')}
+      </div>` : ''}
+
+      ${r.ratedDays.length > 0 ? `
+      <div class="recap-section">
+        <h4>Top Rated Days</h4>
+        ${r.ratedDays.slice(0, 5).map(d => `
+          <div class="recap-bar">
+            <div class="recap-bar-label">Day ${d.num}: ${d.title}</div>
+            <div style="color:var(--edo-gold);flex:1;">${'\u2605'.repeat(d.rating)}${'\u2606'.repeat(5-d.rating)}</div>
+          </div>
+        `).join('')}
+      </div>` : ''}
+
+      ${r.visited > 0 ? `
+      <div class="recap-section">
+        <h4>Day-by-Day Progress</h4>
+        ${days.map(d => `
+          <div class="recap-bar">
+            <div class="recap-bar-label">Day ${d.num}</div>
+            <div class="recap-bar-track"><div class="recap-bar-fill" style="width:${(r.visitedByDay[d.num]/d.stops.length*100).toFixed(1)}%;"></div></div>
+            <div class="recap-bar-value">${r.visitedByDay[d.num]}/${d.stops.length}</div>
+          </div>
+        `).join('')}
+      </div>` : ''}
+
+      ${r.visited === 0 && r.totalSpend === 0 && r.diaryEntries === 0 ? `
+        <p style="text-align:center;padding:30px 20px;color:var(--text-dim);font-style:italic;">Start checking off stops, logging expenses, and writing diary entries during the trip \u2014 this recap will fill in automatically.</p>
+      ` : ''}
+    `;
+  }
+  // Render on open
+  document.querySelector('.section-toggle[onclick*="tripRecap"]').addEventListener('click', () => setTimeout(render, 50));
+  render();
+})();
+
+// ── 32. GITHUB GIST SYNC ────────────────────────────
+(function initGistSync() {
+  const PAT_KEY = 'gist_sync_pat';
+  const ID_KEY  = 'gist_sync_id';
+  const GIST_FILENAME = 'japan-itinerary-state.json';
+
+  function pat() { return localStorage.getItem(PAT_KEY) || ''; }
+  function gid() { return localStorage.getItem(ID_KEY) || ''; }
+
+  function updateStatusPill(state) {
+    const pill = document.getElementById('syncStatus');
+    if (!pill) return;
+    pill.className = 'sync-status-pill ' + state;
+    pill.textContent = { off: 'OFF', on: 'ON', sync: 'SYNC', err: 'ERR' }[state] || 'OFF';
+  }
+
+  // Collect all syncable state
+  function collectState() {
+    const state = { version: 1, ts: Date.now(), keys: {} };
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!k) continue;
+      if (k === PAT_KEY || k === ID_KEY || k === 'weather_cache_v1') continue;
+      if (k.startsWith('visited_') || k.startsWith('spend_') || k.startsWith('pack_') || k.startsWith('food_') || k.startsWith('diary_day_') || k === 'japan-theme') {
+        state.keys[k] = localStorage.getItem(k);
+      }
+    }
+    return state;
+  }
+  function applyState(state) {
+    if (!state || !state.keys) return;
+    Object.entries(state.keys).forEach(([k, v]) => {
+      localStorage.setItem(k, v);
+    });
+  }
+
+  async function createGist() {
+    if (!pat()) throw new Error('No token');
+    updateStatusPill('sync');
+    const body = { description: 'Japan 2026 itinerary state', public: false, files: { [GIST_FILENAME]: { content: JSON.stringify(collectState(), null, 2) } } };
+    const res = await fetch('https://api.github.com/gists', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + pat(), 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error('Create failed ' + res.status);
+    const data = await res.json();
+    localStorage.setItem(ID_KEY, data.id);
+    updateStatusPill('on');
+    return data.id;
+  }
+  async function pushState() {
+    if (!pat() || !gid()) return;
+    updateStatusPill('sync');
+    try {
+      const body = { files: { [GIST_FILENAME]: { content: JSON.stringify(collectState(), null, 2) } } };
+      const res = await fetch('https://api.github.com/gists/' + gid(), {
+        method: 'PATCH',
+        headers: { 'Authorization': 'Bearer ' + pat(), 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('Push failed ' + res.status);
+      updateStatusPill('on');
+    } catch (e) {
+      console.warn('Gist push failed', e);
+      updateStatusPill('err');
+    }
+  }
+  async function pullState() {
+    if (!pat() || !gid()) return null;
+    updateStatusPill('sync');
+    try {
+      const res = await fetch('https://api.github.com/gists/' + gid(), {
+        headers: { 'Authorization': 'Bearer ' + pat(), 'Accept': 'application/vnd.github+json' }
+      });
+      if (!res.ok) throw new Error('Pull failed ' + res.status);
+      const data = await res.json();
+      const content = data.files?.[GIST_FILENAME]?.content;
+      if (!content) throw new Error('Missing file in gist');
+      const state = JSON.parse(content);
+      updateStatusPill('on');
+      return state;
+    } catch (e) {
+      console.warn('Gist pull failed', e);
+      updateStatusPill('err');
+      return null;
+    }
+  }
+
+  // Debounced push — triggered by save operations across the app
+  let pushTimer;
+  window._pushGistState = () => {
+    if (!pat() || !gid()) return;
+    clearTimeout(pushTimer);
+    pushTimer = setTimeout(pushState, 2000);
+  };
+
+  // Pull on load if configured
+  if (pat() && gid()) {
+    updateStatusPill('on');
+    pullState().then(state => {
+      if (!state) return;
+      // Only auto-apply if remote is newer than local
+      const localTs = parseInt(localStorage.getItem('local_state_ts') || '0');
+      if (state.ts > localTs) {
+        applyState(state);
+        localStorage.setItem('local_state_ts', String(state.ts));
+        // Notify user (non-blocking)
+        console.info('Loaded newer state from Gist');
+      }
+    });
+  } else {
+    updateStatusPill('off');
+  }
+
+  window.openSyncModal = function () {
+    const hasToken = !!pat();
+    const hasGist = !!gid();
+    openAppModal(`
+      <h3>Cross-Device Sync</h3>
+      <p>Sync your diary, expenses, packing list, and visited check-offs between your phone and laptop via a private GitHub Gist.</p>
+      <p style="font-size:12px;opacity:0.7;background:rgba(197,58,42,0.1);border-left:3px solid var(--edo-red);padding:10px 12px;border-radius:3px;">
+        <strong>Setup:</strong> Create a GitHub Personal Access Token at
+        <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--edo-gold);">github.com/settings/tokens</a>
+        with only the <strong>Gist</strong> scope, then paste it below. It's stored only on this device.
+      </p>
+      <label style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:700;">GitHub Personal Access Token</label>
+      <input type="password" id="gistPatInput" value="${pat()}" placeholder="github_pat_...">
+      <label style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:700;">Gist ID (leave blank to create new)</label>
+      <input type="text" id="gistIdInput" value="${gid()}" placeholder="auto-generated on first save">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;">
+        <button class="primary" onclick="saveSyncConfig()">${hasToken && hasGist ? 'Save \u0026 Push Now' : (hasToken ? 'Save \u0026 Create Gist' : 'Save Settings')}</button>
+        ${hasGist ? `<button class="secondary" onclick="syncPullNow()">Pull from Gist</button>` : ''}
+        ${hasToken ? `<button class="secondary" onclick="clearSyncConfig()" style="color:#e8886f;border-color:rgba(197,58,42,0.4);">Disable Sync</button>` : ''}
+      </div>
+      <p style="font-size:11px;opacity:0.55;margin-top:14px;">Token is stored in localStorage on this device only. To use on another device, open Sync there and paste the same Token + Gist ID.</p>
+    `);
+  };
+
+  window.saveSyncConfig = async function () {
+    const newPat = document.getElementById('gistPatInput').value.trim();
+    const newId  = document.getElementById('gistIdInput').value.trim();
+    if (newPat) localStorage.setItem(PAT_KEY, newPat); else localStorage.removeItem(PAT_KEY);
+    if (newId) localStorage.setItem(ID_KEY, newId);
+
+    if (!newPat) {
+      updateStatusPill('off');
+      closeAppModal();
+      return;
+    }
+    try {
+      if (!gid()) {
+        await createGist();
+        alert('Gist created. ID saved — use this ID on your other devices.');
+      } else {
+        await pushState();
+      }
+      closeAppModal();
+    } catch (e) {
+      alert('Sync error: ' + e.message);
+      updateStatusPill('err');
+    }
+  };
+  window.syncPullNow = async function () {
+    const state = await pullState();
+    if (state) {
+      applyState(state);
+      localStorage.setItem('local_state_ts', String(state.ts));
+      alert('Pulled latest state from Gist. Reloading to apply...');
+      location.reload();
+    }
+  };
+  window.clearSyncConfig = function () {
+    if (!confirm('Disable sync on this device? (Your Gist data is untouched.)')) return;
+    localStorage.removeItem(PAT_KEY);
+    localStorage.removeItem(ID_KEY);
+    updateStatusPill('off');
+    closeAppModal();
+  };
+})();
+
+// ── 33. LITE-YOUTUBE ACCESSIBILITY POLISH ────────────
+(function polishVideoCards() {
+  document.querySelectorAll('.video-card').forEach(card => {
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    const title = card.querySelector('.video-card-title')?.textContent || 'Video guide';
+    card.setAttribute('aria-label', 'Play video: ' + title);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+    });
+  });
+  document.querySelectorAll('.stop-video-btn').forEach(btn => {
+    btn.setAttribute('aria-label', 'Play related YouTube video');
+  });
 })();
 
 // ── 20. SERVICE WORKER REGISTRATION ─────────────────
