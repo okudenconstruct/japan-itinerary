@@ -5273,9 +5273,14 @@ function openPhotoFull(id, caption, day) {
         (Fine-grained tokens can also work but need <em>Gists: Read and write</em> explicitly enabled \u2014 easy to miss. If you see a 403, switch to a classic token.)
       </p>
       <label style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:700;">GitHub Personal Access Token</label>
-      <input type="password" id="gistPatInput" value="${pat()}" placeholder="ghp_... or github_pat_...">
+      <input type="text" id="gistPatInput" value="${pat()}" placeholder="ghp_... or github_pat_..."
+        autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off"
+        data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other"
+        style="-webkit-text-security:disc;text-security:disc;font-family:ui-monospace,Consolas,monospace;letter-spacing:1px;">
       <label style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:700;">Gist ID (leave blank to create new)</label>
-      <input type="text" id="gistIdInput" value="${gid()}" placeholder="auto-generated on first save">
+      <input type="text" id="gistIdInput" value="${gid()}" placeholder="auto-generated on first save"
+        autocomplete="off" spellcheck="false"
+        data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other">
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;">
         <button class="primary" onclick="saveSyncConfig()">${hasToken && hasGist ? 'Save \u0026 Push Now' : (hasToken ? 'Save \u0026 Create Gist' : 'Save Settings')}</button>
         ${hasGist ? `<button class="secondary" onclick="syncPullNow()">Pull from Gist</button>` : ''}
