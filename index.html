@@ -5161,6 +5161,14 @@ function openPhotoFull(id, caption, day) {
     });
   }
 
+  function explainGhError(status, bodyText) {
+    if (status === 401) return 'Token rejected (401). It may be expired or mistyped. Generate a new one.';
+    if (status === 403) return 'Permission denied (403). Your token lacks the "gist" scope. The most reliable fix: create a CLASSIC token at github.com/settings/tokens/new with the "gist" scope checked. (If you used a fine-grained token, it needs Gists: Read and write explicitly enabled \u2014 that option is off by default.)';
+    if (status === 404) return 'Gist not found (404). The Gist ID may be wrong, or the token does not own this gist.';
+    if (status === 422) return 'GitHub rejected the request (422). ' + (bodyText || '');
+    return 'HTTP ' + status + ' ' + (bodyText || '');
+  }
+
   async function createGist() {
     if (!pat()) throw new Error('No token');
     updateStatusPill('sync');
@@ -5170,7 +5178,10 @@ function openPhotoFull(id, caption, day) {
       headers: { 'Authorization': 'Bearer ' + pat(), 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
-    if (!res.ok) throw new Error('Create failed ' + res.status);
+    if (!res.ok) {
+      const txt = await res.text().catch(() => '');
+      throw new Error(explainGhError(res.status, txt));
+    }
     const data = await res.json();
     localStorage.setItem(ID_KEY, data.id);
     updateStatusPill('on');
@@ -5186,7 +5197,10 @@ function openPhotoFull(id, caption, day) {
         headers: { 'Authorization': 'Bearer ' + pat(), 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
-      if (!res.ok) throw new Error('Push failed ' + res.status);
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '');
+        throw new Error(explainGhError(res.status, txt));
+      }
       updateStatusPill('on');
     } catch (e) {
       console.warn('Gist push failed', e);
@@ -5200,7 +5214,10 @@ function openPhotoFull(id, caption, day) {
       const res = await fetch('https://api.github.com/gists/' + gid(), {
         headers: { 'Authorization': 'Bearer ' + pat(), 'Accept': 'application/vnd.github+json' }
       });
-      if (!res.ok) throw new Error('Pull failed ' + res.status);
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '');
+        throw new Error(explainGhError(res.status, txt));
+      }
       const data = await res.json();
       const content = data.files?.[GIST_FILENAME]?.content;
       if (!content) throw new Error('Missing file in gist');
@@ -5243,16 +5260,20 @@ function openPhotoFull(id, caption, day) {
   window.openSyncModal = function () {
     const hasToken = !!pat();
     const hasGist = !!gid();
+    const classicUrl = 'https://github.com/settings/tokens/new?scopes=gist&description=Japan%20Itinerary%20Sync';
     openAppModal(`
       <h3>Cross-Device Sync</h3>
       <p>Sync your diary, expenses, packing list, and visited check-offs between your phone and laptop via a private GitHub Gist.</p>
-      <p style="font-size:12px;opacity:0.7;background:rgba(197,58,42,0.1);border-left:3px solid var(--edo-red);padding:10px 12px;border-radius:3px;">
-        <strong>Setup:</strong> Create a GitHub Personal Access Token at
-        <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--edo-gold);">github.com/settings/tokens</a>
-        with only the <strong>Gist</strong> scope, then paste it below. It's stored only on this device.
+      <p style="font-size:12px;opacity:0.85;background:rgba(197,58,42,0.1);border-left:3px solid var(--edo-red);padding:10px 12px;border-radius:3px;">
+        <strong>Setup \u2014 use a CLASSIC token:</strong>
+        <a href="${classicUrl}" target="_blank" rel="noopener" style="color:var(--edo-gold);font-weight:700;">Click here to create one pre-filled</a>
+        with just the <code>gist</code> scope. Set expiration to your preference and click "Generate token," then copy and paste below.
+      </p>
+      <p style="font-size:11px;opacity:0.6;margin:0 0 10px;">
+        (Fine-grained tokens can also work but need <em>Gists: Read and write</em> explicitly enabled \u2014 easy to miss. If you see a 403, switch to a classic token.)
       </p>
       <label style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:700;">GitHub Personal Access Token</label>
-      <input type="password" id="gistPatInput" value="${pat()}" placeholder="github_pat_...">
+      <input type="password" id="gistPatInput" value="${pat()}" placeholder="ghp_... or github_pat_...">
       <label style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:700;">Gist ID (leave blank to create new)</label>
       <input type="text" id="gistIdInput" value="${gid()}" placeholder="auto-generated on first save">
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;">
