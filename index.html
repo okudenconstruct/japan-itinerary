@@ -1005,6 +1005,247 @@
     opacity: 0.4;
   }
 
+  /* Packing — detailed list UI */
+  .pack-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    background: rgba(201, 168, 76, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.12);
+    border-radius: 6px;
+  }
+
+  .pack-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .pack-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pack-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .pack-filter-btn {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .pack-filter-btn:hover {
+    color: var(--text-bright);
+    border-color: var(--edo-gold);
+  }
+
+  .pack-filter-btn.active {
+    background: var(--edo-gold);
+    color: #1a1208;
+    border-color: var(--edo-gold);
+    font-weight: 600;
+  }
+
+  .pack-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pack-progress-track {
+    flex: 1;
+    height: 3px;
+    background: rgba(201, 168, 76, 0.12);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .pack-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--edo-gold), #E8D5A3);
+    transition: width 0.3s ease;
+  }
+
+  .pack-progress-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+    min-width: 110px;
+    text-align: right;
+  }
+
+  .pack-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .pack-action-btn {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .pack-action-btn:hover {
+    color: var(--edo-red);
+    border-color: var(--edo-red);
+  }
+
+  .packing-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .packing-cat h4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .pack-cat-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    font-weight: 400;
+  }
+
+  .pack-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 8px 0;
+    border-top: 1px solid rgba(201, 168, 76, 0.07);
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  .pack-item:first-of-type {
+    border-top: none;
+  }
+
+  .pack-item input[type="checkbox"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    accent-color: var(--edo-red);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+
+  .pack-item-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pack-item-name {
+    font-size: 13px;
+    color: var(--text-bright);
+    line-height: 1.35;
+  }
+
+  .pack-item-note {
+    font-size: 11.5px;
+    color: var(--text-dim);
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  .pack-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 5px;
+  }
+
+  .pack-item.checked .pack-item-name {
+    text-decoration: line-through;
+    color: var(--text-dim);
+    opacity: 0.55;
+  }
+
+  .pack-item.checked .pack-item-note {
+    opacity: 0.5;
+  }
+
+  .pack-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .pack-badge-45L {
+    background: rgba(44, 74, 110, 0.25);
+    color: #6FA5D6;
+    border: 1px solid rgba(44, 74, 110, 0.5);
+  }
+
+  .pack-badge-sling {
+    background: rgba(107, 142, 90, 0.2);
+    color: #9BC185;
+    border: 1px solid rgba(107, 142, 90, 0.45);
+  }
+
+  .pack-badge-both {
+    background: rgba(201, 168, 76, 0.15);
+    color: var(--edo-gold);
+    border: 1px solid rgba(201, 168, 76, 0.4);
+  }
+
+  .pack-badge-warn {
+    background: rgba(197, 58, 42, 0.18);
+    color: #E88479;
+    border: 1px solid rgba(197, 58, 42, 0.45);
+  }
+
+  .pack-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  @media (max-width: 640px) {
+    .pack-progress-label {
+      min-width: auto;
+    }
+    .packing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   /* FOOTER */
   .footer {
     text-align: center;
@@ -2776,10 +3017,32 @@
 
   <!-- PACKING LIST -->
   <div class="section-toggle" onclick="toggleSection('packing')">
-    <span>One-Bag Packing Checklist</span>
+    <span>Packing Checklist &mdash; Apr 28 to May 11</span>
     <span class="arrow">&#9660;</span>
   </div>
   <div class="section-body" id="packing">
+    <div class="pack-toolbar">
+      <div class="pack-legend">
+        <span class="pack-legend-item"><span class="pack-badge pack-badge-45L">45L</span> Peak Design 45L backpack</span>
+        <span class="pack-legend-item"><span class="pack-badge pack-badge-sling">Sling</span> Everyday Sling 6L</span>
+        <span class="pack-legend-item"><span class="pack-badge pack-badge-both">Both</span> Either / toiletry bag</span>
+        <span class="pack-legend-item"><span class="pack-badge pack-badge-warn">Warn</span> Action needed before departure</span>
+      </div>
+      <div class="pack-filters">
+        <button class="pack-filter-btn active" data-pack-filter="all" onclick="setPackFilter('all', this)">All</button>
+        <button class="pack-filter-btn" data-pack-filter="45L" onclick="setPackFilter('45L', this)">45L backpack</button>
+        <button class="pack-filter-btn" data-pack-filter="sling" onclick="setPackFilter('sling', this)">Sling 6L</button>
+        <button class="pack-filter-btn" data-pack-filter="flag" onclick="setPackFilter('flag', this)">Action needed</button>
+      </div>
+      <div class="pack-progress">
+        <div class="pack-progress-track"><div class="pack-progress-fill" id="packProgressFill"></div></div>
+        <div class="pack-progress-label" id="packProgressLabel">0 / 0 packed</div>
+        <div class="pack-actions">
+          <button class="pack-action-btn" onclick="resetAllPacking()">Reset</button>
+          <button class="pack-action-btn" onclick="checkAllPacking()">Check all</button>
+        </div>
+      </div>
+    </div>
     <div class="packing-grid" id="packingGrid"></div>
   </div>
 
@@ -3188,14 +3451,88 @@ function inferStopTag(stop) {
   return 'other';
 }
 
-const packingData = {
-  "Clothing": ["3 merino tees", "1 long sleeve", "1 light jacket", "2 shorts / pants", "4 underwear", "3 pairs socks", "1 swimwear"],
-  "Footwear": ["Walking shoes", "Sandals / slides"],
-  "Tech": ["Phone + charger", "USB-C cable", "Power bank", "Adapter (Type A)", "Earbuds"],
-  "Toiletries": ["Toothbrush + paste", "Deodorant", "Sunscreen", "Lip balm", "Small towel"],
-  "Documents": ["Passport", "Flight confirmation", "Ryokan booking", "JR Pass (if bought)", "Travel insurance"],
-  "Essentials": ["Day pack (packable)", "Water bottle", "Snacks for flight", "Pen (customs form)", "Zip bags"]
-};
+const packingData = [
+  { cat: "Clothing", items: [
+    { name: "3 merino wool t-shirts", note: "Merino is ideal — odor-resistant, fast-drying, laundry-friendly", bag: "45L" },
+    { name: "1 lightweight long sleeve", note: "For cooler evenings and temple modesty", bag: "45L" },
+    { name: "1 light packable jacket", note: "Mid-60s evenings in Hakone; also useful on trains", bag: "45L" },
+    { name: "2 shorts or pants", note: "One versatile, one casual. Quick-dry preferred", bag: "45L" },
+    { name: "4 pairs underwear", note: "Quick-dry. One extra since laundry cadence is every 3–4 days", bag: "45L" },
+    { name: "3 pairs socks", note: "Merino or quick-dry athletic. Ankle or low cut works with Air Max", bag: "45L" }
+  ]},
+  { cat: "Footwear", items: [
+    { name: "Nike Air Max (wear on travel day)", note: "One shoe strategy — wear them, don't pack them", bag: "sling" },
+    { name: "Shoe bag", note: "Optional — if you want to stuff shoes in 45L during departure", bag: "45L" }
+  ]},
+  { cat: "Tech", items: [
+    { name: "Phone + USB-C cable", note: "Use one of your 2 USB-C cables", bag: "sling" },
+    { name: "Multi-port charging brick", note: "Japan uses Type A plugs (same as US) — your brick works natively. No adapter needed unless it's 3-prong.", bag: "45L" },
+    { name: "2 USB-C cables", bag: "45L" },
+    { name: "Anker Zolo 20,000mAh power bank", note: "Built-in USB-C cable included. Keep in sling when out", bag: "sling" },
+    { name: "2 outlet adapters", note: "Likely unnecessary — Japan = Type A (US-standard). Bring 1 max as backup if your brick is 3-prong.", bag: "45L", warn: true },
+    { name: "GoPro Hero 7 Black", note: "256GB SD card = roughly 8–9 hrs of 4K footage. More than enough.", bag: "sling" },
+    { name: "2x GoPro extra batteries", note: "Charge in-camera via USB-C or via dual charger if you own one", bag: "sling" },
+    { name: "GoPro chest mount strap", bag: "45L" },
+    { name: "Samsung Galaxy Buds 4 Pro + case", note: "Case charges via USB-C", bag: "sling" },
+    { name: "Samsung Galaxy Watch + magnetic puck charger", note: "SM-R960 uses proprietary magnetic charger — don't forget the puck", bag: "45L" },
+    { name: "Rayban Meta glasses + case + USB-C cable", note: "Case charges via USB-C", bag: "sling" }
+  ]},
+  { cat: "Toiletries", items: [
+    { name: "Toothbrush", bag: "both" },
+    { name: "Travel toothpaste", note: "Or buy an excellent one at any Japanese convenience store", bag: "both" },
+    { name: "Flossers", bag: "both" },
+    { name: "1 bar soap", note: "Hotels typically provide soap — bring only if you prefer your own", bag: "both" },
+    { name: "Deodorant (full stick)", note: "Western-style antiperspirant is hard to find in Japan. Do not skip this.", bag: "both", warn: true },
+    { name: "Sunscreen (travel size)", note: "Japanese sunscreen is excellent — totally fine to buy there", bag: "both" },
+    { name: "Lip balm", bag: "both" },
+    { name: "Nail clippers", note: "Legal carry-on", bag: "both" },
+    { name: "Tweezers", note: "Legal carry-on", bag: "both" },
+    { name: "Travel scissors", note: "Legal carry-on — blade must be under 4 inches from pivot", bag: "both" },
+    { name: "Quart zip-lock bags (2–3)", note: "TSA liquids + wet-item separation mid-trip", bag: "both" }
+  ]},
+  { cat: "Medications", items: [
+    { name: "Valtrex 1g — 16 tablets", note: "Once daily × 14 days + 2 buffer", bag: "both", warn: true },
+    { name: "Colestipol 2g — 30 tablets", note: "Twice daily × 14 days + buffer. Hard to replace in Japan — don't run short.", bag: "both", warn: true },
+    { name: "Pantoprazole 40mg — 16 tablets", note: "Once daily × 14 days + buffer", bag: "both" },
+    { name: "Vyvanse 20mg — 16 capsules", note: "CONTROLLED SUBSTANCE — NCD import permit required. Confirm printed approval before April 28.", bag: "both", warn: true },
+    { name: "Imodium — 6 tablets", note: "Travel GI insurance", bag: "both" },
+    { name: "Tums — small travel pack", note: "Japanese diet is rich and varied; worth having", bag: "both" },
+    { name: "Ibuprofen — 12–16 tablets", bag: "both" },
+    { name: "Benadryl or Ibuprofen PM — 6–8 tablets", note: "Sleep aid for the 14-hr flight and first night of jet lag", bag: "both" }
+  ]},
+  { cat: "Documents & admin", items: [
+    { name: "Passport", note: "Primary ID — keep in sling at all times when traveling", bag: "sling", warn: true },
+    { name: "Photocopy of passport", note: "Store separately from original. A phone photo works.", bag: "45L" },
+    { name: "NCD import permit (printed)", note: "Required for Vyvanse. Confirm approved and printed before departure.", bag: "sling", warn: true },
+    { name: "Prescription printout for all medications", note: "Show if questioned at customs", bag: "sling" },
+    { name: "Flight confirmations (offline)", note: "Screenshot to Camera Roll for offline access at Narita", bag: "sling" },
+    { name: "Hotel booking confirmations (offline)", note: "All hotels including 月の宿 紗ら Hakone. Screenshot offline.", bag: "sling" },
+    { name: "Visit Japan Web QR code (offline)", note: "Pre-registered — screenshot to Camera Roll before boarding", bag: "sling" },
+    { name: "Pen", note: "Customs / arrival card on the plane. Keep in sling pocket.", bag: "sling" },
+    { name: "Suica or Pasmo IC card", note: "Load at Narita airport on arrival. Covers all trains, buses, vending machines.", bag: "sling" },
+    { name: "Japanese yen cash (¥30,000–50,000)", note: "Many rural and traditional spots are cash-only", bag: "sling" },
+    { name: "RoamVault / MobiMatter eSIM", note: "Verify which profile is active. Activate just before boarding or on landing.", bag: "sling", warn: true },
+    { name: "Travel insurance", note: "Not purchased. Medical evacuation from Japan can exceed $50,000. Consider buying before April 28.", bag: "sling", warn: true }
+  ]},
+  { cat: "Flight comfort", items: [
+    { name: "Travel neck pillow", note: "14-hour flight to Narita — worth packing", bag: "45L" },
+    { name: "Eye mask", note: "Pairs with Benadryl / Ibuprofen PM for the flight", bag: "sling" },
+    { name: "Earplugs", note: "Backup if buds run out of battery mid-flight", bag: "sling" },
+    { name: "Compression socks", note: "Recommended for 14-hr flight given your cardiovascular genetic risk factors. Wear on both legs of travel.", bag: "sling", warn: true }
+  ]},
+  { cat: "Misc essentials", items: [
+    { name: "Band-aids (6–8 assorted)", note: "Small first aid kit. Everything else is available in Japan.", bag: "both" },
+    { name: "Laundry bag", note: "Small mesh or stuff-sack for dirty clothes separation", bag: "45L" },
+    { name: "Portable clothesline", note: "Optional but useful for mid-trip laundry dry time in ryokan rooms. Ultralight.", bag: "45L" },
+    { name: "Compact umbrella", note: "Late April / early May Japan has rain. Fits in the sling.", bag: "sling" },
+    { name: "Packing cubes", note: "For the 45L — at minimum one clothing cube, one tech/cables cube", bag: "45L" }
+  ]}
+];
+
+function packSlug(s) {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+}
+function packKey(item) { return 'pack_' + packSlug(item.name); }
 
 // ── RENDER TIMELINE ──────────────────────────────────
 const timeline = document.getElementById('timeline');
@@ -3295,29 +3632,109 @@ days.forEach((day, idx) => {
 });
 
 // ── RENDER PACKING LIST ───────────────────────────────
-const packingGrid = document.getElementById('packingGrid');
-Object.entries(packingData).forEach(([cat, items]) => {
-  const col = document.createElement('div');
-  col.className = 'packing-cat';
-  col.innerHTML = `<h4>${cat}</h4>` + items.map((item, i) => {
-    const key = `pack_${cat}_${i}`;
-    const checked = localStorage.getItem(key) === '1';
-    return `<label class="${checked ? 'checked' : ''}">
-      <input type="checkbox" ${checked ? 'checked' : ''} onchange="togglePack(this, '${key}')"> ${item}
-    </label>`;
-  }).join('');
-  packingGrid.appendChild(col);
-});
+let packFilter = 'all';
+
+function packMatchesFilter(item, f) {
+  if (f === 'all') return true;
+  if (f === 'flag') return !!item.warn;
+  if (f === '45L') return item.bag === '45L' || item.bag === 'both';
+  if (f === 'sling') return item.bag === 'sling' || item.bag === 'both';
+  return true;
+}
+
+function packBadgeHtml(bag) {
+  if (bag === '45L') return '<span class="pack-badge pack-badge-45L">45L</span>';
+  if (bag === 'sling') return '<span class="pack-badge pack-badge-sling">Sling</span>';
+  return '<span class="pack-badge pack-badge-both">Both</span>';
+}
+
+function escapeAttr(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function renderPackingList() {
+  const packingGrid = document.getElementById('packingGrid');
+  if (!packingGrid) return;
+  packingGrid.innerHTML = '';
+
+  let total = 0, checked = 0, anyShown = false;
+
+  packingData.forEach(section => {
+    const visibleItems = section.items.filter(item => packMatchesFilter(item, packFilter));
+    if (!visibleItems.length) return;
+    anyShown = true;
+
+    let catChecked = 0;
+    const itemsHtml = visibleItems.map(item => {
+      const key = packKey(item);
+      const isChecked = localStorage.getItem(key) === '1';
+      if (isChecked) { catChecked++; checked++; }
+      total++;
+
+      const warn = item.warn ? '<span class="pack-badge pack-badge-warn">Action needed</span>' : '';
+      const note = item.note ? `<div class="pack-item-note">${item.note}</div>` : '';
+
+      return `<label class="pack-item${isChecked ? ' checked' : ''}">
+        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="togglePack(this, '${key}')">
+        <div class="pack-item-content">
+          <div class="pack-item-name">${item.name}</div>
+          ${note}
+          <div class="pack-item-meta">${packBadgeHtml(item.bag)}${warn}</div>
+        </div>
+      </label>`;
+    }).join('');
+
+    const col = document.createElement('div');
+    col.className = 'packing-cat';
+    col.innerHTML = `<h4><span>${escapeAttr(section.cat)}</span><span class="pack-cat-count">${catChecked}/${visibleItems.length}</span></h4>${itemsHtml}`;
+    packingGrid.appendChild(col);
+  });
+
+  if (!anyShown) {
+    packingGrid.innerHTML = '<div class="pack-empty">No items match this filter.</div>';
+  }
+
+  updatePackProgress(checked, total);
+}
+
+function updatePackProgress(checked, total) {
+  const label = document.getElementById('packProgressLabel');
+  const fill = document.getElementById('packProgressFill');
+  if (label) label.textContent = `${checked} / ${total} packed`;
+  if (fill) fill.style.width = total ? (checked / total * 100).toFixed(1) + '%' : '0%';
+}
 
 function togglePack(el, key) {
   if (el.checked) {
     localStorage.setItem(key, '1');
-    el.parentElement.classList.add('checked');
   } else {
     localStorage.removeItem(key);
-    el.parentElement.classList.remove('checked');
   }
+  // Re-render to update category counts and progress
+  renderPackingList();
 }
+
+function setPackFilter(val, btn) {
+  packFilter = val;
+  document.querySelectorAll('.pack-filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderPackingList();
+}
+
+function resetAllPacking() {
+  if (!confirm('Clear all packing checkmarks?')) return;
+  packingData.forEach(section => section.items.forEach(item => localStorage.removeItem(packKey(item))));
+  renderPackingList();
+}
+
+function checkAllPacking() {
+  packingData.forEach(section => section.items.forEach(item => {
+    if (packMatchesFilter(item, packFilter)) localStorage.setItem(packKey(item), '1');
+  }));
+  renderPackingList();
+}
+
+renderPackingList();
 
 // ── RENDER VIDEO GUIDES ──────────────────────────────
 const videoGrid = document.getElementById('videoGrid');
